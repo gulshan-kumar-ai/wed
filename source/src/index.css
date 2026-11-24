@@ -21,6 +21,7 @@
     @apply font-sans;
     min-width: 280px;
     -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
   }
 
   img,
@@ -79,6 +80,32 @@ html.lenis body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    overscroll-behavior-y: contain;
+  }
+
+  .stage,
+  .stage * {
+    backface-visibility: hidden;
+  }
+
+  .stage svg {
+    shape-rendering: optimizeSpeed;
+  }
+
+  @supports (content-visibility: auto) {
+    section[aria-label]:not(.stage) {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 900px;
+    }
   }
 }
 

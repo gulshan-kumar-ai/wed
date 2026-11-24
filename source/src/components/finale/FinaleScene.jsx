@@ -40,7 +40,7 @@ export default function FinaleScene({ wedding }) {
   return (
     <section
       ref={ref}
-      className="stage relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-[#17122A]"
+      className="stage relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-[#17122A] sm:min-h-[640px]"
       aria-labelledby="finale-heading"
     >
       <ArtLayer image={f.sky} style={{ y: skyY }}>

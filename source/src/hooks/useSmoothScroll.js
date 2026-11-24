@@ -16,7 +16,11 @@ export function scrollToY(y, duration = 2.6) {
  */
 export function useSmoothScroll() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const narrowScreen = window.matchMedia('(max-width: 767px)').matches;
+
+    if (reducedMotion || coarsePointer || narrowScreen) return undefined;
 
     const lenis = new Lenis({
       lerp: 0.085,
