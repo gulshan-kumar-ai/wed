@@ -12,7 +12,7 @@ import Footer from './components/layout/Footer';
 import MusicToggle from './components/ui/MusicToggle';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { wedding } from './config/wedding';
-import { LanguageProvider, LanguageSwitcher, useLanguage } from './i18n';
+import { LanguageProvider, useLanguage } from './i18n';
 import ShareButton from './components/ui/ShareButton';
 
 function AppContent() {
@@ -21,7 +21,6 @@ function AppContent() {
 
   return (
       <MotionConfig reducedMotion="user">
-      <LanguageSwitcher />
       <MusicToggle src={wedding.music.src} volume={wedding.music.volume} />
       <ShareButton wedding={wedding} compact />
       <main className="overflow-x-clip">
