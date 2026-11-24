@@ -1,4 +1,5 @@
 import { OmMedallion, Swastika } from '../ui/SacredEmblem';
+import ShareButton from '../ui/ShareButton';
 
 /** Slim closing strip under the finale. */
 export default function Footer({ wedding }) {
@@ -18,6 +19,7 @@ export default function Footer({ wedding }) {
           {location} · {dates}
         </p>
         {footer.hashtag && <p className="mt-3 font-sans text-sm font-semibold tracking-[0.18em] text-saffron-light">{footer.hashtag}</p>}
+        <div className="mt-5"><ShareButton wedding={wedding} /></div>
       </div>
     </footer>
   );

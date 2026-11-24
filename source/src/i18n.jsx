@@ -11,6 +11,7 @@ const translations = {
     saveCalendar: 'Save to Calendar', googleCalendar: 'Google Calendar', appleOutlook: 'Apple / Outlook (.ics)',
     travelling: 'Travelling to Kunri', venuesTitle: 'Venues & Directions', venuesIntro: 'Everything you need to find your way around Kunri, District Umerkot, during the celebrations.',
     directions: 'Get Directions', openMaps: 'Open in Maps', rsvpEyebrow: 'RSVP', rsvpTitle: 'Confirm Your Presence',
+    share: 'Share Invitation', shareNative: 'Share', copyLink: 'Copy Link', copied: 'Link Copied',
   },
   ur: {
     musicOn: 'روایتی موسیقی', musicOff: 'موسیقی', scroll: 'ذرا نیچے دیکھیں',
@@ -22,6 +23,7 @@ const translations = {
     saveCalendar: 'کیلنڈر میں محفوظ کریں', googleCalendar: 'گوگل کیلنڈر', appleOutlook: 'ایپل / آؤٹ لک (.ics)',
     travelling: 'کنری کا سفر', venuesTitle: 'جگہیں اور راستے', venuesIntro: 'تقاریب کے دوران کنری، ضلع عمرکوٹ میں آنے کے لیے ضروری معلومات۔',
     directions: 'راستہ دیکھیں', openMaps: 'نقشوں میں کھولیں', rsvpEyebrow: 'جواب', rsvpTitle: 'اپنی حاضری کی تصدیق کریں',
+    share: 'دعوت نامہ شیئر کریں', shareNative: 'شیئر کریں', copyLink: 'لنک کاپی کریں', copied: 'لنک کاپی ہو گیا',
   },
   sd: {
     musicOn: 'روايتي موسيقي', musicOff: 'موسيقي', scroll: 'هيٺ ڏسو',
@@ -33,6 +35,7 @@ const translations = {
     saveCalendar: 'ڪلينڊر ۾ محفوظ ڪيو', googleCalendar: 'گوگل ڪلينڊر', appleOutlook: 'ايپل / آئوٽ لک (.ics)',
     travelling: 'کنري جو سفر', venuesTitle: 'مقام ۽ رستا', venuesIntro: 'تقريبن دوران کنري، ضلع عمرڪوٽ وٺي وڃڻ لاءِ ضروري معلومات.',
     directions: 'رستو ڏسو', openMaps: 'نقشي ۾ کوليو', rsvpEyebrow: 'جواب', rsvpTitle: 'پاڻ جي حاضري تصديق ڪريو',
+    share: 'دعوت شيئر ڪريو', shareNative: 'شيئر', copyLink: 'لنک نقل ڪريو', copied: 'لنک نقل ٿي ويو',
   },
 };
 
