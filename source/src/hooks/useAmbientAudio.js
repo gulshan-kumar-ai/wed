@@ -104,9 +104,14 @@ function createTanpuraDrone(volume) {
   feedback.connect(delay);
   delay.connect(tone);
 
-  const SA = 138.59; // C#3, a common tanpura tonic
+  const SA = 138.59; // C#3, a warm tanpura tonic
   const cycle = [SA * 0.75, SA, SA, SA * 0.5]; // Pa (lower), Sa, Sa, Sa (lower)
   const PLUCK_GAP = 1.05;
+
+  // A simple, unhurried Kafi/Bhairavi-leaning pentatonic phrase.
+  // It is synthesized locally, so it has no licensing or download dependency.
+  const melody = [SA * 2, SA * 2.25, SA * 2.5, SA * 2.25, SA * 2, SA * 1.5, SA * 1.6875, SA * 1.5];
+  const melodyGap = 1.8;
 
   const pluck = (freq, when) => {
     const env = ctx.createGain();
@@ -136,14 +141,47 @@ function createTanpuraDrone(volume) {
   };
 
   let step = 0;
+  let melodyStep = 0;
   let nextTime = 0;
+  let nextMelodyTime = 0;
   let timer = null;
+
+  const playMelodyNote = (freq, when) => {
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, when);
+    env.gain.exponentialRampToValueAtTime(0.035, when + 0.18);
+    env.gain.exponentialRampToValueAtTime(0.012, when + 0.85);
+    env.gain.exponentialRampToValueAtTime(0.0001, when + 1.55);
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1500, when);
+    filter.frequency.exponentialRampToValueAtTime(950, when + 1.4);
+
+    const oscillator = ctx.createOscillator();
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(freq, when);
+    oscillator.detune.setValueAtTime(2, when);
+
+    oscillator.connect(filter);
+    filter.connect(env);
+    env.connect(master);
+    oscillator.start(when);
+    oscillator.stop(when + 1.6);
+  };
 
   const schedule = () => {
     while (nextTime < ctx.currentTime + 0.4) {
       pluck(cycle[step % cycle.length], nextTime);
       nextTime += PLUCK_GAP + (step % cycle.length === 3 ? 0.6 : 0);
       step += 1;
+    }
+
+    while (nextMelodyTime < ctx.currentTime + 0.8) {
+      const phrasePause = melodyStep % melody.length === 0;
+      playMelodyNote(melody[melodyStep % melody.length], nextMelodyTime + (phrasePause ? 0.35 : 0));
+      nextMelodyTime += melodyGap + (phrasePause ? 0.9 : 0);
+      melodyStep += 1;
     }
   };
 
@@ -155,6 +193,7 @@ function createTanpuraDrone(volume) {
       master.gain.setValueAtTime(master.gain.value, now);
       master.gain.linearRampToValueAtTime(volume * 0.9, now + FADE_MS / 1000);
       nextTime = now + 0.05;
+      nextMelodyTime = now + 1.2;
       clearInterval(timer);
       timer = setInterval(schedule, 120);
       schedule();

@@ -62,7 +62,7 @@ export default function MusicToggle({ src, volume }) {
             exit={{ opacity: 0, width: 0 }}
             className="hidden overflow-hidden whitespace-nowrap font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-charcoal sm:inline"
           >
-            {playing ? 'Shehnai on' : 'Music'}
+            {playing ? 'Tradition on' : 'Music'}
           </motion.span>
         </AnimatePresence>
       </button>
