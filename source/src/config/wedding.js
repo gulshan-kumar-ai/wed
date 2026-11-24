@@ -66,9 +66,8 @@ export const wedding = {
       brideName: 'Payal Kumari',
       brideTitle: 'Dr.',
       groomPrefix: 'Chi.', // Chiranjeevi
-      bridePrefix: 'Chi. Sau. Kan.', // Chiranjeevi Saubhagyakankshini
-      // TODO: bride's parents, e.g. 'Smt. … & Shri …'. The "Daughter of" line stays hidden while empty.
-      brideParents: '',
+      bridePrefix: '',
+      brideParents: 'Shri Kailash Kumar Harani',
       brideHometown: '',
       // Portraits: put files in public/photos/ and set e.g. '/photos/grouve.jpg'
       groomPhoto: null,
@@ -93,8 +92,8 @@ export const wedding = {
       brideName: 'Prena Kumari',
       brideTitle: 'Dr.',
       groomPrefix: 'Chi.',
-      bridePrefix: 'Chi. Sau. Kan.',
-      brideParents: '', // TODO
+      bridePrefix: '',
+      brideParents: 'Shri Tarachand Dedha',
       brideHometown: '',
       groomPhoto: null,
       bridePhoto: null,
