@@ -1,0 +1,28 @@
+﻿PAMOORA WEDDING INVITATION
+==========================
+
+TO VIEW THE CARD
+  Double-click "Wedding Invitation.html". It opens in your web browser
+  (Chrome or Edge recommended). Scroll down to walk through the invitation.
+  An internet connection is needed for the fonts and the Google Maps.
+
+FILES
+  Wedding Invitation.html           The complete card in a single file.
+  favicon.svg, apple-touch-icon.png Small icons used by the card (keep them next to it).
+  Invitation Preview Image.jpg      The picture WhatsApp shows when the link is shared.
+  audio\                            Put a shehnai/sitar track here named "ambient.mp3"
+                                    to replace the built-in soft drone music.
+  Wedding Invitation - Source Code (backup).zip
+                                    The full editable project. Unzip it, then run
+                                    "npm install" and "npm run dev" to edit it.
+
+SHARING ON WHATSAPP
+  To send guests a link, the card must be put online (for example on Netlify
+  or Vercel, both free). Sending the .html file itself on WhatsApp will not
+  open nicely on phones.
+
+STILL TO CONFIRM (in src/config/wedding.js inside the project)
+  - Spellings "Grouve" and "Prena"
+  - Brides' parents' names (the "Daughter of" lines are hidden until added)
+  - Exact ceremony days/times and the phere muhurat (currently estimates)
+  - Coordinator names and phone numbers

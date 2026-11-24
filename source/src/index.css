@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    overflow-x: hidden;
+    background: #fdf8f0;
+    color: #2c221e;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @supports (overflow: clip) {
+    html {
+      overflow-x: clip;
+    }
+  }
+
+  body {
+    @apply font-sans;
+    min-width: 280px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  button {
+    min-width: 0;
+  }
+
+  ::selection {
+    background: rgba(212, 175, 55, 0.35);
+  }
+}
+
+/* Lenis smooth-scroll requirements */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+  /* One "art unit" = 1px of the 1440 × 900 artboard, after `slice` scaling.
+     Lets HTML overlays line up exactly with points inside the SVG art layers. */
+  .stage {
+    --u: max(100vw / 1440, 100svh / 900);
+  }
+
+  .text-halo {
+    text-shadow:
+      0 0 18px rgba(253, 248, 240, 0.9),
+      0 0 2px rgba(253, 248, 240, 0.9);
+  }
+
+  .gold-foil {
+    background: linear-gradient(
+      100deg,
+      #9c7a1e 0%,
+      #d4af37 22%,
+      #f6e6a6 42%,
+      #d4af37 58%,
+      #9c7a1e 80%,
+      #d4af37 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (max-width: 359px) {
+  .countdown-unit {
+    border-radius: 0.75rem;
+  }
+
+  .countdown-unit .countdown-label {
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
