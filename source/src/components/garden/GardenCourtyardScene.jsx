@@ -10,6 +10,7 @@ import Toran from '../hero/art/Toran';
 import InvitationCard from '../invitation/InvitationCard';
 import { artwork } from '../../config/artwork';
 import { useAmbient } from '../../hooks/useAmbient';
+import { useReducedMotion } from 'framer-motion';
 
 /*
  * Peacocks are HTML-positioned so they stay on screen on narrow phones, but
@@ -35,6 +36,7 @@ const PEACOCK_INSET = 'clamp(-36px, calc(50% - var(--u) * 600), 40%)';
 export default function GardenCourtyardScene({ wedding }) {
   const ref = useRef(null);
   const animate = useAmbient(ref);
+  const reduceMotion = useReducedMotion();
   const g = artwork.garden;
 
   const { scrollYProgress: entry } = useScroll({ target: ref, offset: ['start end', 'start start'] });
@@ -61,16 +63,26 @@ export default function GardenCourtyardScene({ wedding }) {
           <BalustradeArt />
         </ArtLayer>
         <motion.div className="pointer-events-none absolute inset-0" style={{ y: railY }} aria-hidden="true">
-          <div className="absolute" style={{ ...peacockBox, left: PEACOCK_INSET }}>
+          <motion.div
+            className="absolute"
+            style={{ ...peacockBox, left: PEACOCK_INSET }}
+            animate={animate && !reduceMotion ? { x: ['0%', '-5%', '5%', '0%'], y: [0, -3, 0, -2, 0] } : undefined}
+            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', times: [0, 0.33, 0.66, 1] }}
+          >
             {g.peacock ? <img src={g.peacock} alt="" className="h-auto w-full" /> : <Peacock key={`Peacock-1-${animate}`} className="h-auto w-full" animate={animate} />}
-          </div>
-          <div className="absolute" style={{ ...peacockBox, right: PEACOCK_INSET }}>
+          </motion.div>
+          <motion.div
+            className="absolute"
+            style={{ ...peacockBox, right: PEACOCK_INSET }}
+            animate={animate && !reduceMotion ? { x: ['0%', '5%', '-5%', '0%'], y: [0, -2, 0, -3, 0] } : undefined}
+            transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', times: [0, 0.33, 0.66, 1] }}
+          >
             {g.peacock ? (
               <img src={g.peacock} alt="" className="h-auto w-full -scale-x-100" />
             ) : (
               <Peacock key={`Peacock-2-${animate}`} className="h-auto w-full" animate={animate} flip />
             )}
-          </div>
+          </motion.div>
         </motion.div>
         <ArtLayer image={g.foreground} style={{ y: groundY }}>
           <GardenForeground />
@@ -91,7 +103,7 @@ export default function GardenCourtyardScene({ wedding }) {
       </div>
 
       {/* Scrolling content over the backdrop */}
-      <div className="relative z-10 -mt-[100svh] px-4 pb-[45svh] pt-[92svh] sm:px-6">
+      <div className="relative z-10 -mt-[100svh] px-4 pb-[45svh] pt-[24svh] sm:px-6 sm:pt-[92svh]">
         <InvitationCard wedding={wedding} />
       </div>
     </section>
