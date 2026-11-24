@@ -1,12 +1,14 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { downloadIcs, googleCalendarUrl } from './calendar';
+import { useLanguage } from '../../i18n';
 
 /** "Save to Calendar" button with Google Calendar and .ics (Apple / Outlook) options. */
 export default function CalendarMenu({ event }) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
   const menuId = useId();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!open) return undefined;
@@ -37,7 +39,7 @@ export default function CalendarMenu({ event }) {
         <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
           <path d="M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM12 11v6M9 14h6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
-        Save to Calendar
+        {t('saveCalendar')}
       </button>
       <AnimatePresence>
         {open && (
@@ -52,7 +54,7 @@ export default function CalendarMenu({ event }) {
           >
             <a href={googleCalendarUrl(event)} target="_blank" rel="noopener noreferrer" className={item} onClick={() => setOpen(false)}>
               <span className="flex h-7 w-7 items-center justify-center rounded-md bg-saffron/15 font-semibold text-saffron-dark">G</span>
-              Google Calendar
+              {t('googleCalendar')}
             </a>
             <button
               type="button"
@@ -65,7 +67,7 @@ export default function CalendarMenu({ event }) {
               <span className="flex h-7 w-7 items-center justify-center rounded-md bg-crimson/10 text-crimson">
                 <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>
-              Apple / Outlook (.ics)
+              {t('appleOutlook')}
             </button>
           </motion.div>
         )}

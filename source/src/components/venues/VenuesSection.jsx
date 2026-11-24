@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useLanguage } from '../../i18n';
 import { AnimatePresence, motion } from 'framer-motion';
 import SectionHeading from '../ui/SectionHeading';
 
@@ -91,6 +92,7 @@ function VenuePanel({ venue }) {
 /** Tabbed location switcher with address, landmarks, directions and an embedded map. */
 export default function VenuesSection({ wedding }) {
   const { venues } = wedding;
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const tabsRef = useRef([]);
 
@@ -108,9 +110,9 @@ export default function VenuesSection({ wedding }) {
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           id="venues-heading"
-          eyebrow="Travelling to Kunri"
-          title="Venues & Directions"
-          intro="Everything you need to find your way around Kunri, District Umerkot, during the celebrations."
+          eyebrow={t('travelling')}
+          title={t('venuesTitle')}
+          intro={t('venuesIntro')}
         />
 
         <div

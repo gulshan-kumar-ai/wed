@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../i18n';
 import ScallopedFrame from '../ui/ScallopedFrame';
 import SectionHeading from '../ui/SectionHeading';
 import { MOTIFS } from '../ui/MotifIcons';
@@ -70,6 +71,7 @@ function EventCard({ event, venue, timeZone, index }) {
 /** Four ceremonies in a 2 × 2 grid (single column on mobile). */
 export default function EventsSection({ wedding }) {
   const { events, venues, timeZone } = wedding;
+  const { t } = useLanguage();
   const venueById = Object.fromEntries(venues.map((v) => [v.id, v]));
 
   return (
@@ -81,9 +83,9 @@ export default function EventsSection({ wedding }) {
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading
           id="events-heading"
-          eyebrow="The celebrations"
-          title="Wedding Festivities"
-          intro="Three days of rituals, music and blessings in Kunri. All times are Pakistan Standard Time."
+          eyebrow={t('celebrationsEyebrow')}
+          title={t('celebrationsTitle')}
+          intro={t('celebrationsIntro')}
         />
         <ol className="mt-16 grid gap-8 md:grid-cols-2 md:gap-10">
           {events.map((event, i) => (

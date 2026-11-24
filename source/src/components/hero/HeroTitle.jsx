@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import SacredEmblem from '../ui/SacredEmblem';
 import Ornament from '../ui/Ornament';
 import { brideFormal, brideFull, groomFormal, groomFull } from '../ui/names';
+import { coupleWeds, useLanguage } from '../../i18n';
 
 const isDevanagari = (s) => /[ऀ-ॿ]/.test(s);
 
@@ -25,11 +26,11 @@ function Name({ title, name }) {
   );
 }
 
-function Couple({ couple }) {
+function Couple({ couple, t }) {
   return (
     <motion.span variants={rise} className="flex flex-col items-center">
       <Name title={couple.groomTitle} name={groomFull(couple)} />
-      <span className="text-halo my-[0.04em] font-display text-[0.46em] font-medium italic leading-tight text-saffron-dark">weds</span>
+      <span className="text-halo my-[0.04em] font-display text-[0.46em] font-medium italic leading-tight text-saffron-dark">{coupleWeds(t)}</span>
       <Name title={couple.brideTitle} name={brideFull(couple)} />
     </motion.span>
   );
@@ -37,6 +38,7 @@ function Couple({ couple }) {
 
 /** Emblem, subtitle, the two couples' names, location and dates. */
 export default function HeroTitle({ wedding, style }) {
+  const { t } = useLanguage();
   const { invocation, subtitle, couples, location, dates, emblem } = wedding;
   const [first, second] = couples;
 
@@ -74,7 +76,7 @@ export default function HeroTitle({ wedding, style }) {
           variants={rise}
           className="text-halo mt-[1.6svh] font-sans text-[clamp(0.62rem,1.5svh,0.78rem)] font-semibold uppercase tracking-[0.5em] text-saffron-dark"
         >
-          {subtitle}
+          {t('languageCode') === 'ur' ? 'دو شاندار اتحاد' : t('languageCode') === 'sd' ? 'ٻہ شاهي اتحاد' : subtitle}
         </motion.p>
 
         {/* Full names with honorifics are long, so the size tracks both width and height */}
@@ -83,14 +85,14 @@ export default function HeroTitle({ wedding, style }) {
             {groomFormal(first)} weds {brideFormal(first)} and {groomFormal(second)} weds {brideFormal(second)}
           </span>
           <span aria-hidden="true" className="contents">
-            <Couple couple={first} />
+            <Couple couple={first} t={t} />
             <motion.span
               variants={rise}
               className="gold-foil my-[0.12em] font-display text-[1em] font-medium italic leading-none lg:my-0 lg:text-[1.3em]"
             >
               &amp;
             </motion.span>
-            <Couple couple={second} />
+            <Couple couple={second} t={t} />
           </span>
         </h1>
 

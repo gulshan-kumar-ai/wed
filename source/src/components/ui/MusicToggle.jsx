@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAmbientAudio } from '../../hooks/useAmbientAudio';
+import { useLanguage } from '../../i18n';
 
 function Bars() {
   return (
@@ -35,6 +36,7 @@ function NoteIcon() {
 /** Floating ambient-music toggle (top-right). Audio never auto-plays. */
 export default function MusicToggle({ src, volume }) {
   const { playing, toggle } = useAmbientAudio({ src, volume });
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -62,7 +64,7 @@ export default function MusicToggle({ src, volume }) {
             exit={{ opacity: 0, width: 0 }}
             className="hidden overflow-hidden whitespace-nowrap font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-charcoal sm:inline"
           >
-            {playing ? 'Tradition on' : 'Music'}
+            {playing ? t('musicOn') : t('musicOff')}
           </motion.span>
         </AnimatePresence>
       </button>

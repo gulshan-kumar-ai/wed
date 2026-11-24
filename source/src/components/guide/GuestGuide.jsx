@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../i18n';
 import SectionHeading from '../ui/SectionHeading';
 
 const iconProps = {
@@ -125,6 +126,7 @@ function Points({ points }) {
 /** "Things to Know": travel, dress code & weather, and hospitality contacts for out-of-town guests. */
 export default function GuestGuide({ wedding }) {
   const { travel, attire, hospitality } = wedding.guide;
+  const { t } = useLanguage();
   return (
     <section className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="guide-heading">
       <div className="mx-auto max-w-6xl">

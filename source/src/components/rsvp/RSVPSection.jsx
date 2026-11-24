@@ -1,4 +1,5 @@
 import { useId, useMemo, useState } from 'react';
+import { useLanguage } from '../../i18n';
 import { AnimatePresence, motion } from 'framer-motion';
 import RoyalScroll from './RoyalScroll';
 import SectionHeading from '../ui/SectionHeading';
@@ -131,6 +132,7 @@ function Confirmation({ response, wedding, onEdit }) {
 /** "Confirm Your Presence" RSVP form on a royal scroll, with an instant festive confirmation. */
 export default function RSVPSection({ wedding }) {
   const { events, couples, rsvp } = wedding;
+  const { t } = useLanguage();
   const uid = useId();
   const sides = [`${couples[0].groom}'s Side`, `${couples[1].groom}'s Side`, 'Both Twins / Family Friend'];
 
@@ -185,7 +187,7 @@ export default function RSVPSection({ wedding }) {
   return (
     <section className="relative overflow-hidden bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="rsvp-heading">
       <div className="relative mx-auto max-w-6xl">
-        <SectionHeading id="rsvp-heading" eyebrow="RSVP" title="Confirm Your Presence" intro={rsvp.deadline} />
+        <SectionHeading id="rsvp-heading" eyebrow={t('rsvpEyebrow')} title={t('rsvpTitle')} intro={rsvp.deadline} />
 
         <RoyalScroll className="mt-14">
           <AnimatePresence mode="wait" initial={false}>

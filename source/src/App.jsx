@@ -12,19 +12,22 @@ import Footer from './components/layout/Footer';
 import MusicToggle from './components/ui/MusicToggle';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { wedding } from './config/wedding';
+import { LanguageProvider, LanguageSwitcher, useLanguage } from './i18n';
 
-export default function App() {
+function AppContent() {
   useSmoothScroll();
+  const { t } = useLanguage();
 
   return (
-    <MotionConfig reducedMotion="user">
+      <MotionConfig reducedMotion="user">
+      <LanguageSwitcher />
       <MusicToggle src={wedding.music.src} volume={wedding.music.volume} />
       <main className="overflow-x-clip">
         {/* Phase 1 · Temple courtyard → doorway light */}
         <HeroScene wedding={wedding} />
         {/* Phase 2 · Garden courtyard + formal invitation, mandap passage, couples */}
         <GardenCourtyardScene wedding={wedding} />
-        <MandapPassage eyebrow="Two brothers · Two brides" title="Meet the Couples" />
+        <MandapPassage eyebrow={t('meetEyebrow')} title={t('meetTitle')} />
         <CouplesSection wedding={wedding} />
         {/* Phase 3 · Timeline, venues, RSVP */}
         <EventsSection wedding={wedding} />
@@ -35,6 +38,14 @@ export default function App() {
         <FinaleScene wedding={wedding} />
       </main>
       <Footer wedding={wedding} />
-    </MotionConfig>
+      </MotionConfig>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
