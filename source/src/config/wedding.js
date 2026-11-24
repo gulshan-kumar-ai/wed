@@ -39,6 +39,8 @@ export const wedding = {
     request: 'request the honour of your gracious presence and blessings at the auspicious double wedding of their beloved twin sons',
     dateLine: 'Thursday 14 to Saturday 16 January 2027',
     closing: 'Your presence will make the celebrations complete.',
+    quote: 'Saj-dhaj kar aana, khushiyaan sang laana, mere judwa bhaiyon ki shaadi mein zaroor-zaroor aana.',
+    quoteBy: 'Chohiet Pamoora',
     // Optional sign-off line at the bottom of the card; '' to hide
     compliments: 'With love & warm regards from the Pamoora Pariwar',
   },

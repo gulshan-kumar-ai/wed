@@ -101,6 +101,19 @@ export default function InvitationCard({ wedding }) {
         <motion.p variants={reveal} className="mt-8 max-w-sm font-display text-lg italic text-charcoal">
           {invitation.closing}
         </motion.p>
+
+        {invitation.quote && (
+          <motion.blockquote variants={reveal} className="mt-6 max-w-md border-y border-gold/40 px-4 py-5 text-center">
+            <p className="font-display text-[1.25rem] leading-relaxed italic text-crimson sm:text-[1.35rem]">
+              “{invitation.quote}”
+            </p>
+            {invitation.quoteBy && (
+              <cite className="mt-3 block font-sans text-[11px] not-italic font-semibold uppercase tracking-[0.28em] text-saffron-dark">
+                — {invitation.quoteBy}
+              </cite>
+            )}
+          </motion.blockquote>
+        )}
         {invitation.compliments && (
           <motion.p variants={reveal} className="mt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.28em] text-saffron-dark">
             {invitation.compliments}
