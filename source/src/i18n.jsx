@@ -80,7 +80,7 @@ export function LanguageSwitcher() {
   ];
 
   return (
-    <div className="fixed left-1/2 top-4 z-50 flex -translate-x-1/2 rounded-full border border-gold/70 bg-ivory/90 p-1 shadow-[0_4px_24px_rgba(169,50,38,0.14)] backdrop-blur-md sm:top-6" aria-label="Language">
+    <div className="fixed left-4 top-4 z-40 flex rounded-full border border-gold/70 bg-ivory/90 p-1 shadow-[0_4px_24px_rgba(169,50,38,0.14)] backdrop-blur-md sm:left-6 sm:top-6" aria-label="Language">
       {options.map(([code, label]) => (
         <button
           key={code}
