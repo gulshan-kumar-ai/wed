@@ -111,12 +111,12 @@ function createTanpuraDrone(volume) {
   // A simple, unhurried Kafi/Bhairavi-leaning pentatonic phrase.
   // It is synthesized locally, so it has no licensing or download dependency.
   const melody = [SA * 2, SA * 2.25, SA * 2.5, SA * 2.25, SA * 2, SA * 1.5, SA * 1.6875, SA * 1.5];
-  const melodyGap = 1.8;
+  const melodyGap = 2.4;
 
   const pluck = (freq, when) => {
     const env = ctx.createGain();
     env.gain.setValueAtTime(0.0001, when);
-    env.gain.exponentialRampToValueAtTime(0.16, when + 0.03);
+    env.gain.exponentialRampToValueAtTime(0.105, when + 0.03);
     env.gain.exponentialRampToValueAtTime(0.0001, when + 4.6);
 
     const filter = ctx.createBiquadFilter();
@@ -149,8 +149,8 @@ function createTanpuraDrone(volume) {
   const playMelodyNote = (freq, when) => {
     const env = ctx.createGain();
     env.gain.setValueAtTime(0.0001, when);
-    env.gain.exponentialRampToValueAtTime(0.035, when + 0.18);
-    env.gain.exponentialRampToValueAtTime(0.012, when + 0.85);
+    env.gain.exponentialRampToValueAtTime(0.022, when + 0.18);
+    env.gain.exponentialRampToValueAtTime(0.008, when + 0.85);
     env.gain.exponentialRampToValueAtTime(0.0001, when + 1.55);
 
     const filter = ctx.createBiquadFilter();

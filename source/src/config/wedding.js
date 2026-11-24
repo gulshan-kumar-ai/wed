@@ -22,7 +22,7 @@ export const wedding = {
     // Put a royalty-free shehnai / sitar loop at public/audio/ambient.mp3.
     // If the file is missing, a soft synthesized tanpura drone plays instead.
     src: 'audio/ambient.mp3', // relative, so it also works when the page is opened from disk
-    volume: 0.45,
+    volume: 0.32,
   },
 
   /* ── Formal invitation ───────────────────────────────────── */
