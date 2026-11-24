@@ -1,0 +1,32 @@
+{
+  "id": "/wed/",
+  "name": "A Double Royal Union",
+  "short_name": "Pamoora Wedding",
+  "description": "Wedding invitation for Grouve & Payal and Gulshan & Prena",
+  "start_url": "/wed/",
+  "scope": "/wed/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF8F0",
+  "theme_color": "#E67E22",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
