@@ -71,7 +71,8 @@ export const wedding = {
       bridePrefix: '',
       brideParents: 'Shri Kailash Kumar Harani',
       brideHometown: '',
-      // Portraits: put files in public/photos/ and set e.g. '/photos/grouve.jpg'
+      // Portraits: put files in public/photos/ and set e.g. 'photos/grouve.jpg'
+      // (no leading slash, so it also works from the GitHub Pages sub-folder)
       groomPhoto: null,
       bridePhoto: null,
       tagline: 'The doctor of the twins',
@@ -265,7 +266,7 @@ export const wedding = {
       title: 'Blessings & Hospitality',
       intro: 'Our coordinators are happy to help with travel, stays and anything you need.',
       // TODO: names and numbers. Use full international numbers, e.g. '+92 300 1234567'.
-      // Numbers containing 'X' are treated as placeholders and are not linked.
+      // Coordinators whose number still contains 'X' are hidden from guests until filled in.
       coordinators: [
         { name: 'Travel coordinator', role: 'Pick-ups from Mirpurkhas & Hyderabad', phone: '+92 3XX XXXXXXX' },
         { name: 'Stay coordinator', role: 'Guest rooms & accommodation', phone: '+92 3XX XXXXXXX' },

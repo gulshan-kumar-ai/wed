@@ -13,8 +13,25 @@ npm run build    # production build in dist/
 | What | Where |
 | --- | --- |
 | Names, parents, invitation wording, stories, galleries, events, venues, RSVP settings | `src/config/wedding.js` |
+| The same wording in Urdu and Sindhi | `src/config/wedding.i18n.js` |
+| Buttons, labels and messages in all three languages | `src/strings.js` |
 | Swap placeholder art for illustrations | `src/config/artwork.js` (+ files in `public/art/`) |
 | Colours & fonts | `tailwind.config.js`, Google Fonts link in `index.html` |
+
+## Languages
+
+English, Urdu (اردو) and Sindhi (سنڌي). Guests choose on the opening doors or in the footer; the
+choice is remembered, and a phone set to Urdu or Sindhi starts in that language. Urdu and Sindhi lay
+the page out right-to-left and use Noto Naskh Arabic. Personal names stay in English letters in every
+language so nobody's name is misspelt. When you change wording in `wedding.js`, change it in
+`wedding.i18n.js` too (anything missing there simply shows in English). Have a native reader check
+the Urdu and Sindhi before sending.
+
+## Timings still to confirm
+
+While `timingsConfirmed` in `wedding.js` is `false`, the ceremony times and the phere muhurat are
+marked "provisional", a note above the ceremonies says they will be updated, and calendar entries are
+saved as tentative. Set it to `true` once the times are final.
 
 ## How the hero works
 
@@ -49,8 +66,9 @@ it plays a gentle synthesized tanpura drone instead (`hooks/useAmbientAudio.js`)
 1. **Temple courtyard** (`components/hero`): walk-in through the temple doorway.
 2. **Garden courtyard** (`components/garden`): mehrab arcade, peacocks on the balustrade, with the
    formal invitation card (`components/invitation`) scrolling over it.
-3. **Floral mandap passage** (`components/mandap`): a flower wall with a scalloped arch you zoom through.
-4. **Meet the Couples** (`components/couples`): twin story, couple toggle, arch portraits, swipeable gallery.
+3. **Floral mandap passage** (`components/mandap`): a flower wall with a scalloped arch you zoom through;
+   the twins' story rises in beneath the heading as the wall clears.
+4. **Meet the Couples** (`components/couples`): couple toggle, arch portraits, story, swipeable gallery.
 5. **Wedding Festivities** (`components/events`): 2 × 2 scalloped cards, each with Save to Calendar
    (Google Calendar link or downloadable `.ics`).
 6. **Venues & Directions** (`components/venues`): tabbed locations with Google Maps embed and directions.
@@ -62,7 +80,13 @@ it plays a gentle synthesized tanpura drone instead (`hooks/useAmbientAudio.js`)
 ## Photos
 
 Put files in `public/photos/` and reference them in `wedding.js` (`groomPhoto`, `bridePhoto`,
-`gallery[].src`), e.g. `'/photos/vikram.jpg'`. Without photos, tasteful placeholders are shown.
+`gallery[].src`), e.g. `'photos/grouve.jpg'`. Until a portrait is added, the couple section shows a
+small gilded arch with a marigold (groom) or lotus (bride) motif; the photo gallery only appears once
+at least one gallery photo has a `src`, so guests never see "coming soon" tiles.
+
+Coordinators whose number still contains `X` are hidden. If none have real numbers, the guide asks
+guests to reply to whoever sent them the invitation (plus a "Message the family on WhatsApp" button
+once `rsvp.whatsapp` is set).
 
 ## Maps
 
@@ -71,9 +95,25 @@ coordinates (`'25.1780,69.5660'`) once you have them; the sample entries all poi
 
 ## RSVP delivery
 
-By default an RSVP is only saved in the guest's own browser. To actually receive responses, set
-`rsvp.endpoint` to a URL that accepts a JSON POST (a Google Apps Script web app writing to a Sheet,
-Formspree, etc.) and/or `rsvp.whatsapp` to show a "Send on WhatsApp" button after submitting.
+Guests accept or decline, choose events and say whose side they are on; guests coming from outside
+Kunri add their arrival date and time and whether they need a pick-up (Mirpurkhas / Hyderabad, from
+`rsvp.pickupFrom`) or a room. Every reply reaches the family by one of three routes:
+
+| `rsvp.endpoint` | `rsvp.whatsapp` | What happens |
+| --- | --- | --- |
+| set | any | Posted to your Google Sheet; the guest sees "Your reply has reached the family". If the Sheet can't be reached, the guest is offered WhatsApp instead. |
+| `null` | set | The reply opens in WhatsApp, addressed to that number, ready to send. |
+| `null` | `null` | The reply opens in WhatsApp and the guest picks whom to send it to (whoever invited them). |
+
+**Google Sheet setup:** follow the steps at the top of `rsvp/google-apps-script.gs` (create a Sheet →
+Extensions → Apps Script → paste → Deploy as a web app with access "Anyone" → copy the `/exec` URL into
+`rsvp.endpoint`). The page sends a plain-text POST, which Apps Script accepts without a CORS preflight.
+Each reply carries an id, so a guest who edits their reply updates their row instead of adding one.
+Rows are written in English whatever language the guest used. Set `NOTIFY_EMAIL` in the script to get
+an email per reply.
+
+A hidden form field catches spam bots. A reply saved by an older version of the page (which only
+stored it on the guest's phone) is detected and the guest is asked to send it again.
 
 ## Personal links & the opening doors
 
