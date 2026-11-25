@@ -8,6 +8,19 @@ npm run dev      # http://localhost:5173
 npm run build    # production build in dist/
 ```
 
+## Publish
+
+The live site (https://gulshan-kumar-ai.github.io/wed/) is GitHub Pages serving the single-file card
+in the repository root. After any change:
+
+```bash
+npm run release   # builds the card and copies it to ../index.html and "../Wedding Invitation.html"
+git add -A && git commit -m "…" && git push
+```
+
+Committing only `source/` does not change the live site; the rebuilt `index.html` is what gets
+deployed. Pages usually updates within a minute of the push.
+
 ## Personalise
 
 | What | Where |
@@ -20,8 +33,9 @@ npm run build    # production build in dist/
 
 ## Languages
 
-English, Urdu (اردو) and Sindhi (سنڌي). Guests choose on the opening doors or in the footer; the
-choice is remembered, and a phone set to Urdu or Sindhi starts in that language. Urdu and Sindhi lay
+English, Urdu (اردو) and Sindhi (سنڌي). Guests choose on the opening doors or with the globe
+button in the top bar; the choice is remembered, and a phone set to Urdu or Sindhi starts in that
+language. Urdu and Sindhi lay
 the page out right-to-left and use Noto Naskh Arabic. Personal names stay in English letters in every
 language so nobody's name is misspelt. When you change wording in `wedding.js`, change it in
 `wedding.i18n.js` too (anything missing there simply shows in English). Have a native reader check
@@ -56,10 +70,17 @@ The zoom heads for artboard point (720, 700), the foot of the temple steps.
 Smooth scrolling uses Lenis (`hooks/useSmoothScroll.js`). Reduced-motion users get native
 scrolling and no ambient loops.
 
-## Music
+## Top bar & music
 
-The toggle never auto-plays. It looks for `public/audio/ambient.mp3`. If the file is missing,
-it plays a gentle synthesized tanpura drone instead (`hooks/useAmbientAudio.js`).
+Language (globe), Share and Music sit together in the top corner (`components/ui/TopBar.jsx`). The bar
+slides away while the guest scrolls down to read and returns as soon as they scroll up, so it never
+sits on top of the content. On phones Share opens the phone's share sheet; on computers it opens a
+menu (WhatsApp, Facebook, Instagram, Copy link). The music button pulses three times to invite a tap,
+then stays still.
+
+Music never auto-plays: it starts from the "Open the Invitation" tap or the music button. It looks
+for `public/audio/ambient.mp3`; if the file is missing, it plays a gentle synthesized tanpura drone
+instead (`hooks/useAmbientAudio.js`).
 
 ## Page journey
 
@@ -70,7 +91,8 @@ it plays a gentle synthesized tanpura drone instead (`hooks/useAmbientAudio.js`)
    the twins' story rises in beneath the heading as the wall clears.
 4. **Meet the Couples** (`components/couples`): couple toggle, arch portraits, story, swipeable gallery.
 5. **Wedding Festivities** (`components/events`): 2 × 2 scalloped cards, each with Save to Calendar
-   (Google Calendar link or downloadable `.ics`).
+   (Google Calendar link or downloadable `.ics`), plus "Add all 4 events to my calendar": one
+   `pamoora-wedding.ics` holding every ceremony (Apple Calendar, Outlook and most phones).
 6. **Venues & Directions** (`components/venues`): tabbed locations with Google Maps embed and directions.
 7. **Confirm Your Presence** (`components/rsvp`): RSVP on a royal scroll, with a festive confirmation.
 8. **Things to Know** (`components/guide`): travel, dress code & weather, coordinator contacts.
@@ -106,11 +128,26 @@ Kunri add their arrival date and time and whether they need a pick-up (Mirpurkha
 | `null` | `null` | The reply opens in WhatsApp and the guest picks whom to send it to (whoever invited them). |
 
 **Google Sheet setup:** follow the steps at the top of `rsvp/google-apps-script.gs` (create a Sheet →
-Extensions → Apps Script → paste → Deploy as a web app with access "Anyone" → copy the `/exec` URL into
-`rsvp.endpoint`). The page sends a plain-text POST, which Apps Script accepts without a CORS preflight.
-Each reply carries an id, so a guest who edits their reply updates their row instead of adding one.
-Rows are written in English whatever language the guest used. Set `NOTIFY_EMAIL` in the script to get
-an email per reply.
+Extensions → Apps Script → paste → run `setup` once → Deploy as a web app with access "Anyone" → copy
+the `/exec` URL into `rsvp.endpoint`). The page sends a plain-text POST, which Apps Script accepts
+without a CORS preflight. Each reply carries an id, so a guest who edits their reply updates their
+row instead of adding one. Rows are written in English whatever language the guest used. Set
+`NOTIFY_EMAIL` in the script to get an email per reply.
+
+The same Sheet also counts visits (`src/analytics.js`, switch off with `rsvp.countVisits: false`):
+one row each time someone opens the invitation (once per visit, so reloads don't count twice) with
+the time, the personal-link name if there was one, new or returning device (a random id kept on the
+phone), language and phone/computer. Opening the downloaded `.html` file on your own computer isn't
+counted. The Sheet's tabs:
+
+| Tab | What it shows |
+| --- | --- |
+| Summary | Live counts: invitation opens, different phones, personal links opened, replies, accepted, declined, guests coming, head count per ceremony, pick-ups, rooms, last open / reply |
+| RSVPs | One row per guest reply |
+| Visits | One row per visit |
+| Invitations | Each personal link: how often it was opened, when, and whether that guest has replied |
+
+The ceremony names in the script (`EVENTS`) must match `events[].short` in `wedding.js`.
 
 A hidden form field catches spam bots. A reply saved by an older version of the page (which only
 stored it on the guest's phone) is detected and the guest is asked to send it again.
@@ -136,16 +173,16 @@ copy and forward doesn't greet someone else by their name.
 
 Returning guests skip the doors and the walk-in and land on the invitation card, with a
 "Welcome back" note that can replay the entrance. Once past the opening scene, a dock at the
-bottom (Invite · Events · Venue · RSVP · Share) jumps between sections; RSVP stays a bright pill
+bottom (Invite · Events · Venue · RSVP) jumps between sections; RSVP stays a bright pill
 until the guest has replied on that device.
 
 ## Sharing on WhatsApp
 
-1. Copy `.env.example` to `.env.production` and set `VITE_SITE_URL` to the address where the site
-   will live (e.g. `https://our-wedding.netlify.app`). WhatsApp only shows the thumbnail when the
-   image URL is absolute.
+1. `siteUrl` in `wedding.js` is the address where the card is published
+   (`https://gulshan-kumar-ai.github.io/wed`). WhatsApp only shows the thumbnail when the image URL
+   is absolute, so keep it up to date if the card moves (a `VITE_SITE_URL` variable overrides it).
 2. After changing names or dates, run `npm run og` to regenerate `public/og-image.jpg` (the
-   1200 × 630 preview) from the hero scene, then deploy `dist/`.
+   1200 × 630 preview) from the hero scene, copy it to the repository root, then publish (below).
 3. The page title, description and preview tags are generated from `src/config/wedding.js` at build
    time, so they always match the invitation.
 

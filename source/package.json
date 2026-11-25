@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "og": "vite build && node scripts/make-og-image.mjs && vite build",
-    "standalone": "vite build --mode standalone"
+    "standalone": "vite build --mode standalone",
+    "release": "vite build --mode standalone && node scripts/release.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.11.17",

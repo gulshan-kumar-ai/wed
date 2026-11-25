@@ -1,45 +1,56 @@
 ﻿PAMOORA WEDDING INVITATION
 ==========================
 
-TO VIEW THE CARD
-  Double-click "Wedding Invitation.html". It opens in your web browser
-  (Chrome or Edge recommended). Tap "Open the Invitation" and scroll down.
-  An internet connection is needed for the fonts and the Google Maps.
+THE CARD ONLINE
+  https://gulshan-kumar-ai.github.io/wed/
+  To view it offline, double-click "Wedding Invitation.html" (Chrome or
+  Edge recommended), tap "Open the Invitation" and scroll down. An internet
+  connection is needed for the fonts and the Google Maps.
 
 LANGUAGES
-  Guests choose English, Urdu or Sindhi on the opening doors (or in the
-  footer). Please ask someone who reads Urdu and Sindhi well to check the
-  wording before the card goes out. The wording is in
-  source\src\config\wedding.i18n.js and source\src\strings.js.
+  Guests choose English, Urdu or Sindhi on the opening doors, or later with
+  the globe button in the top corner. Please ask someone who reads Urdu and
+  Sindhi well to check the wording before the card goes out. The wording is
+  in source\src\config\wedding.i18n.js and source\src\strings.js.
 
 PERSONAL LINKS
   Add the guest's name (and party size) to the link to greet them by name:
     https://gulshan-kumar-ai.github.io/wed/?to=Sharma+Family&n=4
   "Dear Sharma Family" appears on the doors and their RSVP is filled in.
 
-HOW RSVPs REACH YOU
-  Right now each reply opens in WhatsApp, ready for the guest to send to
-  whoever invited them. To collect every reply in one Google Sheet instead:
+GOOGLE SHEET: RSVPs AND VISITS
+  Until the Sheet is connected, each reply opens in WhatsApp, ready for the
+  guest to send to whoever invited them. Once it is connected, every reply
+  AND every opening of the invitation is recorded in one Google Sheet:
+    Summary      live totals: times opened, different phones, replies,
+                 accepted, declined, guests coming, head count per
+                 ceremony, pick-ups and rooms needed
+    RSVPs        one row per guest reply
+    Visits       one row each time someone opens the invitation
+    Invitations  each personal link: how often it was opened, and whether
+                 that guest has replied
+  To connect it (about 5 minutes, once):
     1. Open source\rsvp\google-apps-script.gs and follow the steps at the
-       top (about 5 minutes).
-    2. Paste the web-app link it gives you into source\src\config\wedding.js
-       at rsvp.endpoint, then rebuild the card.
-  To have WhatsApp replies addressed to one family number, put it at
-  rsvp.whatsapp in the same file (for example '923001234567').
+       top: create the Sheet, paste the script, run "setup", deploy it.
+    2. Put the web-app link it gives you (it ends in /exec) into
+       source\src\config\wedding.js at rsvp.endpoint, then publish (below).
+  To have WhatsApp replies addressed to one family number instead, put it
+  at rsvp.whatsapp in the same file (for example '923001234567').
+
+PUBLISHING CHANGES
+  In the source folder run:   npm run release
+  then commit and push. GitHub Pages updates the site within a minute.
+  (Changing files in source\ alone does not change the live card.)
 
 FILES
-  Wedding Invitation.html           The complete card in a single file.
+  index.html                        The live card (what GitHub Pages shows).
+  Wedding Invitation.html           The same card, to open with a double-click.
   favicon.svg, apple-touch-icon.png Small icons used by the card (keep them next to it).
-  Invitation Preview Image.jpg      The picture WhatsApp shows when the link is shared.
+  og-image.jpg                      The picture WhatsApp shows when the link is shared.
   audio\                            Put a shehnai/sitar track here named "ambient.mp3"
                                     to replace the built-in soft drone music.
   source\                           The editable project: run "npm install" and
                                     "npm run dev" inside it to make changes.
-
-SHARING ON WHATSAPP
-  To send guests a link, the card must be put online (for example on GitHub
-  Pages, Netlify or Vercel). Sending the .html file itself on WhatsApp will
-  not open nicely on phones.
 
 STILL TO FILL IN (in source\src\config\wedding.js)
   - Spellings "Grouve" and "Prena"
@@ -47,4 +58,4 @@ STILL TO FILL IN (in source\src\config\wedding.js)
     "provisional" until you set timingsConfirmed: true.
   - Coordinator names and phone numbers (hidden from guests until added)
   - Photos: portraits and gallery (the gallery stays hidden until added)
-  - The Google Sheet link and/or family WhatsApp number for RSVPs (see above)
+  - The Google Sheet link (see above)
