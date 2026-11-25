@@ -16,6 +16,7 @@ import { artwork } from '../../config/artwork';
 import { scrollToY } from '../../hooks/useSmoothScroll';
 import { useAmbient } from '../../hooks/useAmbient';
 import { useIsSmallScreen } from '../../hooks/useMediaQuery';
+import { useLanguage } from '../../i18n';
 
 /*
  * The camera dollies towards the temple doorway as you scroll.
@@ -38,6 +39,7 @@ const DOOR_GLOW_AT = '50% calc(100% - var(--u) * 460)';
  */
 export default function HeroScene({ wedding }) {
   const ref = useRef(null);
+  const { t } = useLanguage();
   const animate = useAmbient(ref);
   const small = useIsSmallScreen();
   // Loops inside the full-screen SVG layers force those layers to be redrawn every
@@ -85,7 +87,7 @@ export default function HeroScene({ wedding }) {
   const urnRightImage = artwork.urnRight ?? artwork.urnLeft;
 
   return (
-    <section ref={ref} className="cv-auto relative h-[185svh] bg-[#D9A577] sm:h-[260svh]" aria-label="Wedding invitation">
+    <section ref={ref} className="cv-auto relative h-[185svh] bg-[#D9A577] sm:h-[260svh]" aria-label={t('invitationAria')}>
       <div className="stage sticky top-0 h-[100svh] w-full overflow-hidden bg-ivory">
         {/* 1 · Sky */}
         <ArtLayer image={artwork.sky} style={{ y: skyY, scale: skyScale, transformOrigin: '50% 100%' }}>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import ShareButton from './ShareButton';
 import { useLanguage } from '../../i18n';
 import { scrollToSection } from '../../hooks/useSmoothScroll';
 import { RSVP_EVENT, hasReplied } from '../../guest';
@@ -79,11 +78,11 @@ function useTyping() {
 }
 
 /**
- * Floating dock (Invite · Events · Venue · RSVP · Share) that appears once the
- * guest is past the opening walk-in. RSVP stays a bright pill until they reply.
- * Before the dock appears, phones get the stand-alone share button instead.
+ * Floating dock (Invite · Events · Venue · RSVP) that appears once the guest is
+ * past the opening walk-in. RSVP stays a bright pill until they reply. Share,
+ * language and music live in the top bar.
  */
-export default function QuickNav({ wedding }) {
+export default function QuickNav() {
   const { t } = useLanguage();
   const { past, active } = useScrollState();
   const replied = useReplied();
@@ -91,13 +90,12 @@ export default function QuickNav({ wedding }) {
   const show = past && !typing;
 
   const item = (selected) =>
-    `relative rounded-full px-2.5 py-2 font-sans text-[12px] font-semibold uppercase tracking-[0.06em] transition-colors min-[400px]:px-3 sm:px-4 sm:tracking-[0.12em] focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
+    `relative rounded-full px-3 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors sm:px-5 sm:tracking-[0.12em] focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
       selected ? 'bg-gold-pale text-crimson' : 'text-charcoal hover:text-crimson'
     }`;
 
   return (
     <>
-      {!past && <ShareButton wedding={wedding} compact />}
       <AnimatePresence>
         {show && (
           <motion.nav
@@ -122,7 +120,7 @@ export default function QuickNav({ wedding }) {
                 className={
                   replied
                     ? `${item(active === 'rsvp')} inline-flex items-center gap-1`
-                    : 'rounded-full bg-gradient-to-r from-crimson via-crimson-light to-saffron px-3.5 py-2 font-sans text-[12px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_6px_16px_rgba(169,50,38,0.35)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory sm:px-5 sm:tracking-[0.16em]'
+                    : 'rounded-full bg-gradient-to-r from-crimson via-crimson-light to-saffron px-4 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_6px_16px_rgba(169,50,38,0.35)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory sm:px-6 sm:tracking-[0.16em]'
                 }
               >
                 {replied && (
@@ -133,8 +131,6 @@ export default function QuickNav({ wedding }) {
                 {t('navRsvp')}
                 {replied && <span className="sr-only"> ({t('navReplied')})</span>}
               </button>
-              <span className="mx-0.5 h-6 w-px bg-gold/50" aria-hidden="true" />
-              <ShareButton wedding={wedding} compact inline />
             </div>
           </motion.nav>
         )}

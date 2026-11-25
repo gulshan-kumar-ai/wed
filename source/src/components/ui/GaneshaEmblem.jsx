@@ -3,10 +3,10 @@
  * single tusk and the trunk curling to his left. viewBox 100 × 100.
  * Swap via `artwork.ganesha` for a commissioned emblem.
  */
-export default function GaneshaEmblem({ className = '', image = null }) {
-  if (image) return <img src={image} alt="Lord Ganesha" className={className} />;
+export default function GaneshaEmblem({ className = '', image = null, label = 'Lord Ganesha' }) {
+  if (image) return <img src={image} alt={label} className={className} />;
   return (
-    <svg viewBox="0 0 100 100" className={className} role="img" aria-label="Lord Ganesha">
+    <svg viewBox="0 0 100 100" className={className} role="img" aria-label={label}>
       <defs>
         <linearGradient id="ganesha-gold" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#E9CF7A" />

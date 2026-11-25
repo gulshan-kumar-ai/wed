@@ -116,39 +116,48 @@ const fold = (line) => {
   return out.join('\r\n ');
 };
 
-export function buildIcs({ id, title, start, end, details, location, tentative = false }) {
+const vevent = ({ id, title, start, end, details, location, tentative = false }) => [
+  'BEGIN:VEVENT',
+  `UID:${id}@double-royal-union`,
+  `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
+  `DTSTART:${toUtcStamp(start)}`,
+  `DTEND:${toUtcStamp(end)}`,
+  `SUMMARY:${escapeIcs(title)}`,
+  `DESCRIPTION:${escapeIcs(details)}`,
+  `LOCATION:${escapeIcs(location)}`,
+  `STATUS:${tentative ? 'TENTATIVE' : 'CONFIRMED'}`,
+  'BEGIN:VALARM',
+  'TRIGGER:-PT3H',
+  'ACTION:DISPLAY',
+  `DESCRIPTION:${escapeIcs(title)}`,
+  'END:VALARM',
+  'END:VEVENT',
+];
+
+/** One .ics calendar holding one or more events (e.g. all four ceremonies at once). */
+export function buildIcs(events, calendarName = '') {
+  const list = Array.isArray(events) ? events : [events];
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//A Double Royal Union//Wedding Invitation//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${id}@double-royal-union`,
-    `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
-    `DTSTART:${toUtcStamp(start)}`,
-    `DTEND:${toUtcStamp(end)}`,
-    `SUMMARY:${escapeIcs(title)}`,
-    `DESCRIPTION:${escapeIcs(details)}`,
-    `LOCATION:${escapeIcs(location)}`,
-    `STATUS:${tentative ? 'TENTATIVE' : 'CONFIRMED'}`,
-    'BEGIN:VALARM',
-    'TRIGGER:-PT3H',
-    'ACTION:DISPLAY',
-    `DESCRIPTION:${escapeIcs(title)}`,
-    'END:VALARM',
-    'END:VEVENT',
+    ...(calendarName ? [`X-WR-CALNAME:${escapeIcs(calendarName)}`] : []),
+    ...list.flatMap(vevent),
     'END:VCALENDAR',
   ];
   return lines.map(fold).join('\r\n');
 }
 
-export function downloadIcs(event) {
-  const blob = new Blob([buildIcs(event)], { type: 'text/calendar;charset=utf-8' });
+/** Download a single event (`event`) or several (`[...]`, with a file name) as an .ics file. */
+export function downloadIcs(events, fileName, calendarName) {
+  const name = fileName ?? `${(Array.isArray(events) ? events[0] : events).id}.ics`;
+  const blob = new Blob([buildIcs(events, calendarName)], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${event.id}.ics`;
+  a.download = name;
   document.body.appendChild(a);
   a.click();
   a.remove();

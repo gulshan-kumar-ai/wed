@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig } from 'framer-motion';
 import HeroScene from './components/hero/HeroScene';
 import GardenCourtyardScene from './components/garden/GardenCourtyardScene';
@@ -10,7 +10,7 @@ import RSVPSection from './components/rsvp/RSVPSection';
 import GuestGuide from './components/guide/GuestGuide';
 import FinaleScene from './components/finale/FinaleScene';
 import Footer from './components/layout/Footer';
-import MusicToggle from './components/ui/MusicToggle';
+import TopBar from './components/ui/TopBar';
 import QuickNav from './components/ui/QuickNav';
 import OpeningGate from './components/intro/OpeningGate';
 import WelcomeBack from './components/intro/WelcomeBack';
@@ -21,6 +21,7 @@ import { LanguageProvider, useLanguage } from './i18n';
 import { AudioProvider, useAudio } from './audio';
 import { IntroContext } from './intro';
 import { getBoot, markOpened } from './guest';
+import { logVisit } from './analytics';
 
 function AppContent() {
   useSmoothScroll();
@@ -45,6 +46,12 @@ function AppContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Count this visit in the family's Google Sheet (once per visit, only when a Sheet is connected)
+  useEffect(() => {
+    logVisit({ guest, language });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const openInvitation = (withMusic) => {
     if (withMusic && !audio.playing) audio.play();
     markOpened(guest);
@@ -65,7 +72,7 @@ function AppContent() {
   return (
     <MotionConfig reducedMotion="user">
       <IntroContext.Provider value={{ opened, guest }}>
-        <MusicToggle />
+        <TopBar wedding={w} />
         <main className="overflow-x-clip">
           {/* Phase 1 · Temple courtyard → doorway light */}
           <HeroScene wedding={w} />
@@ -87,7 +94,7 @@ function AppContent() {
           <FinaleScene wedding={w} />
         </main>
         <Footer wedding={w} />
-        {!gate && <QuickNav wedding={w} />}
+        {!gate && <QuickNav />}
         {welcome && !gate && <WelcomeBack guest={guest} onReplay={replay} />}
         <AnimatePresence>
           {gate && <OpeningGate key="gate" wedding={w} guest={guest} onOpen={openInvitation} onDone={() => setGate(false)} />}

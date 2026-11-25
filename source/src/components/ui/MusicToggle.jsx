@@ -33,19 +33,13 @@ function NoteIcon() {
   );
 }
 
-/** Floating ambient-music toggle (top-right). Audio never auto-plays. */
+/** Ambient-music toggle for the top bar. Audio never auto-plays. */
 export default function MusicToggle() {
   const { playing, toggle } = useAudio();
   const { t } = useLanguage();
 
   return (
-    <motion.div
-      className="fixed right-4 top-4 z-50 sm:right-6 sm:top-6"
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.4, duration: 0.8 }}
-    >
-      <button
+    <button
         type="button"
         onClick={toggle}
         aria-pressed={playing}
@@ -72,6 +66,5 @@ export default function MusicToggle() {
           </motion.span>
         </AnimatePresence>
       </button>
-    </motion.div>
   );
 }

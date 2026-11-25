@@ -15,7 +15,7 @@ const reveal = {
 function FullName({ honorific, name }) {
   return (
     <p dir="ltr" className="font-display text-[clamp(1.6rem,4.4vw,2.2rem)] font-semibold leading-tight text-crimson">
-      {honorific && <span className="mr-2 text-[0.7em] font-medium text-saffron-dark">{honorific}</span>}
+      {honorific && <span className="mr-2 text-[0.78em] font-medium text-saffron-dark">{honorific}</span>}
       {name}
     </p>
   );
@@ -65,7 +65,7 @@ export default function InvitationCard({ wedding }) {
         aria-label={t('invitationAria')}
       >
         <motion.div variants={reveal}>
-          <GaneshaEmblem image={artwork.ganesha} className="h-20 w-20 sm:h-24 sm:w-24" />
+          <GaneshaEmblem image={artwork.ganesha} label={t('ganesha')} className="h-20 w-20 sm:h-24 sm:w-24" />
         </motion.div>
         <motion.p variants={reveal} dir="ltr" className="mt-3 font-display text-lg font-semibold tracking-[0.12em] text-crimson sm:text-xl">
           {invitation.mantra}

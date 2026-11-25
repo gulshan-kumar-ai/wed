@@ -10,6 +10,7 @@ import Toran from '../hero/art/Toran';
 import InvitationCard from '../invitation/InvitationCard';
 import { artwork } from '../../config/artwork';
 import { useAmbient } from '../../hooks/useAmbient';
+import { useLanguage } from '../../i18n';
 import { useReducedMotion } from 'framer-motion';
 
 /*
@@ -35,6 +36,7 @@ const PEACOCK_INSET = 'clamp(-36px, calc(50% - var(--u) * 600), 40%)';
  */
 export default function GardenCourtyardScene({ wedding }) {
   const ref = useRef(null);
+  const { t } = useLanguage();
   const animate = useAmbient(ref);
   const reduceMotion = useReducedMotion();
   const g = artwork.garden;
@@ -50,7 +52,7 @@ export default function GardenCourtyardScene({ wedding }) {
   const dim = useTransform(p, [0.3, 0.45, 0.75, 0.85], [0, 0.18, 0.18, 0]);
 
   return (
-    <section ref={ref} className="relative bg-[#5D7C38]" aria-label="Formal invitation">
+    <section ref={ref} className="relative bg-[#5D7C38]" aria-label={t('formalInvitation')}>
       {/* Sticky backdrop */}
       <div className="stage sticky top-0 h-[100svh] w-full overflow-hidden bg-[#5D7C38]">
         <ArtLayer image={g.backdrop}>

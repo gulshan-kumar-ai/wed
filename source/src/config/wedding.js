@@ -67,7 +67,7 @@ export const wedding = {
       bride: 'Payal',
       brideName: 'Payal Kumari',
       brideTitle: 'Dr.',
-      groomPrefix: 'Chi.', // Chiranjeevi
+      groomPrefix: '', // optional word before the title, e.g. 'Chi.' (Chiranjeevi)
       bridePrefix: '',
       brideParents: 'Shri Kailash Kumar Harani',
       brideHometown: '',
@@ -94,7 +94,7 @@ export const wedding = {
       bride: 'Prena',
       brideName: 'Prena Kumari',
       brideTitle: 'Dr.',
-      groomPrefix: 'Chi.',
+      groomPrefix: '',
       bridePrefix: '',
       brideParents: 'Shri Tarachand Dedha',
       brideHometown: '',
@@ -231,6 +231,8 @@ export const wedding = {
     // it to (usually whoever sent them the invitation), so it still reaches you.
     endpoint: null, // TODO: paste the Apps Script web-app URL here
     whatsapp: null, // TODO: e.g. '923001234567'
+    // With an endpoint, also count how often the invitation is opened (Summary and Visits tabs)
+    countVisits: true,
     maxGuests: 10,
     // Travel questions for guests coming from outside Kunri
     arrivalDates: ['2027-01-13', '2027-01-14', '2027-01-15', '2027-01-16'],
@@ -292,7 +294,10 @@ export const wedding = {
     hashtag: '#JudwaaKiShaadi',
   },
 
-  /* ── Link previews (WhatsApp / social) ───────────────────── */
-  // Title and description are generated from this file at build time (vite.config.js).
-  // The image's absolute URL comes from VITE_SITE_URL (see .env.example).
+  /* ── Website address & link previews (WhatsApp / social) ─── */
+  // Where the invitation is published (no trailing slash). WhatsApp needs it to show
+  // the preview picture, and the Share button uses it when the card is opened from a
+  // file on your computer. Title and description are generated from this file at
+  // build time (vite.config.js). A VITE_SITE_URL environment variable overrides it.
+  siteUrl: 'https://gulshan-kumar-ai.github.io/wed',
 };

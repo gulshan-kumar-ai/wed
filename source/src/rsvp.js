@@ -149,6 +149,7 @@ export async function postToEndpoint(endpoint, payload) {
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
+      credentials: 'omit',
       // Apps Script cannot answer a CORS preflight, so send it a "simple" text/plain request
       headers: appsScript ? { 'Content-Type': 'text/plain;charset=utf-8' } : { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(payload),

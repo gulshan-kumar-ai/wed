@@ -21,7 +21,7 @@ const rise = {
 function Name({ title, name }) {
   return (
     <span dir="ltr" className="text-halo whitespace-nowrap font-display font-semibold leading-[1.04] text-crimson">
-      {title && <span className="mr-[0.22em] text-[0.62em] font-medium text-saffron-dark">{title}</span>}
+      {title && <span className="mr-[0.22em] text-[0.7em] font-medium text-saffron-dark">{title}</span>}
       {name}
     </span>
   );

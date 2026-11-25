@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '../../i18n';
 
-/** Where the invitation lives online. Used when the page is opened from a file on disk. */
-const PUBLIC_URL = import.meta.env.VITE_SITE_URL || 'https://gulshan-kumar-ai.github.io/wed/';
-
-function shareUrl() {
-  if (typeof window === 'undefined' || !/^https?:$/.test(window.location.protocol)) return PUBLIC_URL;
+/** The invitation's own address, or the published one when the page was opened from a file on disk. */
+function shareUrl(siteUrl) {
+  const published = `${(import.meta.env.VITE_SITE_URL || siteUrl || '').replace(/\/+$/, '')}/`;
+  if (typeof window === 'undefined' || !/^https?:$/.test(window.location.protocol)) return published;
   return `${window.location.origin}${window.location.pathname}`;
 }
 
@@ -39,18 +38,22 @@ async function copyText(text) {
 }
 
 /**
- * compact: icon-only button that opens the phone's share sheet (or copies the link).
- * inline: with compact, sits in the flow (the quick-nav dock) instead of floating.
- * Otherwise: a labelled button with a menu (share sheet, WhatsApp, Facebook, Instagram, copy).
+ * variant="bar": round icon button in the top bar. On phones it opens the share
+ *   sheet straight away; elsewhere a menu drops down below it.
+ * variant="footer": labelled button whose menu opens upwards.
+ * The menu offers the share sheet (when the device has one), WhatsApp, Facebook,
+ * Instagram (copies the link, since Instagram cannot receive one) and Copy link.
  */
-export default function ShareButton({ wedding, compact = false, inline = false }) {
+export default function ShareButton({ wedding, variant = 'footer' }) {
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState(null); // 'copied' | 'instagram'
   const wrapRef = useRef(null);
   const { t } = useLanguage();
+  const bar = variant === 'bar';
   const [first, second] = wedding.couples;
-  const url = shareUrl();
+  const url = shareUrl(wedding.siteUrl);
   const text = `${wedding.subtitle} · ${first.groom} & ${first.bride} · ${second.groom} & ${second.bride}\n${wedding.location} · ${wedding.dates}`;
+  const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   useEffect(() => {
     if (!open) return undefined;
@@ -78,89 +81,89 @@ export default function ShareButton({ wedding, compact = false, inline = false }
   };
 
   const nativeShare = async () => {
-    if (!navigator.share) return copy();
     try {
       await navigator.share({ title: wedding.subtitle, text, url });
     } catch (error) {
-      if (error?.name !== 'AbortError' && !compact) setOpen(true);
+      if (error?.name !== 'AbortError') setOpen(true);
     }
-    return undefined;
   };
 
   const shareWhatsApp = () => window.open(`https://wa.me/?text=${encodeURIComponent(`${text}\n${url}`)}`, '_blank', 'noopener,noreferrer');
   const shareFacebook = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
-  // Instagram has no way to receive a link from a web page, so copy it and say so
   const shareInstagram = async () => {
     await copy('instagram');
     window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
   };
 
-  const base =
+  // On a phone the top-bar button goes straight to the share sheet
+  const onButton = () => (bar && canShare && window.matchMedia('(pointer: coarse)').matches ? nativeShare() : setOpen((v) => !v));
+
+  const item =
     'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start font-sans text-sm font-medium text-charcoal transition hover:bg-gold-pale focus:outline-none focus-visible:bg-gold-pale';
 
-  if (compact) {
-    return (
-      <div className={inline ? 'relative' : 'fixed bottom-5 right-4 z-40 sm:hidden'}>
-        <button
-          type="button"
-          onClick={nativeShare}
-          aria-label={note ? t('copied') : t('share')}
-          className={
-            inline
-              ? 'flex h-10 w-10 items-center justify-center rounded-full text-crimson transition hover:bg-gold-pale focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron'
-              : 'flex h-12 w-12 items-center justify-center rounded-full border border-gold/70 bg-ivory text-crimson shadow-[0_8px_24px_rgba(44,34,30,0.22)]'
-          }
-        >
-          {note ? <CheckIcon /> : <ShareIcon />}
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div ref={wrapRef} className="relative inline-block">
+    <div ref={wrapRef} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={onButton}
         aria-expanded={open}
-        className="inline-flex items-center gap-2 rounded-full border border-gold/70 px-5 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-gold-light transition hover:border-gold-light hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        aria-label={bar ? (note === 'copied' ? t('copied') : t('share')) : undefined}
+        className={
+          bar
+            ? 'flex h-12 w-12 items-center justify-center rounded-full border border-gold/70 bg-ivory/75 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron'
+            : 'inline-flex items-center gap-2 rounded-full border border-gold/70 px-5 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-gold-light transition hover:border-gold-light hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold'
+        }
       >
-        <ShareIcon />
-        <span>{note === 'copied' ? t('copied') : t('share')}</span>
+        {bar && note ? <CheckIcon /> : <ShareIcon />}
+        {!bar && <span>{note === 'copied' ? t('copied') : t('share')}</span>}
       </button>
 
-      <p role="status" className="absolute left-1/2 top-full mt-2 w-max max-w-[16rem] -translate-x-1/2 font-sans text-[13px] text-gold-light">
-        {note === 'instagram' ? t('instagramCopied') : ''}
-      </p>
+      <AnimatePresence>
+        {note === 'instagram' && (
+          <motion.p
+            role="status"
+            initial={{ opacity: 0, y: bar ? -4 : 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className={`absolute z-30 w-max max-w-[16rem] rounded-lg bg-charcoal/90 px-3 py-2 font-sans text-[13px] text-ivory shadow-lg ${
+              bar ? 'right-0 top-full mt-2' : 'left-1/2 top-full mt-2 -translate-x-1/2'
+            }`}
+          >
+            {t('instagramCopied')}
+          </motion.p>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            initial={{ opacity: 0, y: bar ? -8 : 8, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.97 }}
+            exit={{ opacity: 0, y: bar ? -8 : 8, scale: 0.97 }}
             transition={{ duration: 0.16 }}
-            className="absolute bottom-full left-1/2 z-30 mb-2 w-64 -translate-x-1/2 rounded-xl border border-gold/60 bg-ivory p-1.5 shadow-[0_18px_40px_rgba(44,34,30,0.28)]"
+            className={`absolute z-30 w-64 rounded-xl border border-gold/60 bg-ivory p-1.5 shadow-[0_18px_40px_rgba(44,34,30,0.28)] ${
+              bar ? 'right-0 top-full mt-2' : 'bottom-full left-1/2 mb-2 -translate-x-1/2'
+            }`}
           >
-            {typeof navigator !== 'undefined' && navigator.share && (
-              <button type="button" className={base} onClick={nativeShare}>
+            {canShare && (
+              <button type="button" className={item} onClick={nativeShare}>
                 <span className="w-5 text-center text-lg" aria-hidden="true">↗</span>
                 {t('shareNative')}
               </button>
             )}
-            <button type="button" className={base} onClick={shareWhatsApp}>
+            <button type="button" className={item} onClick={shareWhatsApp}>
               <span className="w-5 text-center font-semibold text-[#1F7A4D]" aria-hidden="true">WA</span>
               WhatsApp
             </button>
-            <button type="button" className={base} onClick={shareFacebook}>
+            <button type="button" className={item} onClick={shareFacebook}>
               <span className="w-5 text-center font-semibold text-[#1877F2]" aria-hidden="true">f</span>
               Facebook
             </button>
-            <button type="button" className={base} onClick={shareInstagram}>
+            <button type="button" className={item} onClick={shareInstagram}>
               <span className="w-5 text-center font-semibold text-[#D62976]" aria-hidden="true">◎</span>
               {t('instagram')}
             </button>
-            <button type="button" className={base} onClick={() => copy()}>
+            <button type="button" className={item} onClick={() => copy()}>
               <span className="w-5 text-center" aria-hidden="true">⧉</span>
               {note === 'copied' ? t('copied') : t('copyLink')}
             </button>

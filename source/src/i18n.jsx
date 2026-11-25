@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { LANGUAGES, strings } from './strings';
 
 const STORAGE_KEY = 'wedding-language';
@@ -88,6 +89,92 @@ export function LanguageSwitcher({ tone = 'light', className = '' }) {
           </button>
         );
       })}
+    </div>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Compact language button for the top bar: shows the current language, opens the full list. */
+export function LanguageMenu() {
+  const { language, setLanguage, t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const current = LANGUAGES.find((l) => l.code === language) ?? LANGUAGES[0];
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const close = (e) => {
+      if (!ref.current?.contains(e.target)) setOpen(false);
+    };
+    const escape = (e) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('pointerdown', close);
+    document.addEventListener('keydown', escape);
+    return () => {
+      document.removeEventListener('pointerdown', close);
+      document.removeEventListener('keydown', escape);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-label={`${t('languageLabel')}: ${current.label}`}
+        className="flex h-12 items-center gap-1.5 rounded-full border border-gold/70 bg-ivory/75 px-3.5 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
+      >
+        <GlobeIcon />
+        <span lang={current.code} className="font-sans text-[13px] font-semibold text-charcoal">
+          {current.short}
+        </span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            initial={{ opacity: 0, y: -8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            transition={{ duration: 0.16 }}
+            className="absolute right-0 top-full z-30 mt-2 w-44 rounded-xl border border-gold/60 bg-ivory p-1.5 shadow-[0_18px_40px_rgba(44,34,30,0.24)]"
+          >
+            {LANGUAGES.map(({ code, label }) => {
+              const selected = code === language;
+              return (
+                <li key={code}>
+                  <button
+                    type="button"
+                    lang={code}
+                    aria-pressed={selected}
+                    onClick={() => {
+                      setLanguage(code);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 font-sans text-[15px] font-semibold transition focus:outline-none focus-visible:bg-gold-pale ${
+                      selected ? 'bg-crimson/10 text-crimson' : 'text-charcoal hover:bg-gold-pale'
+                    }`}
+                  >
+                    {label}
+                    {selected && (
+                      <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden="true">
+                        <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

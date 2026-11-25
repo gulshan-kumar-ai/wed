@@ -8,11 +8,12 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').repl
 /**
  * Builds <title>, description and OpenGraph / Twitter tags from the wedding
  * config, so WhatsApp link previews always match the names and dates.
- * Crawlers need absolute image URLs: set VITE_SITE_URL (see .env.example).
+ * Crawlers need absolute image URLs: they come from wedding.siteUrl
+ * (a VITE_SITE_URL environment variable overrides it).
  */
 function socialMeta(mode) {
   const env = loadEnv(mode, process.cwd(), '');
-  const site = (env.VITE_SITE_URL || '').replace(/\/+$/, '');
+  const site = (env.VITE_SITE_URL || wedding.siteUrl || '').replace(/\/+$/, '');
   const [a, b] = wedding.couples;
   const names = `${a.groom} & ${a.bride} · ${b.groom} & ${b.bride}`;
   const title = `${wedding.subtitle} · ${names}`;
@@ -42,8 +43,8 @@ function socialMeta(mode) {
   return {
     name: 'social-meta',
     transformIndexHtml(html) {
-      if (!site && mode === 'production') {
-        console.warn('\n⚠  VITE_SITE_URL is not set, so WhatsApp link previews will show no thumbnail. See .env.example.\n');
+      if (!site && mode !== 'development') {
+        console.warn('\n⚠  No site address (wedding.siteUrl), so WhatsApp link previews will show no thumbnail.\n');
       }
       return html.replace('<!-- __SOCIAL_META__ -->', tags.join('\n    '));
     },

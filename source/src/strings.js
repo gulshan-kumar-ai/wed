@@ -20,6 +20,7 @@ export const strings = {
     weds: 'weds', with: 'with', at: 'at',
     sonOf: 'Son of {name}', daughterOf: 'Daughter of {name}',
     invitationAria: 'Wedding invitation',
+    formalInvitation: 'Formal invitation', ganesha: 'Lord Ganesha',
 
     meetEyebrow: 'Two brothers · Two brides', meetTitle: 'Meet the Couples', twins: 'The twins',
     chooseCouple: 'Choose a couple', theGroom: 'The Groom', theBride: 'The Bride',
@@ -36,6 +37,8 @@ export const strings = {
     saveCalendar: 'Save to Calendar', googleCalendar: 'Google Calendar', appleOutlook: 'Apple / Outlook (.ics)',
     calDress: 'Dress code: {v}', calMuhurat: 'Phere muhurat: {v}',
     calProvisional: 'Timing is provisional. Please check the invitation for updates.',
+    allToCalendar: 'Add all {n} events to my calendar',
+    allToCalendarHint: 'One file for Apple Calendar, Outlook and most phones. For Google Calendar, use “Save to Calendar” on each ceremony.',
     baraatAria: 'Animated royal baraat procession',
 
     travelling: 'Travelling to Kunri', venuesTitle: 'Venues & Directions',
@@ -107,6 +110,7 @@ export const strings = {
     weds: 'ہمراہ', with: 'ہمراہ', at: 'بمقام',
     sonOf: '{name} کے فرزند', daughterOf: '{name} کی صاحبزادی',
     invitationAria: 'شادی کا دعوت نامہ',
+    formalInvitation: 'رسمی دعوت نامہ', ganesha: 'بھگوان گنیش',
 
     meetEyebrow: 'دو بھائی · دو دلہنیں', meetTitle: 'جوڑوں سے ملیے', twins: 'جڑواں بھائی',
     chooseCouple: 'جوڑا منتخب کریں', theGroom: 'دولہا', theBride: 'دلہن',
@@ -123,6 +127,8 @@ export const strings = {
     saveCalendar: 'کیلنڈر میں محفوظ کریں', googleCalendar: 'گوگل کیلنڈر', appleOutlook: 'ایپل / آؤٹ لک (.ics)',
     calDress: 'لباس: {v}', calMuhurat: 'پھیروں کا مہورت: {v}',
     calProvisional: 'وقت عارضی ہے۔ تازہ معلومات کے لیے دعوت نامہ دیکھتے رہیں۔',
+    allToCalendar: 'تمام {n} تقریبات اپنے کیلنڈر میں شامل کریں',
+    allToCalendarHint: 'ایپل کیلنڈر، آؤٹ لک اور زیادہ تر فونز کے لیے ایک ہی فائل۔ گوگل کیلنڈر کے لیے ہر تقریب پر "کیلنڈر میں محفوظ کریں" استعمال کریں۔',
     baraatAria: 'شاہی بارات کی متحرک تصویر',
 
     travelling: 'کنری کا سفر', venuesTitle: 'مقامات اور راستے',
@@ -194,6 +200,7 @@ export const strings = {
     weds: 'سان', with: 'سان', at: 'بمقام',
     sonOf: '{name} جو پٽ', daughterOf: '{name} جي ڌيءَ',
     invitationAria: 'شاديءَ جو دعوت نامو',
+    formalInvitation: 'رسمي دعوت نامو', ganesha: 'ڀڳوان گڻيش',
 
     meetEyebrow: 'ٻه ڀائر · ٻه ڪنوارون', meetTitle: 'جوڙن سان ملو', twins: 'جاڙا ڀائر',
     chooseCouple: 'جوڙو چونڊيو', theGroom: 'گهوٽ', theBride: 'ڪنوار',
@@ -210,6 +217,8 @@ export const strings = {
     saveCalendar: 'ڪئلينڊر ۾ محفوظ ڪريو', googleCalendar: 'گوگل ڪئلينڊر', appleOutlook: 'ايپل / آئوٽ لڪ (.ics)',
     calDress: 'لباس: {v}', calMuhurat: 'ڦيرن جو مهورت: {v}',
     calProvisional: 'وقت عارضي آهي. تازي معلومات لاءِ دعوت نامو ڏسندا رهو.',
+    allToCalendar: 'سڀ {n} تقريبون پنهنجي ڪئلينڊر ۾ شامل ڪريو',
+    allToCalendarHint: 'ايپل ڪئلينڊر، آئوٽ لڪ ۽ گهڻن فونن لاءِ هڪ ئي فائل. گوگل ڪئلينڊر لاءِ هر تقريب تي "ڪئلينڊر ۾ محفوظ ڪريو" استعمال ڪريو.',
     baraatAria: 'شاهي جڃ جي متحرڪ تصوير',
 
     travelling: 'ڪنري جو سفر', venuesTitle: 'هنڌ ۽ رستا',

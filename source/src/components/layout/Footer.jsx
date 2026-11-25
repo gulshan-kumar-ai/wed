@@ -1,6 +1,5 @@
 import { OmMedallion, Swastika } from '../ui/SacredEmblem';
 import ShareButton from '../ui/ShareButton';
-import { LanguageSwitcher } from '../../i18n';
 
 /** Slim closing strip under the finale. */
 export default function Footer({ wedding }) {
@@ -25,7 +24,6 @@ export default function Footer({ wedding }) {
           </p>
         )}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <LanguageSwitcher />
           <ShareButton wedding={wedding} />
         </div>
       </div>
