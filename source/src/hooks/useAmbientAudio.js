@@ -76,7 +76,7 @@ export function useAmbientAudio({ src, volume = 0.45 }) {
     [],
   );
 
-  return { playing, toggle };
+  return { playing, play, pause, toggle };
 }
 
 /* ── Synthesized tanpura drone ─────────────────────────────────────────── */

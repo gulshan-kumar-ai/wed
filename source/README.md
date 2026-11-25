@@ -75,6 +75,30 @@ By default an RSVP is only saved in the guest's own browser. To actually receive
 `rsvp.endpoint` to a URL that accepts a JSON POST (a Google Apps Script web app writing to a Sheet,
 Formspree, etc.) and/or `rsvp.whatsapp` to show a "Send on WhatsApp" button after submitting.
 
+## Personal links & the opening doors
+
+Every first visit opens on a pair of carved doors. Tapping **Open the Invitation** swings them open
+and starts the music (browsers only allow music after a tap); **Open without music** stays silent.
+
+Add the guest's name (and party size) to the link to greet them personally:
+
+```
+https://your-site/?to=Sharma+Family&n=4
+```
+
+- `to`: shown as "Dear Sharma Family," on the doors and pre-filled as the RSVP name
+- `n`: pre-fills the number of guests (capped at `rsvp.maxGuests`)
+- `#invitation`, `#events`, `#venues`, `#rsvp`: open straight at that section
+- `?intro`: always show the doors (for previewing)
+
+The name is remembered on the guest's phone and then removed from the address bar, so a link they
+copy and forward doesn't greet someone else by their name.
+
+Returning guests skip the doors and the walk-in and land on the invitation card, with a
+"Welcome back" note that can replay the entrance. Once past the opening scene, a dock at the
+bottom (Invite · Events · Venue · RSVP · Share) jumps between sections; RSVP stays a bright pill
+until the guest has replied on that device.
+
 ## Sharing on WhatsApp
 
 1. Copy `.env.example` to `.env.production` and set `VITE_SITE_URL` to the address where the site

@@ -103,8 +103,10 @@ export default function GardenCourtyardScene({ wedding }) {
       </div>
 
       {/* Scrolling content over the backdrop */}
-      <div className="relative z-10 -mt-[100svh] px-4 pb-[45svh] pt-[24svh] sm:px-6 sm:pt-[92svh]">
-        <InvitationCard wedding={wedding} />
+      <div className="relative z-10 -mt-[100svh] px-4 pb-[22svh] pt-[24svh] sm:px-6 sm:pb-[45svh] sm:pt-[92svh]">
+        <div id="invitation">
+          <InvitationCard wedding={wedding} />
+        </div>
       </div>
     </section>
   );

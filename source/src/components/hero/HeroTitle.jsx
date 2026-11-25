@@ -3,6 +3,7 @@ import SacredEmblem from '../ui/SacredEmblem';
 import Ornament from '../ui/Ornament';
 import { brideFormal, brideFull, groomFormal, groomFull } from '../ui/names';
 import { coupleWeds, useLanguage } from '../../i18n';
+import { useIntro } from '../../intro';
 
 const isDevanagari = (s) => /[ऀ-ॿ]/.test(s);
 
@@ -39,6 +40,7 @@ function Couple({ couple, t }) {
 /** Emblem, subtitle, the two couples' names, location and dates. */
 export default function HeroTitle({ wedding, style }) {
   const { t } = useLanguage();
+  const { opened } = useIntro();
   const { invocation, subtitle, couples, location, dates, emblem } = wedding;
   const [first, second] = couples;
 
@@ -53,7 +55,7 @@ export default function HeroTitle({ wedding, style }) {
         className="pointer-events-none absolute left-1/2 top-[8svh] -z-10 h-[66svh] w-[min(980px,130vw)] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(253,248,240,0.74)_0%,rgba(253,248,240,0.42)_45%,rgba(253,248,240,0)_70%)]"
       />
 
-      <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col items-center">
+      <motion.div variants={container} initial="hidden" animate={opened ? 'show' : 'hidden'} className="flex flex-col items-center">
         <motion.div variants={rise}>
           <SacredEmblem om={emblem.om} swastika={emblem.swastika} />
         </motion.div>

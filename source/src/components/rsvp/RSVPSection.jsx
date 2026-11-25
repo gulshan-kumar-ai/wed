@@ -5,8 +5,7 @@ import RoyalScroll from './RoyalScroll';
 import SectionHeading from '../ui/SectionHeading';
 import { OmMedallion } from '../ui/SacredEmblem';
 import Ornament from '../ui/Ornament';
-
-const STORAGE_KEY = 'double-royal-union-rsvp';
+import { readRsvp, saveRsvp } from '../../guest';
 
 const labelCls = 'block font-sans text-[11px] font-semibold uppercase tracking-[0.24em] text-crimson';
 const inputCls =
@@ -58,7 +57,9 @@ function PetalBurst() {
 }
 
 function Confirmation({ response, wedding, onEdit }) {
-  const firstName = response.name.trim().split(/\s+/)[0];
+  // "Sharma Family" reads better in full; long personal names just use the first word
+  const name = response.name.trim().replace(/\s+/g, ' ');
+  const greetName = name.length <= 24 ? name : name.split(' ')[0];
   const chosen = wedding.events.filter((e) => response.events.includes(e.id)).map((e) => e.short);
   const { whatsapp } = wedding.rsvp;
   const waText = [
@@ -86,7 +87,7 @@ function Confirmation({ response, wedding, onEdit }) {
       <OmMedallion className="h-20 w-20" />
       <p className="mt-5 font-sans text-[11px] font-semibold uppercase tracking-[0.4em] text-saffron-dark">Shubh Swagatam</p>
       <h3 className="mt-3 font-display text-[clamp(2.2rem,5vw,3rem)] font-semibold leading-tight text-crimson">
-        Dhanyavaad, {firstName}!
+        Dhanyavaad, {greetName}!
       </h3>
       <p className="mt-4 max-w-md font-display text-xl leading-relaxed text-charcoal">
         Your presence has been noted with joy. The dhol is tuned and the marigolds are strung. We can’t wait to celebrate with you in Kunri.
@@ -130,22 +131,17 @@ function Confirmation({ response, wedding, onEdit }) {
 }
 
 /** "Confirm Your Presence" RSVP form on a royal scroll, with an instant festive confirmation. */
-export default function RSVPSection({ wedding }) {
+export default function RSVPSection({ wedding, guest }) {
   const { events, couples, rsvp } = wedding;
   const { t } = useLanguage();
   const uid = useId();
   const sides = [`${couples[0].groom}'s Side`, `${couples[1].groom}'s Side`, 'Both Twins / Family Friend'];
 
-  const saved = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    } catch {
-      return null;
-    }
-  }, []);
+  const saved = useMemo(() => readRsvp(), []);
 
   const [values, setValues] = useState(
-    saved ?? { name: '', phone: '', guests: 1, events: [], side: '', note: '' },
+    // A personal link (?to=…&n=…) pre-fills the name and party size
+    saved ?? { name: guest?.to ?? '', phone: '', guests: guest?.n ?? 1, events: [], side: '', note: '' },
   );
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(saved ? 'done' : 'idle'); // idle | sending | done | error
@@ -175,7 +171,7 @@ export default function RSVPSection({ wedding }) {
         });
         if (!res.ok) throw new Error(`RSVP failed: ${res.status}`);
       }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      saveRsvp(payload);
       setStatus('done');
     } catch {
       setStatus('error');
@@ -185,7 +181,7 @@ export default function RSVPSection({ wedding }) {
   const describedBy = (key) => (errors[key] ? `${uid}-${key}-error` : undefined);
 
   return (
-    <section className="relative overflow-hidden bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="rsvp-heading">
+    <section id="rsvp" className="relative overflow-hidden bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="rsvp-heading">
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading id="rsvp-heading" eyebrow={t('rsvpEyebrow')} title={t('rsvpTitle')} intro={rsvp.deadline} />
 

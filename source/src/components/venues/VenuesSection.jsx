@@ -106,7 +106,7 @@ export default function VenuesSection({ wedding }) {
   };
 
   return (
-    <section className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="venues-heading">
+    <section id="venues" className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="venues-heading">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           id="venues-heading"

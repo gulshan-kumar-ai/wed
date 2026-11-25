@@ -78,7 +78,7 @@ export default function EventsSection({ wedding }) {
   const venueById = Object.fromEntries(venues.map((v) => [v.id, v]));
 
   return (
-    <section className="relative bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="events-heading">
+    <section id="events" className="relative bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="events-heading">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(rgba(212,175,55,0.35)_1px,transparent_1px)] [background-size:22px_22px]"

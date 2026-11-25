@@ -6,7 +6,7 @@ import { LanguageSwitcher } from '../../i18n';
 export default function Footer({ wedding }) {
   const { couples, location, dates, footer } = wedding;
   return (
-    <footer className="bg-[#12132E] px-6 pb-10 pt-8 text-center text-ivory">
+    <footer className="bg-[#12132E] px-6 pb-28 pt-8 text-center text-ivory">
       <div className="mx-auto flex max-w-2xl flex-col items-center">
         <div className="flex items-center gap-4">
           <Swastika className="h-4 w-4 text-gold" />

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAmbientAudio } from '../../hooks/useAmbientAudio';
+import { useAudio } from '../../audio';
 import { useLanguage } from '../../i18n';
 
 function Bars() {
@@ -34,8 +34,8 @@ function NoteIcon() {
 }
 
 /** Floating ambient-music toggle (top-right). Audio never auto-plays. */
-export default function MusicToggle({ src, volume }) {
-  const { playing, toggle } = useAmbientAudio({ src, volume });
+export default function MusicToggle() {
+  const { playing, toggle } = useAudio();
   const { t } = useLanguage();
 
   return (

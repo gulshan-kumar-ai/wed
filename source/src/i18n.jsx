@@ -12,6 +12,10 @@ const translations = {
     travelling: 'Travelling to Kunri', venuesTitle: 'Venues & Directions', venuesIntro: 'Everything you need to find your way around Kunri, District Umerkot, during the celebrations.',
     directions: 'Get Directions', openMaps: 'Open in Maps', rsvpEyebrow: 'RSVP', rsvpTitle: 'Confirm Your Presence',
     share: 'Share Invitation', shareNative: 'Share', copyLink: 'Copy Link', copied: 'Link Copied',
+    gateDear: 'Dear', gateInvited: 'You are cordially invited to the double wedding of',
+    gateOpen: 'Open the Invitation', gateMusic: 'Opens with soft music', gateSilent: 'Open without music',
+    navLabel: 'Jump to', navInvite: 'Invite', navEvents: 'Events', navVenue: 'Venue', navRsvp: 'RSVP', navReplied: 'Replied',
+    welcomeBack: 'Welcome back', replayEntrance: 'Replay entrance',
   },
   ur: {
     musicOn: 'روایتی موسیقی', musicOff: 'موسیقی', scroll: 'ذرا نیچے دیکھیں',

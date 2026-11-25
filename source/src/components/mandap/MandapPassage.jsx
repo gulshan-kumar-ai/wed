@@ -115,7 +115,7 @@ export default function MandapPassage({ eyebrow, title }) {
   const maskLayers = `${mask} center / calc(var(--aw) * 1.2) calc(var(--aw) * 1.74) no-repeat, linear-gradient(#000 0 0)`;
 
   return (
-    <section ref={ref} className="relative h-[185svh] bg-ivory-deep sm:h-[230svh]" aria-label={title}>
+    <section ref={ref} className="cv-auto relative h-[155svh] bg-ivory-deep sm:h-[230svh]" aria-label={title}>
       <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden bg-ivory-deep" style={holeSize}>
         {/* Cream chapter waiting beyond the arch */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#FFF8EA_0%,#F6EBDA_60%)]" aria-hidden="true" />
