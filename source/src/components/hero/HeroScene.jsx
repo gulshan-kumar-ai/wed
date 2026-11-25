@@ -71,9 +71,11 @@ export default function HeroScene({ wedding }) {
   const toranY = useTransform(p, [0, 0.4], ['0%', '-140%']);
   const petalOpacity = useTransform(p, [0, 0.6], [1, 0]);
 
-  // Doorway light → ivory hand-off to the next scene
-  const glowOpacity = useTransform(p, [0.45, 0.82], [0, 1]);
-  const whiteout = useTransform(p, [0.8, 0.97], [0, 1]);
+  // Doorway light → ivory hand-off to the next scene. On phones the light fills the
+  // screen a little sooner and the invitation card rises straight out of it, so
+  // there is no empty white screen between the two scenes.
+  const glowOpacity = useTransform(p, small ? [0.4, 0.74] : [0.45, 0.82], [0, 1]);
+  const whiteout = useTransform(p, small ? [0.7, 0.86] : [0.8, 0.97], [0, 1]);
 
   const enter = () => {
     const el = ref.current;

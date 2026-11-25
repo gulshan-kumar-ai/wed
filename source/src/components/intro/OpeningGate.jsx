@@ -4,7 +4,7 @@ import { OmMedallion } from '../ui/SacredEmblem';
 import Ornament from '../ui/Ornament';
 import Toran from '../hero/art/Toran';
 import { lockScroll } from '../../hooks/useSmoothScroll';
-import { useLanguage } from '../../i18n';
+import { LanguageSwitcher, useLanguage } from '../../i18n';
 
 const EASE = [0.65, 0, 0.35, 1];
 
@@ -95,7 +95,7 @@ export default function OpeningGate({ wedding, guest, onOpen, onDone }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="gate-title"
-      className="fixed inset-0 z-[60] touch-none overflow-hidden overscroll-none"
+      className="fixed inset-0 z-[60] overflow-hidden overscroll-none"
       style={{ perspective: '1600px' }}
       exit={{ opacity: 0, transition: { duration: 0.4 } }}
     >
@@ -112,58 +112,72 @@ export default function OpeningGate({ wedding, guest, onOpen, onDone }) {
         <Toran className="h-full w-full drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)]" animate={!reduce} />
       </motion.div>
 
-      {/* Greeting */}
+      {/* Greeting (scrolls on very short screens rather than being cut off) */}
       <motion.div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 pb-[4svh] pt-[clamp(84px,14svh,170px)] text-center"
+        className="absolute inset-0 z-20 flex flex-col overflow-y-auto overscroll-contain px-5 pb-[3svh] pt-[clamp(72px,12svh,170px)] text-center"
         initial={{ opacity: 0, y: 14 }}
         animate={opening ? { opacity: 0, scale: 1.04 } : { opacity: 1, y: 0 }}
         transition={{ duration: opening ? 0.45 : 1, ease: [0.22, 1, 0.36, 1], delay: opening ? 0 : 0.2 }}
       >
-        <div className="flex flex-col items-center w-full max-w-[22rem] rounded-[2rem] border border-gold/50 bg-[rgba(52,12,9,0.82)] px-5 py-7 shadow-[0_0_0_6px_rgba(52,12,9,0.35),0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-[3px] sm:max-w-md sm:px-10 lg:max-w-xl lg:px-14 lg:py-10">
-          <OmMedallion className="h-16 w-16 drop-shadow-[0_4px_14px_rgba(0,0,0,0.45)] sm:h-20 sm:w-20 lg:h-24 lg:w-24" />
+        <div className="m-auto flex w-full max-w-[22rem] flex-col items-center rounded-[2rem] border border-gold/50 bg-[rgba(52,12,9,0.84)] px-5 py-6 shadow-[0_0_0_6px_rgba(52,12,9,0.35),0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-[3px] sm:max-w-md sm:px-10 sm:py-8 lg:max-w-xl lg:px-14 lg:py-10">
+          <LanguageSwitcher tone="dark" />
+
+          <OmMedallion className="mt-5 h-[clamp(3.25rem,7svh,4rem)] w-[clamp(3.25rem,7svh,4rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.45)] sm:h-20 sm:w-20 lg:h-24 lg:w-24" />
           {wedding.invocation && (
-            <p className="mt-3 font-display text-base font-semibold tracking-[0.12em] text-gold-light sm:text-lg">{wedding.invocation}</p>
+            <p dir="ltr" className="mt-3 font-display text-base font-semibold tracking-[0.12em] text-gold-light sm:text-lg">
+              {wedding.invocation}
+            </p>
           )}
 
-          <div id="gate-title">
-            {guest ? (
+          <div id="gate-title" className="flex flex-col items-center">
+            {guest && (
               <>
-                <p className="mt-6 font-display text-xl italic text-gold-light/95 sm:text-2xl lg:text-3xl">{t('gateDear')}</p>
-                <p className="mt-1 max-w-[16ch] font-display text-[clamp(2.1rem,9vw,4rem)] font-semibold leading-[1.05] text-ivory [text-wrap:balance]">
-                  {guest.to},
+                <p className="mt-5 font-display text-xl italic text-gold-light/95 sm:text-2xl lg:text-3xl">{t('gateDear')}</p>
+                <p className="mt-1 max-w-[16ch] font-display text-[clamp(2rem,9vw,4rem)] font-semibold leading-[1.1] text-ivory [text-wrap:balance]">
+                  <bdi>{guest.to}</bdi>
+                  {t('comma').trim()}
                 </p>
               </>
-            ) : null}
-            <p className={`${guest ? 'mt-4' : 'mt-7'} max-w-xs font-display text-lg leading-snug text-ivory/90 sm:max-w-sm sm:text-xl lg:max-w-md lg:text-2xl`}>
-              {t('gateInvited')}
+            )}
+            {t('gateBefore') && (
+              <p className={`${guest ? 'mt-4' : 'mt-6'} max-w-xs font-display text-lg leading-snug text-ivory/90 sm:max-w-sm sm:text-xl lg:max-w-md lg:text-2xl`}>
+                {t('gateBefore')}
+              </p>
+            )}
+
+            <p dir="ltr" className="mt-4 font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
+              {first.groom} <span className="italic text-saffron-light">&amp;</span> {first.bride}
             </p>
+            <p className="font-display text-lg italic text-gold-light/80 lg:text-xl">{t('gateAnd')}</p>
+            <p dir="ltr" className="font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
+              {second.groom} <span className="italic text-saffron-light">&amp;</span> {second.bride}
+            </p>
+
+            {t('gateAfter') && (
+              <p className="mt-3 max-w-xs font-display text-lg leading-snug text-ivory/90 sm:max-w-sm sm:text-xl lg:max-w-md lg:text-2xl">{t('gateAfter')}</p>
+            )}
           </div>
 
-          <p className="mt-4 font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
-            {first.groom} <span className="italic text-saffron-light">&amp;</span> {first.bride}
-          </p>
-          <p className="font-display text-lg italic text-gold-light/80 lg:text-xl">and</p>
-          <p className="font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
-            {second.groom} <span className="italic text-saffron-light">&amp;</span> {second.bride}
-          </p>
-
           <Ornament className="mt-5 h-3 w-44" />
-          <p className="mt-3 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-ivory/85">
-            {wedding.location.split(',')[0]} · {wedding.dates}
+          <p className="mt-3 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-ivory/85 sm:text-[13px]">
+            {wedding.location.split(/[,،]/)[0]} · {wedding.dates}
           </p>
 
           <button
             ref={buttonRef}
             type="button"
             onClick={() => open(true)}
-            className="group relative mt-8 inline-flex items-center gap-3 rounded-full bg-ivory px-8 py-4 font-sans text-[13px] lg:px-10 lg:text-[14px] font-semibold uppercase tracking-[0.2em] text-crimson shadow-[0_0_0_3px_rgba(212,175,55,0.75),0_14px_34px_rgba(0,0,0,0.45)] transition hover:bg-gold-pale focus:outline-none focus-visible:ring-4 focus-visible:ring-gold-light"
+            className="group relative mt-7 inline-flex items-center gap-3 rounded-full bg-ivory px-8 py-4 font-sans text-sm font-semibold uppercase tracking-[0.16em] text-crimson shadow-[0_0_0_3px_rgba(212,175,55,0.75),0_14px_34px_rgba(0,0,0,0.45)] transition hover:bg-gold-pale focus:outline-none focus-visible:ring-4 focus-visible:ring-gold-light lg:px-10"
           >
             {!reduce && (
-              <span className="absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s]" aria-hidden="true" />
+              <span
+                className="absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s] [animation-fill-mode:both] [animation-iteration-count:4]"
+                aria-hidden="true"
+              />
             )}
             {t('gateOpen')}
           </button>
-          <p className="mt-3 font-sans text-[12px] text-ivory/75">
+          <p className="mt-3 font-sans text-[13px] leading-relaxed text-ivory/80">
             <span aria-hidden="true">♪ </span>
             {t('gateMusic')} ·{' '}
             <button

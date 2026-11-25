@@ -1,69 +1,69 @@
 import { useId } from 'react';
 import { mehrabPath } from '../layout/mehrab';
+import { LotusIcon, MarigoldIcon } from '../ui/MotifIcons';
 
 const W = 200;
 const H = 280;
 const OPTS = { spring: 0.42, lobes: 3, depth: 0.6 };
 
+function Caption({ title, name, role }) {
+  return (
+    <figcaption className="mt-4 text-center">
+      {title && (
+        <span dir="ltr" className="block font-display text-xl font-medium leading-none text-saffron-dark">
+          {title}
+        </span>
+      )}
+      <span dir="ltr" className="mt-1 block font-display text-[clamp(1.35rem,3.2vw,1.9rem)] font-semibold leading-tight text-crimson">
+        {name}
+      </span>
+      <span className="mt-2 block font-sans text-xs font-semibold uppercase tracking-[0.24em] text-saffron-dark">{role}</span>
+    </figcaption>
+  );
+}
+
 /**
  * Portrait inside a scalloped royal arch with a double gold border.
- * Without a photo it shows a warm placeholder with the person's initial.
+ * Until a photo is added it shows a small gilded mehrab with a lotus (bride) or
+ * marigold (groom) motif, which reads as ornament rather than a missing photo.
  */
-export default function ArchPortrait({ name, title, role, photo, tone = 'saffron', className = '' }) {
+export default function ArchPortrait({ name, title, role, photo, alt, tone = 'saffron', className = '' }) {
   const uid = useId().replace(/:/g, '');
   const inner = mehrabPath(W - 16, H - 12, { ...OPTS, x: 8, y: 8 });
   const outer = mehrabPath(W, H, OPTS);
-  const grad = tone === 'crimson' ? ['#C8553F', '#7A1F17'] : ['#F3A65A', '#B85F12'];
+
+  if (!photo) {
+    const Motif = tone === 'crimson' ? LotusIcon : MarigoldIcon;
+    return (
+      <figure className={`flex flex-col items-center ${className}`}>
+        <div className="relative w-[min(9.5rem,70%)]" aria-hidden="true">
+          <svg viewBox={`-6 -10 ${W + 12} ${H + 16}`} className="w-full">
+            <path d={outer} fill="#FFFCF5" stroke="#D4AF37" strokeWidth="2.5" />
+            <path d={inner} fill={tone === 'crimson' ? '#A93226' : '#E67E22'} fillOpacity="0.07" stroke="#D4AF37" strokeWidth="1.2" strokeDasharray="2 5" />
+          </svg>
+          <Motif className="absolute left-1/2 top-[56%] h-[42%] w-[60%] -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        <Caption title={title} name={name} role={role} />
+      </figure>
+    );
+  }
 
   return (
     <figure className={`flex flex-col items-center ${className}`}>
-      <svg viewBox={`-22 -26 ${W + 44} ${H + 30}`} className="w-full drop-shadow-[0_16px_28px_rgba(80,30,10,0.22)]" role="img" aria-label={photo ? `Portrait of ${name}` : `${name} (photo coming soon)`}>
+      <svg viewBox={`-22 -26 ${W + 44} ${H + 30}`} className="w-full drop-shadow-[0_16px_28px_rgba(80,30,10,0.22)]" role="img" aria-label={alt}>
         <defs>
           <clipPath id={`clip-${uid}`}>
             <path d={inner} />
           </clipPath>
-          <linearGradient id={`bg-${uid}`} x1="0" y1="0" x2="0.4" y2="1">
-            <stop offset="0" stopColor={grad[0]} />
-            <stop offset="1" stopColor={grad[1]} />
-          </linearGradient>
-          <pattern id={`pt-${uid}`} width="22" height="22" patternUnits="userSpaceOnUse">
-            <path d="M11 3 L19 11 L11 19 L3 11 Z" fill="none" stroke="#FFFFFF" strokeOpacity="0.12" />
-          </pattern>
         </defs>
         <path d={outer} fill="#FFFCF5" stroke="#D4AF37" strokeWidth="2" />
         <g clipPath={`url(#clip-${uid})`}>
-          {photo ? (
-            <image href={photo} x="-30" y="-30" width={W + 60} height={H + 60} preserveAspectRatio="xMidYMid slice" />
-          ) : (
-            <>
-              <rect x="-30" y="-30" width={W + 60} height={H + 60} fill={`url(#bg-${uid})`} />
-              <rect x="-30" y="-30" width={W + 60} height={H + 60} fill={`url(#pt-${uid})`} />
-              <circle cx={W / 2} cy={H * 0.58} r="58" fill="#FFFFFF" opacity="0.08" />
-              <text
-                x={W / 2}
-                y={H * 0.6}
-                textAnchor="middle"
-                dominantBaseline="central"
-                fontFamily="'Cormorant Garamond', serif"
-                fontSize="88"
-                fontWeight="600"
-                fill="#FDF8F0"
-                opacity="0.92"
-              >
-                {name.charAt(0)}
-              </text>
-            </>
-          )}
+          <image href={photo} x="-30" y="-30" width={W + 60} height={H + 60} preserveAspectRatio="xMidYMid slice" />
         </g>
         <path d={inner} fill="none" stroke="#D4AF37" strokeWidth="3" />
         <path d={inner} fill="none" stroke="#FFF3C4" strokeWidth="0.8" />
-        
       </svg>
-      <figcaption className="mt-4 text-center">
-        {title && <span className="block font-display text-lg font-medium leading-none text-saffron-dark">{title}</span>}
-        <span className="mt-1 block font-display text-[clamp(1.35rem,3.2vw,1.9rem)] font-semibold leading-tight text-crimson">{name}</span>
-        <span className="mt-2 block font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-saffron-dark">{role}</span>
-      </figcaption>
+      <Caption title={title} name={name} role={role} />
     </figure>
   );
 }

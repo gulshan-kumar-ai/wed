@@ -18,7 +18,7 @@ export default function ScrollIndicator({ style, onClick, label }) {
         onClick={onClick}
         className="group flex flex-col items-center gap-3 rounded-full px-4 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
       >
-        <span className="text-halo font-sans text-[10px] font-semibold uppercase tracking-[0.42em] text-charcoal sm:text-[11px]">
+        <span className="text-halo font-sans text-xs font-semibold uppercase tracking-[0.3em] text-charcoal sm:text-[13px]">
           {cue}
         </span>
         <span className="relative block h-12 w-px overflow-hidden bg-charcoal/20">

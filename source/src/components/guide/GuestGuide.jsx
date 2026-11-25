@@ -64,32 +64,29 @@ function HospitalityIcon() {
   );
 }
 
-const isRealNumber = (phone) => !/x/i.test(phone) && phone.replace(/\D/g, '').length >= 10;
+/** A number still holding the 'X' placeholders (or too short) is not shown to guests. */
+export const isRealNumber = (phone = '') => !/x/i.test(phone) && phone.replace(/\D/g, '').length >= 10;
 
 function Coordinator({ c }) {
+  const { t } = useLanguage();
   const digits = c.phone.replace(/\D/g, '');
-  const real = isRealNumber(c.phone);
   return (
-    <li className="rounded-xl border border-gold/50 bg-ivory px-4 py-3 text-left">
+    <li className="rounded-xl border border-gold/50 bg-ivory px-4 py-3 text-start">
       <p className="font-sans text-[15px] font-semibold text-charcoal">{c.name}</p>
       <p className="font-sans text-[13px] text-charcoal-soft">{c.role}</p>
-      {real ? (
-        <div className="mt-2 flex flex-wrap gap-2">
-          <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="rounded-full bg-crimson px-3 py-1.5 font-sans text-[12px] font-semibold text-white hover:bg-crimson-dark">
-            Call {c.phone}
-          </a>
-          <a
-            href={`https://wa.me/${digits}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-[#1F7A4D] px-3 py-1.5 font-sans text-[12px] font-semibold text-white hover:brightness-110"
-          >
-            WhatsApp
-          </a>
-        </div>
-      ) : (
-        <p className="mt-1 font-sans text-[13px] font-medium text-crimson">{c.phone}</p>
-      )}
+      <div className="mt-2 flex flex-wrap gap-2">
+        <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="rounded-full bg-crimson px-3.5 py-2 font-sans text-[13px] font-semibold text-white hover:bg-crimson-dark">
+          {t('call')} <bdi dir="ltr">{c.phone}</bdi>
+        </a>
+        <a
+          href={`https://wa.me/${digits}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-[#1F7A4D] px-3.5 py-2 font-sans text-[13px] font-semibold text-white hover:brightness-110"
+        >
+          {t('whatsapp')}
+        </a>
+      </div>
     </li>
   );
 }
@@ -112,7 +109,7 @@ function Column({ icon, title, children, index }) {
 
 function Points({ points }) {
   return (
-    <ul className="space-y-3 text-left">
+    <ul className="space-y-3 text-start">
       {points.map((p) => (
         <li key={p} className="flex gap-3 font-sans text-[15px] leading-relaxed text-charcoal">
           <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-saffron" aria-hidden="true" />
@@ -123,6 +120,41 @@ function Points({ points }) {
   );
 }
 
+/** Who to contact: the real coordinators, else the family's WhatsApp, else "reply to whoever invited you". */
+function Contacts({ hospitality, familyWhatsApp }) {
+  const { t } = useLanguage();
+  const real = hospitality.coordinators.filter((c) => isRealNumber(c.phone));
+
+  if (real.length) {
+    return (
+      <>
+        <p className="font-sans text-[15px] leading-relaxed text-charcoal">{hospitality.intro}</p>
+        <ul className="mt-4 space-y-3">
+          {real.map((c) => (
+            <Coordinator key={c.phone} c={c} />
+          ))}
+        </ul>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <p className="font-sans text-[15px] leading-relaxed text-charcoal">{t('contactFallback')}</p>
+      {familyWhatsApp && (
+        <a
+          href={`https://wa.me/${familyWhatsApp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#1F7A4D] px-5 py-3 font-sans text-[13px] font-semibold text-white shadow-md hover:brightness-110"
+        >
+          {t('messageFamily')}
+        </a>
+      )}
+    </>
+  );
+}
+
 /** "Things to Know": travel, dress code & weather, and hospitality contacts for out-of-town guests. */
 export default function GuestGuide({ wedding }) {
   const { travel, attire, hospitality } = wedding.guide;
@@ -130,7 +162,7 @@ export default function GuestGuide({ wedding }) {
   return (
     <section className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="guide-heading">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading id="guide-heading" eyebrow="For our travelling guests" title="Things to Know" intro="A few notes to make your journey to Kunri easy and comfortable." />
+        <SectionHeading id="guide-heading" eyebrow={t('guideEyebrow')} title={t('guideTitle')} intro={t('guideIntro')} />
         <div className="mt-14 grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
           <Column icon={<TravelIcon />} title={travel.title} index={0}>
             <Points points={travel.points} />
@@ -139,12 +171,7 @@ export default function GuestGuide({ wedding }) {
             <Points points={attire.points} />
           </Column>
           <Column icon={<HospitalityIcon />} title={hospitality.title} index={2}>
-            <p className="font-sans text-[15px] leading-relaxed text-charcoal">{hospitality.intro}</p>
-            <ul className="mt-4 space-y-3">
-              {hospitality.coordinators.map((c) => (
-                <Coordinator key={c.name} c={c} />
-              ))}
-            </ul>
+            <Contacts hospitality={hospitality} familyWhatsApp={wedding.rsvp.whatsapp} />
           </Column>
         </div>
       </div>

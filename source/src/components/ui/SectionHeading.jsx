@@ -11,7 +11,7 @@ export default function SectionHeading({ id, eyebrow, title, intro }) {
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto max-w-2xl text-center"
     >
-      <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.4em] text-saffron-dark">{eyebrow}</p>
+      <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-saffron-dark sm:text-[13px]">{eyebrow}</p>
       <h2 id={id} className="mt-3 font-display text-[clamp(2.4rem,5.5vw,3.8rem)] font-semibold leading-[1.05] text-crimson">
         {title}
       </h2>

@@ -72,7 +72,7 @@ export default function FinaleScene({ wedding }) {
         style={{ y: textY, opacity: textOpacity }}
         className="absolute inset-x-0 top-0 z-10 flex flex-col items-center px-4 pt-[max(4.5rem,8svh)] text-center"
       >
-        <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.4em] text-saffron-light">{finale.eyebrow}</p>
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-saffron-light sm:text-[13px]">{finale.eyebrow}</p>
         <h2 id="finale-heading" className="mt-3 max-w-5xl font-display text-[clamp(1.9rem,4.6vw,3.2rem)] font-semibold leading-[1.08] text-ivory">
           {finale.title}
         </h2>
@@ -80,7 +80,7 @@ export default function FinaleScene({ wedding }) {
           <p className="mt-2 font-display text-[clamp(1.1rem,2.4vw,1.5rem)] italic text-gold-light">{finale.subtitle}</p>
         )}
         <div className="mt-[clamp(1rem,3svh,2rem)] w-full">
-          <Countdown target={finale.countdownTo} arrivedMessage={finale.arrivedMessage} />
+          <Countdown target={finale.countdownTo} arrivedMessage={finale.arrivedMessage} timeZone={wedding.timeZone} />
         </div>
       </motion.div>
 

@@ -1,5 +1,6 @@
-import { useMemo, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useMemo, useRef } from 'react';
+import { motion, useMotionValue, useScroll, useTransform } from 'framer-motion';
+import { useElementSize } from '../../hooks/useElementSize';
 import { mehrabPath } from '../layout/mehrab';
 import { ARCH_BOX, ARCH_OPTS, archMaskUrl, floralTileUrl } from './floralWall';
 import Diya from '../hero/art/Diya';
@@ -94,11 +95,17 @@ function ArchTrim({ animate }) {
  *
  * A wall of flowers with a scalloped mehrab opening rises into view; once
  * pinned, scrolling zooms through the opening into the warm cream
- * "Meet the Couples" chapter waiting behind it.
+ * "Meet the Couples" chapter waiting behind it. As the wall clears, the
+ * heading rises and the twins' story fades in beneath it, so the chapter
+ * opener is a full screen rather than a lone title over empty cream.
  */
-export default function MandapPassage({ eyebrow, title }) {
+export default function MandapPassage({ eyebrow, title, story, storyBy }) {
   const ref = useRef(null);
+  const storyRef = useRef(null);
   const animate = useAmbient(ref);
+  const { height: storyHeight } = useElementSize(storyRef);
+  const storyH = useMotionValue(0);
+  useEffect(() => storyH.set(storyHeight), [storyH, storyHeight]);
 
   const tile = useMemo(() => (artwork.floralWall ? `url("${artwork.floralWall}")` : floralTileUrl()), []);
   const mask = useMemo(() => archMaskUrl(), []);
@@ -108,6 +115,13 @@ export default function MandapPassage({ eyebrow, title }) {
   const wallOpacity = useTransform(p, [0.55, 0.8], [1, 0]);
   const headScale = useTransform(p, [0, 0.7], [0.72, 1]);
   const headY = useTransform(p, [0, 0.7], ['6svh', '0svh']);
+  // Lift the heading by half the story's height so heading + story sit centred together
+  const groupY = useTransform([p, storyH], ([v, h]) => {
+    const k = Math.min(1, Math.max(0, (v - 0.55) / 0.3));
+    return -(h / 2) * k * k * (3 - 2 * k);
+  });
+  const storyOpacity = useTransform(p, [0.62, 0.86], [0, 1]);
+  const storyY = useTransform(p, [0.62, 0.86], [24, 0]);
 
   const holeSize = {
     '--aw': 'min(70vw, 42svh, 400px)',
@@ -115,14 +129,32 @@ export default function MandapPassage({ eyebrow, title }) {
   const maskLayers = `${mask} center / calc(var(--aw) * 1.2) calc(var(--aw) * 1.74) no-repeat, linear-gradient(#000 0 0)`;
 
   return (
-    <section ref={ref} className="cv-auto relative h-[155svh] bg-ivory-deep sm:h-[230svh]" aria-label={title}>
+    <section ref={ref} className="cv-auto relative h-[165svh] bg-ivory-deep sm:h-[240svh]" aria-label={title}>
       <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden bg-ivory-deep" style={holeSize}>
         {/* Cream chapter waiting beyond the arch */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#FFF8EA_0%,#F6EBDA_60%)]" aria-hidden="true" />
-        <motion.div style={{ scale: headScale, y: headY }} className="relative z-0 flex flex-col items-center px-6 text-center">
-          <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.4em] text-saffron-dark">{eyebrow}</p>
-          <h2 className="mt-3 font-display text-[clamp(2.6rem,7vw,4.6rem)] font-semibold leading-none text-crimson">{title}</h2>
-          <Ornament className="mt-5 h-3 w-56" />
+        <motion.div style={{ y: groupY }} className="relative z-0 flex flex-col items-center px-6 text-center">
+          <motion.div style={{ scale: headScale, y: headY }} className="flex flex-col items-center">
+            <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-saffron-dark sm:text-[13px]">{eyebrow}</p>
+            <h2 className="mt-3 font-display text-[clamp(2.6rem,7vw,4.6rem)] font-semibold leading-none text-crimson">{title}</h2>
+            <Ornament className="mt-5 h-3 w-56" />
+          </motion.div>
+
+          {story && (
+            <motion.blockquote
+              ref={storyRef}
+              style={{ opacity: storyOpacity, y: storyY, x: '-50%' }}
+              className="absolute left-1/2 top-full w-[min(40rem,88vw)] pt-[3svh] text-center"
+            >
+              <span className="block font-display text-5xl leading-none text-gold" aria-hidden="true">
+                “
+              </span>
+              <p className="-mt-3 font-display text-[clamp(1.1rem,min(2.5vw,2.7svh),1.6rem)] italic leading-relaxed text-charcoal">{story}</p>
+              {storyBy && (
+                <footer className="mt-4 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-saffron-dark">{storyBy}</footer>
+              )}
+            </motion.blockquote>
+          )}
         </motion.div>
 
         {/* Flower wall with the arch cut out, zooming past the viewer */}

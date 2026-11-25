@@ -31,9 +31,14 @@ function Horse({ x }) {
   );
 }
 
-export default function BaraatProcession({ className = '' }) {
+export default function BaraatProcession({ className = '', label = 'Animated royal baraat procession' }) {
   return (
-    <div className={`relative h-36 w-full overflow-hidden rounded-xl border border-gold/40 bg-[linear-gradient(to_bottom,#FFF9ED_0%,#FFF9ED_58%,#DDAF6B_58%,#DDAF6B_100%)] ${className}`} aria-label="Animated royal baraat procession">
+    <div
+      role="img"
+      aria-label={label}
+      dir="ltr"
+      className={`relative h-36 w-full overflow-hidden rounded-xl border border-gold/40 bg-[linear-gradient(to_bottom,#FFF9ED_0%,#FFF9ED_58%,#DDAF6B_58%,#DDAF6B_100%)] ${className}`}
+    >
       <div className="absolute bottom-3 left-0 right-0 h-px bg-[#A93226]/25" />
       <motion.div
         className="absolute bottom-2 left-[-48%] w-[145%] h-[118px]"

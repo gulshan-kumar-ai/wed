@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import ShareButton from './ShareButton';
 import { useLanguage } from '../../i18n';
 import { scrollToSection } from '../../hooks/useSmoothScroll';
-import { RSVP_EVENT, readRsvp } from '../../guest';
+import { RSVP_EVENT, hasReplied } from '../../guest';
 
 const ITEMS = [
   ['invitation', 'navInvite'],
@@ -13,9 +13,9 @@ const ITEMS = [
 
 /** True once this guest has sent an RSVP (on this device). */
 function useReplied() {
-  const [replied, setReplied] = useState(() => !!readRsvp());
+  const [replied, setReplied] = useState(hasReplied);
   useEffect(() => {
-    const update = () => setReplied(!!readRsvp());
+    const update = () => setReplied(hasReplied());
     window.addEventListener(RSVP_EVENT, update);
     window.addEventListener('storage', update);
     return () => {

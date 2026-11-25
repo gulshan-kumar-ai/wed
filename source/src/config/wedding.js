@@ -116,8 +116,12 @@ export const wedding = {
   /* ── Celebration timeline ────────────────────────────────── */
 
   // All times are Pakistan Standard Time (UTC+05:00, no daylight saving).
-  // TODO: confirm the days and times of each ceremony.
   timeZone: 'Asia/Karachi',
+
+  // TODO: once the days, times and the phere muhurat are final, set this to true.
+  // While it is false, guests see the timings marked "provisional" (and calendar
+  // entries are saved as tentative), so nobody plans around an estimate.
+  timingsConfirmed: false,
 
   events: [
     {
@@ -163,7 +167,8 @@ export const wedding = {
       start: '2027-01-16T19:00:00+05:00',
       end: '2027-01-17T00:30:00+05:00',
       venueId: 'hall',
-      muhurat: '8:41 PM – 10:15 PM', // TODO: confirm the phere muhurat with the pandit ji
+      // Phere muhurat, shown in each language's time format. TODO: confirm with the pandit ji.
+      muhurat: { start: '2027-01-16T20:41:00+05:00', end: '2027-01-16T22:15:00+05:00' },
       dressCode: 'Traditional Formal',
       description: 'The sacred seven vows around the holy fire, followed by dinner and the reception for both couples.',
     },
@@ -182,7 +187,7 @@ export const wedding = {
       mapQuery: 'Kunri, Umerkot, Sindh, Pakistan', // TODO: exact location of Pamoora House
       landmarks: [
         'The family residence of the Pamoora Pariwar in Kunri',
-        'Please call a coordinator on arrival and we will guide you to the door',
+        'Message the family when you reach Kunri and we will guide you to the door',
       ],
       hosts: 'Ganesh Sthapana, Haldi and the Baraat departure',
     },
@@ -216,14 +221,22 @@ export const wedding = {
 
   rsvp: {
     deadline: 'Kindly respond by 31 December 2026',
-    // Optional: a URL that accepts a JSON POST (e.g. a Google Apps Script web
-    // app or Formspree endpoint). If null, responses are kept in the guest's
-    // browser only and the family is notified via the WhatsApp button below.
-    endpoint: null,
-    // Optional: family WhatsApp number in international format without '+'
-    // (e.g. '923001234567'). Shows a "Send on WhatsApp" button after RSVP.
-    whatsapp: null,
+    // Where replies go (see README, "RSVP delivery"):
+    //   endpoint  the Google Apps Script web-app URL from rsvp/google-apps-script.gs;
+    //             every reply is then written to your Google Sheet.
+    //   whatsapp  a family WhatsApp number, international format without '+'
+    //             (e.g. '923001234567'). Replies open in WhatsApp addressed to it.
+    // With neither set, the reply opens in WhatsApp and the guest picks who to send
+    // it to (usually whoever sent them the invitation), so it still reaches you.
+    endpoint: null, // TODO: paste the Apps Script web-app URL here
+    whatsapp: null, // TODO: e.g. '923001234567'
     maxGuests: 10,
+    // Travel questions for guests coming from outside Kunri
+    arrivalDates: ['2027-01-13', '2027-01-14', '2027-01-15', '2027-01-16'],
+    pickupFrom: [
+      { id: 'mirpurkhas', label: 'Mirpurkhas' },
+      { id: 'hyderabad', label: 'Hyderabad' },
+    ],
   },
 
   /* ── Guest guide ─────────────────────────────────────────── */
@@ -236,7 +249,7 @@ export const wedding = {
         'Flying in? Land at Jinnah International, Karachi. Kunri is roughly 5–6 hours by road via Hyderabad and Mirpurkhas.',
         'From Hyderabad, allow about 3 hours by road via Mirpurkhas.',
         'By rail, travel to Mirpur Khas, then continue about 1½ hours by road to Kunri.',
-        'Tell us your arrival time in the RSVP and we will arrange pick-ups from Mirpurkhas.',
+        'Share your arrival details in the RSVP and we will arrange a pick-up from Mirpurkhas or Hyderabad.',
       ],
     },
     attire: {

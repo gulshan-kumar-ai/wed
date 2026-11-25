@@ -49,11 +49,15 @@ export default function MusicToggle() {
         type="button"
         onClick={toggle}
         aria-pressed={playing}
-        aria-label={playing ? 'Pause ambient music' : 'Play ambient music'}
+        aria-label={playing ? t('musicPause') : t('musicPlay')}
         className="group relative flex h-12 items-center gap-2 rounded-full border border-gold/70 bg-ivory/75 pl-[14px] pr-[14px] text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
       >
+        {/* A brief invitation to tap, three pulses and then still, never a pulse that runs forever */}
         {!playing && (
-          <span className="absolute inset-0 animate-ping rounded-full border border-gold/50 [animation-duration:2.6s]" aria-hidden="true" />
+          <span
+            className="absolute inset-0 animate-ping rounded-full border border-gold/50 [animation-delay:1.6s] [animation-duration:2.6s] [animation-fill-mode:both] [animation-iteration-count:3]"
+            aria-hidden="true"
+          />
         )}
         <span className="flex h-5 w-5 items-center justify-center">{playing ? <Bars /> : <NoteIcon />}</span>
         <AnimatePresence initial={false}>
@@ -62,7 +66,7 @@ export default function MusicToggle() {
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: 'auto' }}
             exit={{ opacity: 0, width: 0 }}
-            className="hidden overflow-hidden whitespace-nowrap font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-charcoal sm:inline"
+            className="hidden overflow-hidden whitespace-nowrap font-sans text-xs font-medium uppercase tracking-[0.18em] text-charcoal sm:inline"
           >
             {playing ? t('musicOn') : t('musicOff')}
           </motion.span>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLanguage } from '../../i18n';
+import { formatDay, formatTime } from '../events/calendar';
 
 function remaining(target) {
   const ms = Math.max(0, new Date(target).getTime() - Date.now());
@@ -16,7 +18,7 @@ function remaining(target) {
 function Unit({ value, label, pad = 2 }) {
   const text = String(value).padStart(pad, '0');
   return (
-    <div className="countdown-unit flex min-w-0 flex-col items-center rounded-2xl border border-gold/60 bg-[rgba(18,19,46,0.55)] px-2 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-sm sm:px-5 sm:py-4">
+    <div className="countdown-unit flex min-w-0 flex-col items-center rounded-2xl border border-gold/60 bg-[rgba(18,19,46,0.55)] px-1.5 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-sm sm:px-5 sm:py-4">
       <span className="relative flex h-[1.1em] items-center justify-center overflow-hidden font-display text-[clamp(2rem,8vw,3.75rem)] font-semibold leading-none tabular-nums text-gold-light">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
@@ -30,37 +32,38 @@ function Unit({ value, label, pad = 2 }) {
           </motion.span>
         </AnimatePresence>
       </span>
-      <span className="countdown-label mt-2 font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-ivory sm:text-[11px] sm:tracking-[0.28em]">{label}</span>
+      <span className="countdown-label mt-2 max-w-full truncate font-sans text-xs font-semibold uppercase tracking-[0.08em] text-ivory sm:text-[13px] sm:tracking-[0.2em]">
+        {label}
+      </span>
     </div>
   );
 }
 
 /** Live Days : Hours : Minutes : Seconds countdown to `target` (ISO date with offset). */
-export default function Countdown({ target, arrivedMessage }) {
-  const [t, setT] = useState(() => remaining(target));
+export default function Countdown({ target, arrivedMessage, timeZone = 'Asia/Karachi' }) {
+  const [left, setLeft] = useState(() => remaining(target));
+  const { t, language } = useLanguage();
 
   useEffect(() => {
-    const id = setInterval(() => setT(remaining(target)), 1000);
+    const id = setInterval(() => setLeft(remaining(target)), 1000);
     return () => clearInterval(id);
   }, [target]);
 
-  if (t.done) {
+  if (left.done) {
     return <p className="font-display text-[clamp(1.6rem,4vw,2.4rem)] italic text-gold-light">{arrivedMessage}</p>;
   }
 
-  const date = new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Asia/Karachi' }).format(new Date(target));
+  const when = `${formatDay(target, timeZone, language)}${t('comma')}${formatTime(target, timeZone, language)}`;
 
   return (
-    <div role="timer" aria-label={`Countdown to ${date}`} className="w-full">
+    <div role="timer" aria-label={t('countdownTo', { date: when })} className="w-full">
       <div className="mx-auto grid max-w-2xl grid-cols-4 gap-2 sm:gap-4" aria-hidden="true">
-        <Unit value={t.days} label="Days" pad={t.days > 99 ? 3 : 2} />
-        <Unit value={t.hours} label="Hours" />
-        <Unit value={t.minutes} label="Minutes" />
-        <Unit value={t.seconds} label="Seconds" />
+        <Unit value={left.days} label={t('days')} pad={left.days > 99 ? 3 : 2} />
+        <Unit value={left.hours} label={t('hours')} />
+        <Unit value={left.minutes} label={t('minutes')} />
+        <Unit value={left.seconds} label={t('seconds')} />
       </div>
-      <p className="sr-only">
-        {t.days} days, {t.hours} hours and {t.minutes} minutes to go.
-      </p>
+      <p className="sr-only">{t('countdownLeft', { d: left.days, h: left.hours, m: left.minutes })}</p>
     </div>
   );
 }

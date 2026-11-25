@@ -1,33 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import { useElementSize } from '../../hooks/useElementSize';
+import { useLanguage } from '../../i18n';
 
 const GAP = 20;
-const TONES = [
-  ['#F3A65A', '#B85F12'],
-  ['#C8553F', '#7A1F17'],
-  ['#EBD488', '#9C7A1E'],
-  ['#E9A0A8', '#A93226'],
-];
-
-function Placeholder({ caption, index }) {
-  const [a, b] = TONES[index % TONES.length];
-  return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-3" style={{ background: `linear-gradient(160deg, ${a}, ${b})` }}>
-      <svg viewBox="0 0 24 24" className="h-9 w-9 text-ivory/85" aria-hidden="true">
-        <path d="M4 7h3l2-2.5h6L17 7h3v12H4z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-      </svg>
-      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-ivory/90">Photo coming soon</span>
-      <span className="sr-only">{caption}</span>
-    </div>
-  );
-}
 
 /**
  * Draggable, swipeable horizontal photo carousel with arrow buttons,
- * keyboard support (← →) and position dots.
+ * keyboard support (← →) and position dots. Only given items that have a photo.
  */
 export default function GalleryCarousel({ items, label }) {
+  const { t } = useLanguage();
   const viewportRef = useRef(null);
   const { width: vw } = useElementSize(viewportRef);
   const x = useMotionValue(0);
@@ -74,7 +57,8 @@ export default function GalleryCarousel({ items, label }) {
     'flex h-11 w-11 items-center justify-center rounded-full border border-gold/70 bg-ivory text-crimson shadow-sm transition hover:bg-gold-pale disabled:cursor-not-allowed disabled:opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron';
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label={label} onKeyDown={onKeyDown}>
+    // The drag maths runs left to right, so the strip stays LTR in Urdu and Sindhi too
+    <div role="region" aria-roledescription="carousel" aria-label={label} onKeyDown={onKeyDown} dir="ltr">
       {/* `relative` so absolutely positioned children (e.g. sr-only captions) are clipped too */}
       <div ref={viewportRef} className="relative overflow-hidden rounded-b-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron" tabIndex={0} aria-live="polite">
         <motion.ul
@@ -97,14 +81,10 @@ export default function GalleryCarousel({ items, label }) {
               <figure>
                 <div className="aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-2xl border-2 border-gold/80 bg-ivory p-1.5 shadow-[0_12px_30px_rgba(80,30,10,0.15)]">
                   <div className="h-full w-full overflow-hidden rounded-t-[999px] rounded-b-xl">
-                    {item.src ? (
-                      <img src={item.src} alt={item.caption} className="pointer-events-none h-full w-full select-none object-cover" draggable="false" loading="lazy" />
-                    ) : (
-                      <Placeholder caption={item.caption} index={i} />
-                    )}
+                    <img src={item.src} alt={item.caption} className="pointer-events-none h-full w-full select-none object-cover" draggable="false" loading="lazy" />
                   </div>
                 </div>
-                <figcaption className="mt-3 text-center font-display text-lg italic text-charcoal">{item.caption}</figcaption>
+                <figcaption dir="auto" className="mt-3 text-center font-display text-lg italic text-charcoal">{item.caption}</figcaption>
               </figure>
             </li>
           ))}
@@ -112,7 +92,7 @@ export default function GalleryCarousel({ items, label }) {
       </div>
 
       <div className="mt-6 flex items-center justify-center gap-5">
-        <button type="button" className={arrow} onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Previous photo">
+        <button type="button" className={arrow} onClick={() => goTo(index - 1)} disabled={index === 0} aria-label={t('prevPhoto')}>
           <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
         <div className="flex items-center gap-2">
@@ -121,13 +101,13 @@ export default function GalleryCarousel({ items, label }) {
               key={i}
               type="button"
               onClick={() => goTo(i)}
-              aria-label={`Go to photo ${i + 1}`}
+              aria-label={t('goToPhoto', { n: i + 1 })}
               aria-current={i === index}
               className={`h-2 rounded-full transition-all ${i === index ? 'w-7 bg-crimson' : 'w-2 bg-gold/60 hover:bg-gold'}`}
             />
           ))}
         </div>
-        <button type="button" className={arrow} onClick={() => goTo(index + 1)} disabled={index >= lastIndex} aria-label="Next photo">
+        <button type="button" className={arrow} onClick={() => goTo(index + 1)} disabled={index >= lastIndex} aria-label={t('nextPhoto')}>
           <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
       </div>

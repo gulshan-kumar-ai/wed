@@ -13,13 +13,17 @@ export default function Footer({ wedding }) {
           <OmMedallion className="h-12 w-12" />
           <Swastika className="h-4 w-4 text-gold" />
         </div>
-        <p className="mt-4 font-display text-[clamp(1.3rem,3.5vw,1.8rem)] font-semibold leading-tight text-gold-light">
+        <p dir="ltr" className="mt-4 font-display text-[clamp(1.3rem,3.5vw,1.8rem)] font-semibold leading-tight text-gold-light">
           {couples[0].groom} &amp; {couples[0].bride} <span className="text-ivory/70">·</span> {couples[1].groom} &amp; {couples[1].bride}
         </p>
-        <p className="mt-2 font-sans text-[11px] font-semibold uppercase tracking-[0.32em] text-ivory/90">
+        <p className="mt-2 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-ivory/90 sm:text-[13px]">
           {location} · {dates}
         </p>
-        {footer.hashtag && <p className="mt-3 font-sans text-sm font-semibold tracking-[0.18em] text-saffron-light">{footer.hashtag}</p>}
+        {footer.hashtag && (
+          <p dir="ltr" className="mt-3 font-sans text-sm font-semibold tracking-[0.14em] text-saffron-light">
+            {footer.hashtag}
+          </p>
+        )}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
           <LanguageSwitcher />
           <ShareButton wedding={wedding} />

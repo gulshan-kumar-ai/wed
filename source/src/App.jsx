@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig } from 'framer-motion';
 import HeroScene from './components/hero/HeroScene';
 import GardenCourtyardScene from './components/garden/GardenCourtyardScene';
@@ -16,6 +16,7 @@ import OpeningGate from './components/intro/OpeningGate';
 import WelcomeBack from './components/intro/WelcomeBack';
 import { jumpToY, scrollToSection, useSmoothScroll } from './hooks/useSmoothScroll';
 import { wedding } from './config/wedding';
+import { localizeWedding } from './config/wedding.i18n';
 import { LanguageProvider, useLanguage } from './i18n';
 import { AudioProvider, useAudio } from './audio';
 import { IntroContext } from './intro';
@@ -23,10 +24,12 @@ import { getBoot, markOpened } from './guest';
 
 function AppContent() {
   useSmoothScroll();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const audio = useAudio();
   const boot = getBoot(wedding.rsvp.maxGuests);
   const { guest } = boot;
+  // The wedding details in the chosen language (English is the base in wedding.js)
+  const w = useMemo(() => localizeWedding(wedding, language), [language]);
 
   const [gate, setGate] = useState(boot.showGate);
   const [opened, setOpened] = useState(!boot.showGate);
@@ -65,24 +68,29 @@ function AppContent() {
         <MusicToggle />
         <main className="overflow-x-clip">
           {/* Phase 1 · Temple courtyard → doorway light */}
-          <HeroScene wedding={wedding} />
-          {/* Phase 2 · Garden courtyard + formal invitation, mandap passage, couples */}
-          <GardenCourtyardScene wedding={wedding} />
-          <MandapPassage eyebrow={t('meetEyebrow')} title={t('meetTitle')} />
-          <CouplesSection wedding={wedding} />
+          <HeroScene wedding={w} />
+          {/* Phase 2 · Garden courtyard + formal invitation, mandap passage (with the twins' story), couples */}
+          <GardenCourtyardScene wedding={w} />
+          <MandapPassage
+            eyebrow={t('meetEyebrow')}
+            title={t('meetTitle')}
+            story={w.twinStory}
+            storyBy={`${t('twins')} · ${w.couples[0].groom} & ${w.couples[1].groom}`}
+          />
+          <CouplesSection wedding={w} />
           {/* Phase 3 · Timeline, venues, RSVP */}
-          <EventsSection wedding={wedding} />
-          <VenuesSection wedding={wedding} />
-          <RSVPSection wedding={wedding} guest={guest} />
+          <EventsSection wedding={w} />
+          <VenuesSection wedding={w} />
+          <RSVPSection wedding={w} guest={guest} />
           {/* Phase 4 · Guest guide, lotus-pond finale with countdown */}
-          <GuestGuide wedding={wedding} />
-          <FinaleScene wedding={wedding} />
+          <GuestGuide wedding={w} />
+          <FinaleScene wedding={w} />
         </main>
-        <Footer wedding={wedding} />
-        {!gate && <QuickNav wedding={wedding} />}
+        <Footer wedding={w} />
+        {!gate && <QuickNav wedding={w} />}
         {welcome && !gate && <WelcomeBack guest={guest} onReplay={replay} />}
         <AnimatePresence>
-          {gate && <OpeningGate key="gate" wedding={wedding} guest={guest} onOpen={openInvitation} onDone={() => setGate(false)} />}
+          {gate && <OpeningGate key="gate" wedding={w} guest={guest} onOpen={openInvitation} onDone={() => setGate(false)} />}
         </AnimatePresence>
       </IntroContext.Provider>
     </MotionConfig>

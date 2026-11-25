@@ -102,7 +102,11 @@ export function readRsvp() {
   }
 }
 
-export function saveRsvp(payload) {
-  store.set(RSVP_KEY, JSON.stringify(payload));
+/** Saves { id, values, delivered: 'sheet' | 'whatsapp' | null, submittedAt } and tells the page. */
+export function saveRsvp(record) {
+  store.set(RSVP_KEY, JSON.stringify(record));
   window.dispatchEvent(new Event(RSVP_EVENT));
 }
+
+/** True once this guest's reply has been sent (not merely saved on the phone). */
+export const hasReplied = () => !!readRsvp()?.delivered;

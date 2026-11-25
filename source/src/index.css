@@ -42,6 +42,38 @@
   }
 }
 
+/* ── Urdu and Sindhi (right-to-left, Arabic script) ───────────────────────
+   Letters in Arabic script join up, so letter-spacing would break the words
+   apart; the script has no italics, and it needs a little more line height
+   than the Latin display face. Names written in English letters keep LTR. */
+html[dir='rtl'] * {
+  letter-spacing: normal;
+}
+html[dir='rtl'] .italic {
+  font-style: normal;
+}
+html[dir='rtl'] .leading-none,
+html[dir='rtl'] [class*='leading-[1.0'] {
+  line-height: 1.3;
+}
+html[dir='rtl'] .leading-tight {
+  line-height: 1.45;
+}
+html[dir='rtl'] .leading-snug {
+  line-height: 1.65;
+}
+html[dir='rtl'] .leading-relaxed {
+  line-height: 1.9;
+}
+/* Arabic script reads small next to Latin at the same size */
+html[dir='rtl'] .text-xs {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+html[dir='rtl'] .text-\[13px\] {
+  font-size: 0.875rem;
+}
+
 /* Lenis smooth-scroll requirements */
 html.lenis,
 html.lenis body {

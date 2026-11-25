@@ -30,8 +30,9 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        // Noto Naskh Arabic draws the Urdu and Sindhi letters; Latin text keeps the first font
+        display: ['"Cormorant Garamond"', '"Noto Naskh Arabic"', '"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', '"Noto Naskh Arabic"', 'Inter', 'system-ui', 'sans-serif'],
         deva: ['"Noto Serif Devanagari"', '"Nirmala UI"', 'serif'],
       },
       keyframes: {

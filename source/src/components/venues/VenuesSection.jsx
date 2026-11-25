@@ -15,6 +15,7 @@ function PinIcon(props) {
 }
 
 function VenuePanel({ venue }) {
+  const { t } = useLanguage();
   return (
     <motion.div
       key={venue.id}
@@ -28,7 +29,7 @@ function VenuePanel({ venue }) {
       className="grid overflow-hidden rounded-[1.75rem] border border-gold/70 bg-ivory shadow-[0_24px_60px_rgba(80,30,10,0.14)] lg:grid-cols-[0.9fr_1.1fr]"
     >
       <div className="flex flex-col p-8 sm:p-10">
-        <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.35em] text-saffron-dark">{venue.tab}</p>
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.26em] text-saffron-dark">{venue.tab}</p>
         <h3 className="mt-3 font-display text-[2.1rem] font-semibold leading-tight text-crimson">{venue.name}</h3>
 
         <p className="mt-4 flex items-start gap-3 font-sans text-base font-medium leading-relaxed text-charcoal">
@@ -38,12 +39,12 @@ function VenuePanel({ venue }) {
 
         {venue.hosts && (
           <p className="mt-4 rounded-xl bg-gold-pale/70 px-4 py-3 font-sans text-sm leading-relaxed text-charcoal">
-            <span className="font-semibold text-crimson-dark">Hosting: </span>
+            <span className="font-semibold text-crimson-dark">{t('hosting')}: </span>
             {venue.hosts}
           </p>
         )}
 
-        <h4 className="mt-6 font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-crimson">Finding your way</h4>
+        <h4 className="mt-6 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-crimson">{t('findingWay')}</h4>
         <ul className="mt-3 space-y-2.5">
           {venue.landmarks.map((l) => (
             <li key={l} className="flex gap-3 font-sans text-[15px] leading-relaxed text-charcoal">
@@ -58,25 +59,25 @@ function VenuePanel({ venue }) {
             href={directionsUrl(venue.mapQuery)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-crimson to-crimson-light px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_8px_20px_rgba(169,50,38,0.3)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-crimson to-crimson-light px-6 py-3 font-sans text-[13px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_8px_20px_rgba(169,50,38,0.3)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
-            Get Directions
+            <svg viewBox="0 0 24 24" className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
+            {t('directions')}
           </a>
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.mapQuery)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-gold px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.18em] text-crimson transition hover:bg-gold-pale focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
+            className="inline-flex items-center gap-2 rounded-full border border-gold px-6 py-3 font-sans text-[13px] font-semibold uppercase tracking-[0.14em] text-crimson transition hover:bg-gold-pale focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
           >
-            Open in Maps
+            {t('openMaps')}
           </a>
         </div>
       </div>
 
-      <div className="relative min-h-[320px] border-t border-gold/50 lg:min-h-[480px] lg:border-l lg:border-t-0">
+      <div className="relative min-h-[320px] border-t border-gold/50 lg:min-h-[480px] lg:border-s lg:border-t-0">
         <iframe
-          title={`Map showing ${venue.name}`}
+          title={t('mapOf', { name: venue.name })}
           src={embedUrl(venue.mapQuery)}
           className="absolute inset-0 h-full w-full"
           loading="lazy"
@@ -92,12 +93,14 @@ function VenuePanel({ venue }) {
 /** Tabbed location switcher with address, landmarks, directions and an embedded map. */
 export default function VenuesSection({ wedding }) {
   const { venues } = wedding;
-  const { t } = useLanguage();
+  const { t, rtl } = useLanguage();
   const [active, setActive] = useState(0);
   const tabsRef = useRef([]);
 
   const onKeyDown = (e) => {
-    const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    const forward = rtl ? 'ArrowLeft' : 'ArrowRight';
+    const back = rtl ? 'ArrowRight' : 'ArrowLeft';
+    const dir = e.key === forward ? 1 : e.key === back ? -1 : 0;
     if (!dir) return;
     e.preventDefault();
     const next = (active + dir + venues.length) % venues.length;
@@ -108,16 +111,11 @@ export default function VenuesSection({ wedding }) {
   return (
     <section id="venues" className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="venues-heading">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          id="venues-heading"
-          eyebrow={t('travelling')}
-          title={t('venuesTitle')}
-          intro={t('venuesIntro')}
-        />
+        <SectionHeading id="venues-heading" eyebrow={t('travelling')} title={t('venuesTitle')} intro={t('venuesIntro')} />
 
         <div
           role="tablist"
-          aria-label="Wedding locations"
+          aria-label={t('locationsAria')}
           onKeyDown={onKeyDown}
           className="mx-auto mt-12 flex max-w-3xl flex-col gap-2 rounded-3xl border border-gold/70 bg-ivory p-2 sm:flex-row sm:rounded-full"
         >
@@ -134,7 +132,7 @@ export default function VenuesSection({ wedding }) {
                 aria-controls={`venue-panel-${v.id}`}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(i)}
-                className={`relative flex-1 rounded-full px-4 py-3 font-sans text-[13px] font-semibold tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
+                className={`relative flex-1 rounded-full px-4 py-3 font-sans text-sm font-semibold tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
                   selected ? 'text-white' : 'text-charcoal hover:text-crimson'
                 }`}
               >
