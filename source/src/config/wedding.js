@@ -128,10 +128,9 @@ export const wedding = {
   // All times are Pakistan Standard Time (UTC+05:00, no daylight saving).
   timeZone: 'Asia/Karachi',
 
-  // TODO: once the days, times and the phere muhurat are final, set this to true.
-  // While it is false, guests see the timings marked "provisional" (and calendar
-  // entries are saved as tentative), so nobody plans around an estimate.
-  timingsConfirmed: false,
+  // Set to false to mark the timings "provisional" on the cards (and save calendar
+  // entries as tentative) if they are ever uncertain again.
+  timingsConfirmed: true,
 
   events: [
     {
@@ -166,6 +165,14 @@ export const wedding = {
       end: '2027-01-16T18:30:00+05:00',
       venueId: 'hall',
       route: { from: 'Pamoora House', to: 'Alfateh Marriage Hall' },
+      // Optional illustration on the card (files in public/art/events/; WebP with a JPEG fallback)
+      image: {
+        webp: 'art/events/baraat.webp',
+        fallback: 'art/events/baraat.jpg',
+        width: 560,
+        height: 216,
+        alt: 'The baraat: the groom on a white horse, the bride in a decorated doli, dhol players and dancing guests',
+      },
       dressCode: 'Royal Traditional',
       description: 'Two grooms, two decorated mounts, one band. The twin baraat sets out from Pamoora House and dances its way to the mandap.',
     },
@@ -180,6 +187,13 @@ export const wedding = {
       // Phere muhurat, shown in each language's time format. TODO: confirm with the pandit ji.
       muhurat: { start: '2027-01-16T20:41:00+05:00', end: '2027-01-16T22:15:00+05:00' },
       dressCode: 'Traditional Formal',
+      image: {
+        webp: 'art/events/phere.webp',
+        fallback: 'art/events/phere.jpg',
+        width: 529,
+        height: 322,
+        alt: 'The wedding ceremony under the flower mandap, with the family gathered around the couple',
+      },
       description: 'The sacred seven vows around the holy fire, followed by dinner and the reception for both couples.',
     },
   ],
@@ -212,18 +226,6 @@ export const wedding = {
         'Volunteers will guide cars to the parking area from 4:00 PM',
       ],
       hosts: 'Mehendi & Sangeet, the Baraat arrival, Phere and the Reception',
-    },
-    {
-      id: 'stay',
-      tab: 'Guest Accommodation',
-      name: 'Guest Stay (arranged by the family)',
-      address: 'Kunri, District Umerkot, Sindh',
-      mapQuery: 'Kunri, Umerkot, Sindh, Pakistan',
-      landmarks: [
-        'Rooms are reserved for outstation guests from 13 to 17 January',
-        'Please share your arrival details in the RSVP so we can arrange pick-ups',
-      ],
-      hosts: 'Outstation guests travelling to Kunri',
     },
   ],
 

@@ -6,7 +6,7 @@
  *
  *   npm run release      then commit and push to publish
  */
-import { copyFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,7 +17,8 @@ const built = from('dist-standalone/index.html');
 const kb = Math.round(statSync(built).size / 1024);
 for (const name of ['index.html', 'Wedding Invitation.html']) copyFileSync(built, to(name));
 
-const assets = ['audio/ambient.mp3', 'sw.js', 'manifest.webmanifest', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-image.jpg'];
+const art = (dir) => (existsSync(from(`public/${dir}`)) ? readdirSync(from(`public/${dir}`)).filter((f) => !f.endsWith('.txt')).map((f) => `${dir}/${f}`) : []);
+const assets = [...art('art/events'), 'audio/ambient.mp3', 'sw.js', 'manifest.webmanifest', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-image.jpg'];
 const copied = [];
 for (const file of assets) {
   if (!existsSync(from(`public/${file}`))) continue;

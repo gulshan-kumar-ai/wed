@@ -4,7 +4,7 @@ import ScallopedFrame from '../ui/ScallopedFrame';
 import SectionHeading from '../ui/SectionHeading';
 import { MOTIFS } from '../ui/MotifIcons';
 import CalendarMenu from './CalendarMenu';
-import { downloadIcs, formatDay, formatTimeRange } from './calendar';
+import { formatDay, formatShortDay, formatTimeRange } from './calendar';
 
 function Detail({ label, children }) {
   return (
@@ -48,7 +48,7 @@ function toCalendarEvent(event, venue, { t, language, timeZone, confirmed }) {
   };
 }
 
-function EventCard({ event, venue, timeZone, index, confirmed, calendarEvent }) {
+function EventCard({ event, venue, timeZone, index, confirmed }) {
   const { t, language, rtl } = useLanguage();
   const Icon = MOTIFS[event.motif] ?? MOTIFS.lotus;
   const muhurat = muhuratText(event, timeZone, language);
@@ -69,6 +69,22 @@ function EventCard({ event, venue, timeZone, index, confirmed, calendarEvent }) 
         <h3 className="mt-4 font-display text-[1.9rem] font-semibold leading-tight text-crimson sm:text-[2.1rem]">{event.title}</h3>
         {event.subtitle && <p className="font-display text-xl italic text-saffron-dark">({event.subtitle})</p>}
         <p className="mt-3 max-w-sm font-sans text-[15px] leading-relaxed text-charcoal">{event.description}</p>
+
+        {event.image && (
+          <picture className="mt-5 block w-full max-w-sm">
+            <source srcSet={event.image.webp} type="image/webp" />
+            {/* multiply blends the illustration's white background into the ivory card */}
+            <img
+              src={event.image.fallback}
+              width={event.image.width}
+              height={event.image.height}
+              alt={event.image.alt}
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-full mix-blend-multiply"
+            />
+          </picture>
+        )}
 
         <dl className="mt-6 w-full max-w-sm">
           <Detail label={t('date')}>{formatDay(event.start, timeZone, language)}</Detail>
@@ -99,16 +115,12 @@ function EventCard({ event, venue, timeZone, index, confirmed, calendarEvent }) 
           )}
           {event.dressCode && <Detail label={t('dressCode')}>{event.dressCode}</Detail>}
         </dl>
-
-        <div className="mt-auto pt-7">
-          <CalendarMenu event={calendarEvent} />
-        </div>
       </ScallopedFrame>
     </motion.li>
   );
 }
 
-/** Four ceremonies in a 2 × 2 grid (single column on mobile), plus one file with all of them. */
+/** Four ceremonies in a 2 × 2 grid (single column on mobile), with one calendar button below them. */
 export default function EventsSection({ wedding }) {
   const { events, venues, timeZone, timingsConfirmed } = wedding;
   const { t, language } = useLanguage();
@@ -116,7 +128,11 @@ export default function EventsSection({ wedding }) {
   const confirmed = !!timingsConfirmed;
   // Facebook/Instagram/Android app web views often can't save files; tell those guests what to do
   const inAppBrowser = typeof navigator !== 'undefined' && /; wv\)|FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent);
-  const calendarEvents = events.map((e) => toCalendarEvent(e, venueById[e.venueId], { t, language, timeZone, confirmed }));
+  const calendarEvents = events.map((e) => ({
+    ...toCalendarEvent(e, venueById[e.venueId], { t, language, timeZone, confirmed }),
+    short: e.short,
+    day: formatShortDay(e.start.slice(0, 10), language),
+  }));
 
   return (
     <section id="events" className="relative bg-ivory px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="events-heading">
@@ -125,7 +141,7 @@ export default function EventsSection({ wedding }) {
         className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(rgba(212,175,55,0.35)_1px,transparent_1px)] [background-size:22px_22px]"
       />
       <div className="relative mx-auto max-w-6xl">
-        <SectionHeading id="events-heading" eyebrow={t('celebrationsEyebrow')} title={t('celebrationsTitle')} intro={t('celebrationsIntro')} />
+        <SectionHeading id="events-heading" eyebrow={t('celebrationsEyebrow')} title={t('celebrationsTitle')} />
         {!confirmed && (
           <p className="mx-auto mt-6 flex max-w-xl items-start justify-center gap-2 rounded-2xl border border-saffron/40 bg-saffron/10 px-5 py-3 text-center font-sans text-[15px] font-medium leading-relaxed text-charcoal">
             <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-saffron-dark" aria-hidden="true">
@@ -144,29 +160,17 @@ export default function EventsSection({ wedding }) {
               timeZone={timeZone}
               index={i}
               confirmed={confirmed}
-              calendarEvent={calendarEvents[i]}
-            />
+              />
           ))}
         </ol>
 
         <div className="mt-12 flex flex-col items-center gap-3 text-center">
-          <button
-            type="button"
-            onClick={() => downloadIcs(calendarEvents, 'pamoora-wedding.ics', wedding.subtitle)}
-            className="inline-flex items-center gap-2.5 rounded-full border-2 border-saffron bg-ivory px-6 py-3.5 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-saffron-dark shadow-[0_8px_20px_rgba(184,95,18,0.18)] transition hover:bg-saffron hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-ivory sm:text-sm"
-          >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-              <path
-                d="M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2M14 16h2"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            </svg>
-            {t('allToCalendar', { n: events.length })}
-          </button>
-          <p className="max-w-md font-sans text-sm leading-relaxed text-charcoal-soft">{t('allToCalendarHint')}</p>
+          <CalendarMenu
+            events={calendarEvents}
+            label={t('allToCalendar', { n: events.length })}
+            fileName="pamoora-wedding.ics"
+            calendarName={wedding.subtitle}
+          />
           {inAppBrowser && (
             <p className="max-w-md rounded-xl bg-saffron/10 px-4 py-2 font-sans text-sm leading-relaxed text-charcoal">{t('inAppCalendarHint')}</p>
           )}

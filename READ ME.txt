@@ -55,7 +55,5 @@ FILES
                                     "npm run dev" inside it to make changes.
 
 STILL TO FILL IN (in source\src\config\wedding.js)
-  - Ceremony days/times and the phere muhurat. Guests see them marked
-    "provisional" until you set timingsConfirmed: true.
   - Photos: portraits and gallery (the gallery stays hidden until added)
   - The Google Sheet link (see above)

@@ -41,11 +41,11 @@ language so nobody's name is misspelt. When you change wording in `wedding.js`, 
 `wedding.i18n.js` too (anything missing there simply shows in English). Have a native reader check
 the Urdu and Sindhi before sending.
 
-## Timings still to confirm
+## Ceremony timings
 
-While `timingsConfirmed` in `wedding.js` is `false`, the ceremony times and the phere muhurat are
-marked "provisional", a note above the ceremonies says they will be updated, and calendar entries are
-saved as tentative. Set it to `true` once the times are final.
+The timings are shown as final (`timingsConfirmed: true` in `wedding.js`). If they ever become
+uncertain again, set it to `false`: the times and the phere muhurat are then marked "provisional", a
+note above the ceremonies says they will be updated, and calendar entries are saved as tentative.
 
 ## How the hero works
 
@@ -104,9 +104,10 @@ over through an AudioContext unlocked in the same tap.
 3. **Floral mandap passage** (`components/mandap`): a flower wall with a scalloped arch you zoom through;
    the twins' story rises in beneath the heading as the wall clears.
 4. **Meet the Couples** (`components/couples`): couple toggle, arch portraits, story, swipeable gallery.
-5. **Wedding Festivities** (`components/events`): 2 × 2 scalloped cards, each with Save to Calendar
-   (Google Calendar link or downloadable `.ics`), plus "Add all 4 events to my calendar": one
-   `pamoora-wedding.ics` holding every ceremony (Apple Calendar, Outlook and most phones).
+5. **Wedding Festivities** (`components/events`): 2 × 2 scalloped cards, then one calendar button,
+   "Add all 4 events to my calendar" (`CalendarMenu`): a single `pamoora-wedding.ics` with every
+   ceremony (Apple Calendar, Outlook, Samsung and most phones), plus a Google Calendar link per
+   ceremony (Google Calendar adds one event per link).
 6. **Venues & Directions** (`components/venues`): tabbed locations with Google Maps embed and directions.
 7. **Confirm Your Presence** (`components/rsvp`): RSVP on a royal scroll, with a festive confirmation.
 8. **Things to Know** (`components/guide`): travel, dress code & weather, coordinator contacts.
@@ -119,6 +120,10 @@ Put files in `public/photos/` and reference them in `wedding.js` (`groomPhoto`, 
 `gallery[].src`), e.g. `'photos/grouve.jpg'`. Until a portrait is added, the couple section shows a
 small gilded arch with a marigold (groom) or lotus (bride) motif; the photo gallery only appears once
 at least one gallery photo has a `src`, so guests never see "coming soon" tiles.
+
+Ceremony illustrations: give an event an `image` in `wedding.js` (WebP plus a JPEG fallback in
+`public/art/events/`, with its width, height and a description for screen readers; translate the
+description in `wedding.i18n.js`). Pictures with a white background blend into the ivory card.
 
 Coordinators whose number still contains `X` are hidden. If none have real numbers, the guide asks
 guests to reply to whoever sent them the invitation (plus a "Message the family on WhatsApp" button
