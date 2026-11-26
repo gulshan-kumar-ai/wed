@@ -117,6 +117,8 @@ export default function EventsSection({ wedding }) {
   const { t, language } = useLanguage();
   const venueById = Object.fromEntries(venues.map((v) => [v.id, v]));
   const confirmed = !!timingsConfirmed;
+  // Facebook/Instagram/Android app web views often can't save files; tell those guests what to do
+  const inAppBrowser = typeof navigator !== 'undefined' && /; wv\)|FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent);
   const calendarEvents = events.map((e) => toCalendarEvent(e, venueById[e.venueId], { t, language, timeZone, confirmed }));
 
   return (
@@ -168,6 +170,9 @@ export default function EventsSection({ wedding }) {
             {t('allToCalendar', { n: events.length })}
           </button>
           <p className="max-w-md font-sans text-sm leading-relaxed text-charcoal-soft">{t('allToCalendarHint')}</p>
+          {inAppBrowser && (
+            <p className="max-w-md rounded-xl bg-saffron/10 px-4 py-2 font-sans text-sm leading-relaxed text-charcoal">{t('inAppCalendarHint')}</p>
+          )}
         </div>
       </div>
     </section>

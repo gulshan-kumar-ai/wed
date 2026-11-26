@@ -8,6 +8,7 @@ import Elephant from './art/Elephant';
 import Countdown from './Countdown';
 import Ornament from '../ui/Ornament';
 import { useAmbient } from '../../hooks/useAmbient';
+import { useIsSmallScreen } from '../../hooks/useMediaQuery';
 import { artwork } from '../../config/artwork';
 
 /* Elephants stand on the near banks, about 700 art units out from centre on desktop. */
@@ -25,6 +26,10 @@ const ELEPHANT_INSET = 'clamp(-4vw, calc(50% - var(--u) * 720), 6%)';
 export default function FinaleScene({ wedding }) {
   const ref = useRef(null);
   const animate = useAmbient(ref);
+  // As in the opening scene: on phones the loops inside the full-screen sky and lotus layers stay
+  // still while those layers move with the scroll; the floating diyas and elephants keep it alive.
+  const small = useIsSmallScreen();
+  const animateBig = animate && !small;
   const f = artwork.finale;
   const { finale } = wedding;
 
@@ -44,7 +49,7 @@ export default function FinaleScene({ wedding }) {
       aria-labelledby="finale-heading"
     >
       <ArtLayer image={f.sky} style={{ y: skyY }}>
-        <DuskSkyArt key={`DuskSkyArt-1-${animate}`} animate={animate} />
+        <DuskSkyArt key={`DuskSkyArt-1-${animateBig}`} animate={animateBig} />
       </ArtLayer>
       {/* Pavilion, pond and lotuses sit lower than the sky so the countdown has open sky above them */}
       <div className="absolute inset-x-0 bottom-0 top-[20%]">
@@ -52,7 +57,7 @@ export default function FinaleScene({ wedding }) {
           <PavilionPondArt key={`PavilionPondArt-2-${animate}`} animate={animate} />
         </ArtLayer>
         <ArtLayer image={f.foreground} style={{ y: lotusY }}>
-          <LotusForegroundArt key={`LotusForegroundArt-3-${animate}`} animate={animate} />
+          <LotusForegroundArt key={`LotusForegroundArt-3-${animateBig}`} animate={animateBig} />
         </ArtLayer>
       </div>
 
@@ -85,7 +90,7 @@ export default function FinaleScene({ wedding }) {
       </motion.div>
 
       {/* Closing family blessing, floating on the pond */}
-      <motion.div style={{ opacity: textOpacity }} className="absolute inset-x-0 bottom-[calc(34vw*0.81+0.5rem)] z-10 flex justify-center px-4 lg:bottom-[max(1.5rem,5svh)]">
+      <motion.div style={{ opacity: textOpacity }} className="absolute inset-x-0 bottom-[calc(34vw*0.81+0.5rem)] z-10 flex justify-center px-4 lg:bottom-[max(1.5rem,5svh)] short:bottom-6">
         <div className="flex flex-col items-center rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(18,19,46,0.78)_0%,rgba(18,19,46,0.5)_55%,rgba(18,19,46,0)_100%)] px-10 py-5 text-center">
         <Ornament className="h-3 w-44" />
         <p className="mt-3 font-display text-xl italic text-ivory/95 sm:text-2xl">{finale.regards}</p>

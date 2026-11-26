@@ -78,9 +78,23 @@ sits on top of the content. On phones Share opens the phone's share sheet; on co
 menu (WhatsApp, Facebook, Instagram, Copy link). The music button pulses three times to invite a tap,
 then stays still.
 
-Music never auto-plays: it starts from the "Open the Invitation" tap or the music button. It looks
-for `public/audio/ambient.mp3`; if the file is missing, it plays a gentle synthesized tanpura drone
-instead (`hooks/useAmbientAudio.js`).
+Music never auto-plays: it starts from the "Open the Invitation" tap or the music button.
+
+**The track** is "Raga Kaushi Kanra", Ranjit Makkuni (sitar) & Akram Khan (tabla), from
+[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:RanjitMakkuniRagaKaushiKanra.ogg) under
+CC BY-SA 3.0, edited for the invitation (mono, softer level, fades for a seamless 3-minute loop,
+1.5 MB). The licence asks for a credit, which the footer shows (`music.credit` in `wedding.js`).
+Film songs (Bollywood) are copyrighted and can't be used on a public site. To change the music,
+replace `public/audio/ambient.mp3` (and `audio/ambient.mp3` in the repository root; `npm run release`
+copies it) with a track you have the right to use, mastered soft, and update `music.credit`.
+
+**How it plays on phones** (`hooks/useAmbientAudio.js`): the sound starts synchronously inside the tap
+(iPhones refuse sound that starts later), through an `<audio>` element, which iPhones play even with
+the silent switch on. iPhones ignore volume changes from web pages, so the file itself is mastered
+soft; elsewhere it fades in to `music.volume`. It pauses while the guest is in another app (say,
+sending the RSVP on WhatsApp) and carries on when they return, and shows the track on the lock screen /
+Android notification. If the file is missing or can't play, a gentle synthesized tanpura drone takes
+over through an AudioContext unlocked in the same tap.
 
 ## Page journey
 
@@ -191,6 +205,22 @@ string such as `?v=2`.
 
 ## Mobile & performance notes
 
+Most guests open the link on a phone, usually from WhatsApp, so the card is built and tested phone-first
+(iPhone SE to Pro Max, Android 280–412 px wide, phones held sideways, iPads, laptops and large screens,
+on both Safari's engine, WebKit, and Chrome's, Chromium).
+
+- The opening doors size their text by the screen's height, so "Open the Invitation" is on screen
+  from a small iPhone to a laptop; phones held sideways (`short:` in Tailwind) get two columns, and
+  the opening scene sets the names side by side.
+- Every button and link is at least 44 px tall (Apple's minimum), hover effects only apply on devices
+  with a mouse (no "stuck" highlights after a tap), and quick taps never trigger double-tap zoom.
+- Fixed controls keep clear of the notch, the status bar and the home indicator (`env(safe-area-inset-*)`).
+- No background blur behind fixed controls on phones (it stutters on cheaper Android phones); computers keep it.
+- A small Om badge shows while the page loads, and fonts load without delaying the first paint.
+- Countdown labels shorten (Hrs, Min, Sec) on narrow phones instead of being cut off.
+- Older iPhones that don't know the `svh` unit get a `vh` fallback for every rule that uses it
+  (a small PostCSS step in `postcss.config.js`).
+- The service worker leaves music streaming (range requests) to the network.
 - Pinned scenes use `svh` units, so the pinned scenes don't jump when the phone's address bar shows or hides.
 - Ambient loops (diya flames, garlands, petals, lanterns) pause while their scene is off screen,
   and are switched off entirely for visitors who prefer reduced motion.

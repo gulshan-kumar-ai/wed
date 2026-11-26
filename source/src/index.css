@@ -4,6 +4,7 @@
 
 @layer base {
   html {
+    color-scheme: only light;
     overflow-x: hidden;
     background: #fdf8f0;
     color: #2c221e;
@@ -35,6 +36,24 @@
   textarea,
   button {
     min-width: 0;
+  }
+
+  /* Phones: quick taps (e.g. the guest-count + / −) must not trigger double-tap zoom */
+  a,
+  button,
+  label,
+  input,
+  select,
+  textarea,
+  [role='button'],
+  [role='tab'] {
+    touch-action: manipulation;
+  }
+
+  /* iPhones held sideways: keep the content clear of the notch */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 
   ::selection {

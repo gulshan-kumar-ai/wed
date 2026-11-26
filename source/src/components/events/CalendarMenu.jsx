@@ -25,7 +25,7 @@ export default function CalendarMenu({ event }) {
   }, [open]);
 
   const item =
-    'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start font-sans text-sm font-medium text-charcoal transition hover:bg-gold-pale focus:outline-none focus-visible:bg-gold-pale';
+    'flex min-h-[44px] w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start font-sans text-sm font-medium text-charcoal transition hover:bg-gold-pale focus:outline-none focus-visible:bg-gold-pale';
 
   return (
     <div ref={wrapRef} className="relative inline-block">

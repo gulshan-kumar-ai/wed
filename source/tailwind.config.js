@@ -1,5 +1,9 @@
+import plugin from 'tailwindcss/plugin';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Phones have no hover: without this, a tapped button can stay highlighted
+  future: { hoverOnlyWhenSupported: true },
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
@@ -61,5 +65,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Phones held sideways (short and wide): `short:` classes. A plugin variant rather than a
+    // raw screen, which would switch off Tailwind's min-[…] / max-[…] variants.
+    plugin(({ addVariant }) => addVariant('short', '@media (orientation: landscape) and (max-height: 500px)')),
+  ],
 };

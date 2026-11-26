@@ -44,7 +44,7 @@ export default function MusicToggle() {
         onClick={toggle}
         aria-pressed={playing}
         aria-label={playing ? t('musicPause') : t('musicPlay')}
-        className="group relative flex h-12 items-center gap-2 rounded-full border border-gold/70 bg-ivory/75 pl-[14px] pr-[14px] text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
+        className="group relative flex h-12 items-center gap-2 rounded-full border border-gold/70 bg-ivory/95 pl-[14px] pr-[14px] text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] transition-colors md:bg-ivory/75 md:backdrop-blur-md hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
       >
         {/* A brief invitation to tap, three pulses and then still, never a pulse that runs forever */}
         {!playing && (

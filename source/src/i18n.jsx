@@ -75,7 +75,7 @@ export function LanguageSwitcher({ tone = 'light', className = '' }) {
             lang={code}
             aria-pressed={selected}
             onClick={() => setLanguage(code)}
-            className={`min-w-[3.5rem] rounded-full px-3.5 py-2 font-sans text-[13px] font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
+            className={`min-h-[44px] min-w-[3.5rem] rounded-full px-3.5 py-2 font-sans text-[13px] font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
               selected
                 ? dark
                   ? 'bg-ivory text-crimson shadow-sm'
@@ -130,7 +130,7 @@ export function LanguageMenu() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label={`${t('languageLabel')}: ${current.label}`}
-        className="flex h-12 items-center gap-1.5 rounded-full border border-gold/70 bg-ivory/75 px-3.5 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
+        className="flex h-12 items-center gap-1.5 rounded-full border border-gold/70 bg-ivory/95 px-3.5 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] md:bg-ivory/75 md:backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
       >
         <GlobeIcon />
         <span lang={current.code} className="font-sans text-[13px] font-semibold text-charcoal">
@@ -158,7 +158,7 @@ export function LanguageMenu() {
                       setLanguage(code);
                       setOpen(false);
                     }}
-                    className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 font-sans text-[15px] font-semibold transition focus:outline-none focus-visible:bg-gold-pale ${
+                    className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 font-sans text-[15px] font-semibold transition focus:outline-none focus-visible:bg-gold-pale ${
                       selected ? 'bg-crimson/10 text-crimson' : 'text-charcoal hover:bg-gold-pale'
                     }`}
                   >

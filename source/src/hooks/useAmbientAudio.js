@@ -1,24 +1,49 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const FADE_MS = 1200;
+const DRONE_VOLUME = 0.32;
 
 /**
- * Ambient music with graceful fallback.
+ * Background music that behaves on phones.
  *
- * 1. Tries to play the audio file at `src` (loop, soft fade-in).
- * 2. If the file is missing or blocked, plays a gentle synthesized
- *    tanpura-style drone (Pa–Sa–Sa–Sa) via the Web Audio API.
- *
- * Playback only ever starts from a user gesture (the toggle), never on load.
+ * · Music only starts from a tap (the opening doors or the music button), and
+ *   everything that makes sound is started synchronously inside that tap,
+ *   because iPhones refuse sound that starts later.
+ * · The recording at `src` plays through an <audio> element, which iPhones play
+ *   even with the ring/silent switch on. The file itself is mastered soft,
+ *   because iPhones ignore volume changes from web pages; elsewhere it fades.
+ * · If the file is missing or cannot play, a gentle synthesized tanpura drone
+ *   takes over, through an AudioContext that was unlocked in the same tap.
+ * · Music pauses while the guest is in another app or tab (e.g. sending their
+ *   RSVP on WhatsApp) and carries on when they come back.
  */
-export function useAmbientAudio({ src, volume = 0.45 }) {
+export function useAmbientAudio({ src, volume = 0.8, title, artist }) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef(null);
+  const ctxRef = useRef(null);
   const droneRef = useRef(null);
+  const modeRef = useRef(src ? 'file' : 'drone');
+  const wantRef = useRef(false); // the guest has asked for music
   const fadeRef = useRef(null);
+  const volumeWorks = useRef(null);
 
-  const fadeTo = (audio, target, onDone) => {
+  /** iPhones always report volume 1 and ignore changes; there we skip fades. */
+  const canSetVolume = (audio) => {
+    if (volumeWorks.current == null) {
+      const before = audio.volume;
+      audio.volume = 0.5;
+      volumeWorks.current = Math.abs(audio.volume - 0.5) < 0.01;
+      audio.volume = before;
+    }
+    return volumeWorks.current;
+  };
+
+  const fadeTo = (audio, target, done) => {
     clearInterval(fadeRef.current);
+    if (!canSetVolume(audio)) {
+      done?.();
+      return;
+    }
     const start = audio.volume;
     const t0 = performance.now();
     fadeRef.current = setInterval(() => {
@@ -26,13 +51,40 @@ export function useAmbientAudio({ src, volume = 0.45 }) {
       audio.volume = start + (target - start) * k;
       if (k >= 1) {
         clearInterval(fadeRef.current);
-        onDone?.();
+        done?.();
       }
     }, 30);
   };
 
-  const play = useCallback(async () => {
-    if (!droneRef.current) {
+  /** Create/resume the AudioContext. Only works on iPhone when called inside a tap. */
+  const unlockContext = () => {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!ctxRef.current) ctxRef.current = new Ctx();
+    if (ctxRef.current.state !== 'running') ctxRef.current.resume().catch(() => {});
+    return ctxRef.current;
+  };
+
+  const startDrone = () => {
+    const ctx = unlockContext();
+    if (!ctx) return false;
+    modeRef.current = 'drone';
+    if (!droneRef.current) droneRef.current = createTanpuraDrone(ctx, DRONE_VOLUME);
+    droneRef.current.start();
+    return true;
+  };
+
+  /** Call straight from a tap handler (no await before it). */
+  const play = useCallback(() => {
+    wantRef.current = true;
+    try {
+      // iOS 16.4+: treat this as media playback, so the silent switch doesn't mute it
+      if (navigator.audioSession) navigator.audioSession.type = 'playback';
+    } catch {
+      /* not supported */
+    }
+
+    if (modeRef.current === 'file') {
       if (!audioRef.current) {
         const audio = new Audio(src);
         audio.loop = true;
@@ -40,38 +92,104 @@ export function useAmbientAudio({ src, volume = 0.45 }) {
         audioRef.current = audio;
       }
       const audio = audioRef.current;
-      try {
-        audio.volume = 0;
-        await audio.play();
-        fadeTo(audio, volume);
-        setPlaying(true);
-        return;
-      } catch {
-        // File missing or unsupported: switch to the synthesized drone for good.
-        audioRef.current = null;
-        droneRef.current = createTanpuraDrone(volume);
-      }
+      const ctx = unlockContext(); // kept ready in case the file cannot play
+      if (canSetVolume(audio)) audio.volume = 0;
+      setPlaying(true);
+      Promise.resolve(audio.play())
+        .then(() => {
+          fadeTo(audio, volume);
+          if (ctx && !droneRef.current) ctx.suspend().catch(() => {});
+        })
+        .catch((err) => {
+          if (err?.name === 'AbortError') return; // paused again before it started
+          if (err?.name === 'NotAllowedError') {
+            wantRef.current = false;
+            setPlaying(false);
+            return;
+          }
+          // Missing or unsupported file: use the drone from now on
+          audioRef.current = null;
+          if (!startDrone()) {
+            wantRef.current = false;
+            setPlaying(false);
+          }
+        });
+      return;
     }
-    droneRef.current.start();
-    setPlaying(true);
+
+    if (startDrone()) setPlaying(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, volume]);
 
   const pause = useCallback(() => {
-    if (audioRef.current) {
-      const audio = audioRef.current;
-      fadeTo(audio, 0, () => audio.pause());
-    }
-    droneRef.current?.stop();
+    wantRef.current = false;
     setPlaying(false);
+    const audio = audioRef.current;
+    if (audio && !audio.paused) fadeTo(audio, 0, () => audio.pause());
+    droneRef.current?.stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggle = useCallback(() => (playing ? pause() : play()), [playing, play, pause]);
+
+  // Quiet while the guest is in another app or tab; carry on when they return
+  useEffect(() => {
+    const onVisibility = () => {
+      if (!wantRef.current) return;
+      const audio = audioRef.current;
+      if (document.hidden) {
+        clearInterval(fadeRef.current);
+        audio?.pause();
+        droneRef.current?.stop();
+        ctxRef.current?.suspend().catch(() => {});
+        return;
+      }
+      if (modeRef.current === 'file' && audio) {
+        audio.play().catch(() => {
+          wantRef.current = false;
+          setPlaying(false);
+        });
+      } else if (droneRef.current) {
+        ctxRef.current?.resume().catch(() => {});
+        droneRef.current.start();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
+  // Track name on the lock screen / Android media notification, with play & pause buttons
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !title || typeof window.MediaMetadata !== 'function') return;
+    try {
+      navigator.mediaSession.metadata = new window.MediaMetadata({ title, artist, album: 'Pamoora wedding invitation' });
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', pause);
+    } catch {
+      /* not supported */
+    }
+  }, [title, artist, play, pause]);
+
+  // A read-only status for checking the music in tests and from the browser console
+  useEffect(() => {
+    window.__pamooraMusic = () => ({
+      mode: modeRef.current,
+      wanted: wantRef.current,
+      filePaused: audioRef.current ? audioRef.current.paused : null,
+      fileTime: audioRef.current ? audioRef.current.currentTime : null,
+      context: ctxRef.current ? ctxRef.current.state : null,
+    });
+    return () => {
+      delete window.__pamooraMusic;
+    };
+  }, []);
 
   useEffect(
     () => () => {
       clearInterval(fadeRef.current);
       audioRef.current?.pause();
       droneRef.current?.dispose();
+      ctxRef.current?.close().catch(() => {});
     },
     [],
   );
@@ -79,12 +197,9 @@ export function useAmbientAudio({ src, volume = 0.45 }) {
   return { playing, play, pause, toggle };
 }
 
-/* ── Synthesized tanpura drone ─────────────────────────────────────────── */
+/* ── Synthesized tanpura drone (the fallback) ─────────────────────────────── */
 
-function createTanpuraDrone(volume) {
-  const Ctx = window.AudioContext || window.webkitAudioContext;
-  const ctx = new Ctx();
-
+function createTanpuraDrone(ctx, volume) {
   const master = ctx.createGain();
   master.gain.value = 0;
 
@@ -109,7 +224,6 @@ function createTanpuraDrone(volume) {
   const PLUCK_GAP = 1.05;
 
   // A simple, unhurried Kafi/Bhairavi-leaning pentatonic phrase.
-  // It is synthesized locally, so it has no licensing or download dependency.
   const melody = [SA * 2, SA * 2.25, SA * 2.5, SA * 2.25, SA * 2, SA * 1.5, SA * 1.6875, SA * 1.5];
   const melodyGap = 2.4;
 
@@ -187,7 +301,6 @@ function createTanpuraDrone(volume) {
 
   return {
     start() {
-      ctx.resume();
       const now = ctx.currentTime;
       master.gain.cancelScheduledValues(now);
       master.gain.setValueAtTime(master.gain.value, now);
@@ -207,7 +320,7 @@ function createTanpuraDrone(volume) {
     },
     dispose() {
       clearInterval(timer);
-      ctx.close();
+      master.disconnect();
     },
   };
 }

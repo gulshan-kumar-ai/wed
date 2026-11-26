@@ -112,82 +112,87 @@ export default function OpeningGate({ wedding, guest, onOpen, onDone }) {
         <Toran className="h-full w-full drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)]" animate={!reduce} />
       </motion.div>
 
-      {/* Greeting (scrolls on very short screens rather than being cut off) */}
+      {/* Greeting. Sizes follow the screen's height, so "Open the Invitation" is on screen
+          from a small iPhone to a laptop; phones held sideways get two columns. */}
       <motion.div
-        className="absolute inset-0 z-20 flex flex-col overflow-y-auto overscroll-contain px-5 pb-[3svh] pt-[clamp(72px,12svh,170px)] text-center"
+        className="absolute inset-0 z-20 flex flex-col overflow-y-auto overscroll-contain px-4 pb-[max(2svh,env(safe-area-inset-bottom))] pt-[clamp(56px,10svh,150px)] text-center short:px-6 short:pt-3"
         initial={{ opacity: 0, y: 14 }}
         animate={opening ? { opacity: 0, scale: 1.04 } : { opacity: 1, y: 0 }}
         transition={{ duration: opening ? 0.45 : 1, ease: [0.22, 1, 0.36, 1], delay: opening ? 0 : 0.2 }}
       >
-        <div className="m-auto flex w-full max-w-[22rem] flex-col items-center rounded-[2rem] border border-gold/50 bg-[rgba(52,12,9,0.84)] px-5 py-6 shadow-[0_0_0_6px_rgba(52,12,9,0.35),0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-[3px] sm:max-w-md sm:px-10 sm:py-8 lg:max-w-xl lg:px-14 lg:py-10">
-          <LanguageSwitcher tone="dark" />
+        <div className="m-auto flex w-full max-w-[22rem] flex-col items-center rounded-[2rem] border border-gold/50 bg-[rgba(52,12,9,0.88)] px-4 py-[clamp(0.85rem,2.4svh,2.5rem)] shadow-[0_0_0_6px_rgba(52,12,9,0.35),0_30px_80px_rgba(0,0,0,0.5)] sm:max-w-md sm:px-10 md:backdrop-blur-[3px] lg:max-w-xl lg:px-14 short:max-w-3xl short:flex-row short:items-center short:gap-8 short:px-8 short:py-4">
+          <div className="flex flex-col items-center short:flex-1">
+            <LanguageSwitcher tone="dark" />
 
-          <OmMedallion className="mt-5 h-[clamp(3.25rem,7svh,4rem)] w-[clamp(3.25rem,7svh,4rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.45)] sm:h-20 sm:w-20 lg:h-24 lg:w-24" />
-          {wedding.invocation && (
-            <p dir="ltr" className="mt-3 font-display text-base font-semibold tracking-[0.12em] text-gold-light sm:text-lg">
-              {wedding.invocation}
-            </p>
-          )}
-
-          <div id="gate-title" className="flex flex-col items-center">
-            {guest && (
-              <>
-                <p className="mt-5 font-display text-xl italic text-gold-light/95 sm:text-2xl lg:text-3xl">{t('gateDear')}</p>
-                <p className="mt-1 max-w-[16ch] font-display text-[clamp(2rem,9vw,4rem)] font-semibold leading-[1.1] text-ivory [text-wrap:balance]">
-                  <bdi>{guest.to}</bdi>
-                  {t('comma').trim()}
-                </p>
-              </>
-            )}
-            {t('gateBefore') && (
-              <p className={`${guest ? 'mt-4' : 'mt-6'} max-w-xs font-display text-lg leading-snug text-ivory/90 sm:max-w-sm sm:text-xl lg:max-w-md lg:text-2xl`}>
-                {t('gateBefore')}
+            <OmMedallion className="mt-[1.6svh] h-[clamp(2.25rem,6.5svh,5.5rem)] w-[clamp(2.25rem,6.5svh,5.5rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.45)] short:hidden" />
+            {wedding.invocation && (
+              <p dir="ltr" className="mt-[1svh] font-display text-[clamp(0.9rem,2.4svh,1.2rem)] font-semibold tracking-[0.12em] text-gold-light short:mt-2 short:whitespace-nowrap short:text-sm">
+                {wedding.invocation}
               </p>
             )}
 
-            <p dir="ltr" className="mt-4 font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
-              {first.groom} <span className="italic text-saffron-light">&amp;</span> {first.bride}
-            </p>
-            <p className="font-display text-lg italic text-gold-light/80 lg:text-xl">{t('gateAnd')}</p>
-            <p dir="ltr" className="font-display text-[clamp(1.5rem,6vw,2.6rem)] font-semibold leading-tight text-gold-light">
-              {second.groom} <span className="italic text-saffron-light">&amp;</span> {second.bride}
-            </p>
+            <div id="gate-title" className="flex flex-col items-center">
+              {guest && (
+                <>
+                  <p className="mt-[1.6svh] font-display text-[clamp(1rem,2.8svh,1.9rem)] italic leading-snug text-gold-light/95 short:mt-1 short:text-base">{t('gateDear')}</p>
+                  <p className="max-w-[16ch] font-display text-[clamp(1.6rem,min(9vw,5.6svh),4rem)] font-semibold leading-[1.1] text-ivory [text-wrap:balance] short:text-[clamp(1.25rem,7svh,1.8rem)]">
+                    <bdi>{guest.to}</bdi>
+                    {t('comma').trim()}
+                  </p>
+                </>
+              )}
+              {t('gateBefore') && (
+                <p className="mt-[1.4svh] max-w-xs font-display text-[clamp(1rem,2.9svh,1.6rem)] leading-snug text-ivory/90 sm:max-w-sm lg:max-w-md short:max-w-md short:text-[0.95rem]">{t('gateBefore')}</p>
+              )}
 
-            {t('gateAfter') && (
-              <p className="mt-3 max-w-xs font-display text-lg leading-snug text-ivory/90 sm:max-w-sm sm:text-xl lg:max-w-md lg:text-2xl">{t('gateAfter')}</p>
-            )}
+              <p dir="ltr" className="mt-[1.4svh] font-display text-[clamp(1.35rem,min(6vw,4.2svh),2.6rem)] font-semibold leading-tight text-gold-light short:text-[clamp(1.05rem,5.6svh,1.4rem)]">
+                {first.groom} <span className="italic text-saffron-light">&amp;</span> {first.bride}
+              </p>
+              <p className="font-display text-[clamp(0.95rem,2.6svh,1.25rem)] italic leading-snug text-gold-light/80 short:text-sm">{t('gateAnd')}</p>
+              <p dir="ltr" className="font-display text-[clamp(1.35rem,min(6vw,4.2svh),2.6rem)] font-semibold leading-tight text-gold-light short:text-[clamp(1.05rem,5.6svh,1.4rem)]">
+                {second.groom} <span className="italic text-saffron-light">&amp;</span> {second.bride}
+              </p>
+
+              {t('gateAfter') && (
+                <p className="mt-[1.2svh] max-w-xs font-display text-[clamp(1rem,2.9svh,1.6rem)] leading-snug text-ivory/90 sm:max-w-sm lg:max-w-md short:max-w-md short:text-[0.95rem]">{t('gateAfter')}</p>
+              )}
+            </div>
+
+            <Ornament className="mt-[1.8svh] h-3 w-44 [@media(max-height:740px)]:hidden" />
+            <p className="mt-[1.4svh] font-sans text-xs font-semibold uppercase tracking-[0.24em] text-ivory/85 sm:text-[13px]">
+              {wedding.location.split(/[,،]/)[0]} · {wedding.dates}
+            </p>
           </div>
 
-          <Ornament className="mt-5 h-3 w-44" />
-          <p className="mt-3 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-ivory/85 sm:text-[13px]">
-            {wedding.location.split(/[,،]/)[0]} · {wedding.dates}
-          </p>
-
-          <button
-            ref={buttonRef}
-            type="button"
-            onClick={() => open(true)}
-            className="group relative mt-7 inline-flex items-center gap-3 rounded-full bg-ivory px-8 py-4 font-sans text-sm font-semibold uppercase tracking-[0.16em] text-crimson shadow-[0_0_0_3px_rgba(212,175,55,0.75),0_14px_34px_rgba(0,0,0,0.45)] transition hover:bg-gold-pale focus:outline-none focus-visible:ring-4 focus-visible:ring-gold-light lg:px-10"
-          >
-            {!reduce && (
-              <span
-                className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s] [animation-fill-mode:both] [animation-iteration-count:4]"
-                aria-hidden="true"
-              />
-            )}
-            {t('gateOpen')}
-          </button>
-          <p className="mt-3 font-sans text-[13px] leading-relaxed text-ivory/80">
-            <span aria-hidden="true">♪ </span>
-            {t('gateMusic')} ·{' '}
+          <div className="flex flex-col items-center short:shrink-0">
             <button
+              ref={buttonRef}
               type="button"
-              onClick={() => open(false)}
-              className="underline decoration-gold/60 underline-offset-4 hover:text-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light"
+              onClick={() => open(true)}
+              className="group relative mt-[2.4svh] inline-flex min-h-[3rem] items-center gap-3 rounded-full bg-ivory px-8 py-[clamp(0.75rem,2svh,1rem)] font-sans text-sm font-semibold uppercase tracking-[0.16em] text-crimson shadow-[0_0_0_3px_rgba(212,175,55,0.75),0_14px_34px_rgba(0,0,0,0.45)] transition hover:bg-gold-pale focus:outline-none focus-visible:ring-4 focus-visible:ring-gold-light lg:px-10 short:mt-0"
             >
-              {t('gateSilent')}
+              {!reduce && (
+                <span
+                  className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s] [animation-fill-mode:both] [animation-iteration-count:4]"
+                  aria-hidden="true"
+                />
+              )}
+              {t('gateOpen')}
             </button>
-          </p>
+            <p className="mt-1 flex flex-wrap items-center justify-center gap-x-1 font-sans text-[13px] text-ivory/80">
+              <span>
+                <span aria-hidden="true">♪ </span>
+                {t('gateMusic')} ·
+              </span>
+              <button
+                type="button"
+                onClick={() => open(false)}
+                className="min-h-[44px] px-1.5 underline decoration-gold/60 underline-offset-4 hover:text-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light"
+              >
+                {t('gateSilent')}
+              </button>
+            </p>
+          </div>
         </div>
       </motion.div>
     </motion.div>

@@ -47,8 +47,9 @@ FILES
   Wedding Invitation.html           The same card, to open with a double-click.
   favicon.svg, apple-touch-icon.png Small icons used by the card (keep them next to it).
   og-image.jpg                      The picture WhatsApp shows when the link is shared.
-  audio\                            Put a shehnai/sitar track here named "ambient.mp3"
-                                    to replace the built-in soft drone music.
+  audio\                            The background music: a sitar & tabla raga under a
+                                    free licence (credit in the footer, details in
+                                    audio\README.txt). Film songs are copyrighted.
   source\                           The editable project: run "npm install" and
                                     "npm run dev" inside it to make changes.
 

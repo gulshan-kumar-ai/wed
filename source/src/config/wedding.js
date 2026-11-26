@@ -19,10 +19,19 @@ export const wedding = {
   },
 
   music: {
-    // Put a royalty-free shehnai / sitar loop at public/audio/ambient.mp3.
-    // If the file is missing, a soft synthesized tanpura drone plays instead.
+    // A sitar & tabla raga, edited for the invitation (soft level, fades for a seamless loop):
+    // audio/ambient.mp3 (and public/audio/ambient.mp3). Its licence (CC BY-SA 3.0) asks for the
+    // credit below, which the footer shows. To use another track, replace both files and update
+    // the credit. If the file is missing, a soft synthesized tanpura drone plays instead.
     src: 'audio/ambient.mp3', // relative, so it also works when the page is opened from disk
-    volume: 0.32,
+    volume: 0.8, // computers and Android; iPhones play the file at its own (soft) level
+    credit: {
+      title: 'Raga Kaushi Kanra',
+      artist: 'Ranjit Makkuni (sitar) & Akram Khan (tabla)',
+      license: 'CC BY-SA 3.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
+      source: 'https://commons.wikimedia.org/wiki/File:RanjitMakkuniRagaKaushiKanra.ogg',
+    },
   },
 
   /* ── Formal invitation ───────────────────────────────────── */

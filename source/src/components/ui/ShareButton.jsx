@@ -99,7 +99,7 @@ export default function ShareButton({ wedding, variant = 'footer' }) {
   const onButton = () => (bar && canShare && window.matchMedia('(pointer: coarse)').matches ? nativeShare() : setOpen((v) => !v));
 
   const item =
-    'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start font-sans text-sm font-medium text-charcoal transition hover:bg-gold-pale focus:outline-none focus-visible:bg-gold-pale';
+    'flex min-h-[44px] w-full items-center gap-3 rounded-lg px-3 py-2.5 text-start font-sans text-sm font-medium text-charcoal transition hover:bg-gold-pale focus:outline-none focus-visible:bg-gold-pale';
 
   return (
     <div ref={wrapRef} className="relative">
@@ -110,8 +110,8 @@ export default function ShareButton({ wedding, variant = 'footer' }) {
         aria-label={bar ? (note === 'copied' ? t('copied') : t('share')) : undefined}
         className={
           bar
-            ? 'flex h-12 w-12 items-center justify-center rounded-full border border-gold/70 bg-ivory/75 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] backdrop-blur-md transition-colors hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron'
-            : 'inline-flex items-center gap-2 rounded-full border border-gold/70 px-5 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-gold-light transition hover:border-gold-light hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold'
+            ? 'flex h-12 w-12 items-center justify-center rounded-full border border-gold/70 bg-ivory/95 text-crimson shadow-[0_4px_24px_rgba(169,50,38,0.18)] transition-colors md:bg-ivory/75 md:backdrop-blur-md hover:bg-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron'
+            : 'inline-flex min-h-[44px] items-center gap-2 rounded-full border border-gold/70 px-5 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-gold-light transition hover:border-gold-light hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold'
         }
       >
         {bar && note ? <CheckIcon /> : <ShareIcon />}

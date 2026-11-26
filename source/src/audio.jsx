@@ -4,8 +4,8 @@ import { useAmbientAudio } from './hooks/useAmbientAudio';
 const AudioCtx = createContext(null);
 
 /** One ambient-music player for the whole page, so the opening doors and the toggle share it. */
-export function AudioProvider({ src, volume, children }) {
-  const audio = useAmbientAudio({ src, volume });
+export function AudioProvider({ src, volume, title, artist, children }) {
+  const audio = useAmbientAudio({ src, volume, title, artist });
   return <AudioCtx.Provider value={audio}>{children}</AudioCtx.Provider>;
 }
 

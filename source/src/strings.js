@@ -8,6 +8,7 @@ export const strings = {
     languageLabel: 'Language',
     comma: ', ',
     musicOn: 'Music on', musicOff: 'Music', musicPlay: 'Play ambient music', musicPause: 'Pause ambient music',
+    musicCredit: 'Music', edited: 'edited',
     scroll: 'Scroll to Enter',
 
     gateDialog: 'Wedding invitation', gateDear: 'Dear', gateAnd: 'and',
@@ -88,6 +89,8 @@ export const strings = {
     messageFamily: 'Message the family on WhatsApp',
 
     days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds',
+    daysShort: 'Days', hoursShort: 'Hrs', minutesShort: 'Min', secondsShort: 'Sec',
+    inAppCalendarHint: 'If nothing happens, open this invitation in Chrome or Safari to save the file.',
     countdownTo: 'Countdown to {date}', countdownLeft: '{d} days, {h} hours and {m} minutes to go.',
 
     share: 'Share Invitation', shareNative: 'Share', copyLink: 'Copy Link', copied: 'Link Copied',
@@ -98,6 +101,7 @@ export const strings = {
     languageLabel: 'زبان',
     comma: '، ',
     musicOn: 'موسیقی جاری', musicOff: 'موسیقی', musicPlay: 'موسیقی چلائیں', musicPause: 'موسیقی بند کریں',
+    musicCredit: 'موسیقی', edited: 'ترمیم شدہ',
     scroll: 'نیچے سکرول کریں',
 
     gateDialog: 'شادی کا دعوت نامہ', gateDear: 'محترم', gateAnd: 'اور',
@@ -178,6 +182,8 @@ export const strings = {
     messageFamily: 'واٹس ایپ پر خاندان سے رابطہ کریں',
 
     days: 'دن', hours: 'گھنٹے', minutes: 'منٹ', seconds: 'سیکنڈ',
+    daysShort: 'دن', hoursShort: 'گھنٹے', minutesShort: 'منٹ', secondsShort: 'سیکنڈ',
+    inAppCalendarHint: 'اگر کچھ نہ ہو تو یہ دعوت نامہ کروم یا سفاری میں کھول کر فائل محفوظ کریں۔',
     countdownTo: '{date} تک باقی وقت', countdownLeft: '{d} دن، {h} گھنٹے اور {m} منٹ باقی ہیں۔',
 
     share: 'دعوت نامہ شیئر کریں', shareNative: 'شیئر کریں', copyLink: 'لنک کاپی کریں', copied: 'لنک کاپی ہو گیا',
@@ -188,6 +194,7 @@ export const strings = {
     languageLabel: 'ٻولي',
     comma: '، ',
     musicOn: 'موسيقي هلي رهي آهي', musicOff: 'موسيقي', musicPlay: 'موسيقي هلايو', musicPause: 'موسيقي بند ڪريو',
+    musicCredit: 'موسيقي', edited: 'ترميم ٿيل',
     scroll: 'هيٺ سڪرول ڪريو',
 
     gateDialog: 'شاديءَ جو دعوت نامو', gateDear: 'محترم', gateAnd: '۽',
@@ -268,6 +275,8 @@ export const strings = {
     messageFamily: 'واٽس ايپ تي خاندان سان رابطو ڪريو',
 
     days: 'ڏينهن', hours: 'ڪلاڪ', minutes: 'منٽ', seconds: 'سيڪنڊ',
+    daysShort: 'ڏينهن', hoursShort: 'ڪلاڪ', minutesShort: 'منٽ', secondsShort: 'سيڪنڊ',
+    inAppCalendarHint: 'جيڪڏهن ڪجهه نه ٿئي ته هي دعوت نامو ڪروم يا سفاري ۾ کولي فائل محفوظ ڪريو.',
     countdownTo: '{date} تائين باقي وقت', countdownLeft: '{d} ڏينهن، {h} ڪلاڪ ۽ {m} منٽ باقي آهن.',
 
     share: 'دعوت نامو شيئر ڪريو', shareNative: 'شيئر ڪريو', copyLink: 'لنڪ ڪاپي ڪريو', copied: 'لنڪ ڪاپي ٿي وئي',

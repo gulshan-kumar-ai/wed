@@ -107,7 +107,7 @@ function AppContent() {
 export default function App() {
   return (
     <LanguageProvider>
-      <AudioProvider src={wedding.music.src} volume={wedding.music.volume}>
+      <AudioProvider src={wedding.music.src} volume={wedding.music.volume} title={wedding.music.credit?.title} artist={wedding.music.credit?.artist}>
         <AppContent />
       </AudioProvider>
     </LanguageProvider>

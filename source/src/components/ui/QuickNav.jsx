@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '../../i18n';
 import { scrollToSection } from '../../hooks/useSmoothScroll';
 import { RSVP_EVENT, hasReplied } from '../../guest';
+import { useHideOnScroll } from '../../hooks/useHideOnScroll';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const ITEMS = [
   ['invitation', 'navInvite'],
@@ -87,10 +89,14 @@ export default function QuickNav() {
   const { past, active } = useScrollState();
   const replied = useReplied();
   const typing = useTyping();
-  const show = past && !typing;
+  // A phone held sideways is only ~350 px tall: there the dock steps aside while scrolling down
+  const sideways = useMediaQuery('(orientation: landscape) and (max-height: 500px)');
+  const navRef = useRef(null);
+  const tucked = useHideOnScroll(navRef, sideways);
+  const show = past && !typing && !tucked;
 
   const item = (selected) =>
-    `relative rounded-full px-3 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors sm:px-5 sm:tracking-[0.12em] focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
+    `relative min-h-[44px] rounded-full px-3 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors sm:px-5 sm:tracking-[0.12em] focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron ${
       selected ? 'bg-gold-pale text-crimson' : 'text-charcoal hover:text-crimson'
     }`;
 
@@ -99,6 +105,7 @@ export default function QuickNav() {
       <AnimatePresence>
         {show && (
           <motion.nav
+            ref={navRef}
             key="dock"
             aria-label={t('navLabel')}
             initial={{ y: 90, opacity: 0 }}
@@ -107,7 +114,7 @@ export default function QuickNav() {
             transition={{ type: 'spring', stiffness: 320, damping: 32 }}
             className="pointer-events-none fixed inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 flex justify-center px-2"
           >
-            <div className="pointer-events-auto flex max-w-full items-center gap-0.5 rounded-full border border-gold/70 bg-ivory/90 p-1.5 shadow-[0_10px_30px_rgba(44,34,30,0.22)] backdrop-blur-md sm:gap-1">
+            <div className="pointer-events-auto flex max-w-full items-center gap-0.5 rounded-full border border-gold/70 bg-ivory/95 p-1.5 shadow-[0_10px_30px_rgba(44,34,30,0.22)] sm:gap-1 md:bg-ivory/90 md:backdrop-blur-md">
               {ITEMS.map(([id, key]) => (
                 <button key={id} type="button" className={item(active === id)} aria-current={active === id ? 'location' : undefined} onClick={() => scrollToSection(id)}>
                   {t(key)}
@@ -120,7 +127,7 @@ export default function QuickNav() {
                 className={
                   replied
                     ? `${item(active === 'rsvp')} inline-flex items-center gap-1`
-                    : 'rounded-full bg-gradient-to-r from-crimson via-crimson-light to-saffron px-4 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_6px_16px_rgba(169,50,38,0.35)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory sm:px-6 sm:tracking-[0.16em]'
+                    : 'min-h-[44px] rounded-full bg-gradient-to-r from-crimson via-crimson-light to-saffron px-4 py-2.5 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_6px_16px_rgba(169,50,38,0.35)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory sm:px-6 sm:tracking-[0.16em]'
                 }
               >
                 {replied && (
