@@ -38,6 +38,9 @@ export default {
         display: ['"Cormorant Garamond"', '"Noto Naskh Arabic"', '"Playfair Display"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', '"Noto Naskh Arabic"', 'Inter', 'system-ui', 'sans-serif'],
         deva: ['"Noto Serif Devanagari"', '"Nirmala UI"', 'serif'],
+        // The invitation card: classical capitals for the mantra and dates, a script for the names
+        caps: ['Cinzel', '"Noto Naskh Arabic"', 'Georgia', 'serif'],
+        script: ['"Great Vibes"', '"Noto Naskh Arabic"', 'cursive'],
       },
       keyframes: {
         glow: {

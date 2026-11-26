@@ -179,3 +179,54 @@ html.lenis body {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ── The invitation card ──────────────────────────────────────────────────
+   Everything inside is sized in em from this one font size; --fit (set by
+   InvitationCard) shrinks the whole card so it fits on one screen. */
+.inv-card {
+  --inv-base: 15px;
+  font-size: calc(var(--inv-base) * var(--fit, 1));
+}
+@media (min-width: 640px) {
+  .inv-card {
+    --inv-base: 16px;
+  }
+}
+@media (min-width: 1024px) and (min-height: 760px) {
+  .inv-card {
+    --inv-base: 17px;
+  }
+}
+/* Phone on its side: an open, two-page card (the request and the date beside the couples) */
+@media (orientation: landscape) and (max-height: 500px) {
+  .inv-card {
+    --inv-base: 14px;
+  }
+  .inv-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      'head couples'
+      'when close';
+    column-gap: 2.2em;
+    row-gap: 0.9em;
+    align-items: center;
+  }
+  .inv-head {
+    grid-area: head;
+  }
+  .inv-couples {
+    grid-area: couples;
+  }
+  .inv-when {
+    grid-area: when;
+  }
+  .inv-close {
+    grid-area: close;
+    margin-top: 0 !important;
+  }
+  .inv-orn-1,
+  .inv-orn-2 {
+    display: none !important;
+  }
+}

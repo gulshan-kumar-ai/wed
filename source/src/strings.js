@@ -19,7 +19,7 @@ export const strings = {
     welcomeBack: 'Welcome back', replayEntrance: 'Replay entrance',
 
     weds: 'weds', with: 'with', at: 'at',
-    sonOf: 'Son of {name}', daughterOf: 'Daughter of {name}',
+    sonsOf: 'Sons of {name}', daughterOf: 'Daughter of {name}',
     invitationAria: 'Wedding invitation',
     formalInvitation: 'Formal invitation', ganesha: 'Lord Ganesha',
 
@@ -109,7 +109,7 @@ export const strings = {
     welcomeBack: 'دوبارہ خوش آمدید', replayEntrance: 'آغاز دوبارہ دیکھیں',
 
     weds: 'ہمراہ', with: 'ہمراہ', at: 'بمقام',
-    sonOf: '{name} کے فرزند', daughterOf: '{name} کی صاحبزادی',
+    sonsOf: '{name} کے فرزندان', daughterOf: '{name} کی صاحبزادی',
     invitationAria: 'شادی کا دعوت نامہ',
     formalInvitation: 'رسمی دعوت نامہ', ganesha: 'بھگوان گنیش',
 
@@ -199,7 +199,7 @@ export const strings = {
     welcomeBack: 'ٻيهر ڀليڪار', replayEntrance: 'شروعات ٻيهر ڏسو',
 
     weds: 'سان', with: 'سان', at: 'بمقام',
-    sonOf: '{name} جو پٽ', daughterOf: '{name} جي ڌيءَ',
+    sonsOf: '{name} جا پٽ', daughterOf: '{name} جي ڌيءَ',
     invitationAria: 'شاديءَ جو دعوت نامو',
     formalInvitation: 'رسمي دعوت نامو', ganesha: 'ڀڳوان گڻيش',
 
