@@ -187,6 +187,12 @@ html.lenis body {
   --inv-base: 15px;
   font-size: calc(var(--inv-base) * var(--fit, 1));
 }
+/* Portrait default: stack everything vertically, centred */
+.inv-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 @media (min-width: 640px) {
   .inv-card {
     --inv-base: 16px;

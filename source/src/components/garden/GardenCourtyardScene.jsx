@@ -51,7 +51,11 @@ export default function GardenCourtyardScene({ wedding }) {
   const railY = useTransform(p, [0, 1], ['7%', '-7%']);
   const groundY = useTransform(p, [0, 1], ['12%', '-12%']);
   const toranY = useTransform(p, [0.15, 0.5], ['0%', '-130%']);
-  const dim = useTransform(p, [0.3, 0.45, 0.75, 0.85], [0, 0.18, 0.18, 0]);
+  // On narrow screens the card is taller relative to the viewport, so dim a bit more
+  // so the moving peacocks and foliage don't distract while the card is being read.
+  const isNarrow = typeof window !== 'undefined' && window.innerWidth < 640;
+  const dimMax = isNarrow ? 0.28 : 0.18;
+  const dim = useTransform(p, [0.3, 0.45, 0.75, 0.85], [0, dimMax, dimMax, 0]);
 
   return (
     <section ref={ref} className="relative -mt-[130svh]" aria-label={t('formalInvitation')}>

@@ -20,9 +20,15 @@ export function jumpToY(y) {
 export function sectionY(id) {
   const el = document.getElementById(id);
   if (!el) return null;
-  // The invitation card floats over its garden scene: leave a little of the scene above it
-  const offset = id === 'invitation' ? window.innerHeight * 0.06 : 0;
-  return Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+  // Centre the card in the visible area above the dock (~56 px), keeping at least 12 px headroom.
+  if (id === 'invitation') {
+    const rect = el.getBoundingClientRect();
+    const dock = 56;
+    const avail = window.innerHeight - dock;
+    const topPad = Math.max(12, Math.round((avail - rect.height) / 2));
+    return Math.max(0, rect.top + window.scrollY - topPad);
+  }
+  return Math.max(0, el.getBoundingClientRect().top + window.scrollY);
 }
 
 export function scrollToSection(id, { immediate = false } = {}) {
