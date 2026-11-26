@@ -171,7 +171,7 @@ export default function OpeningGate({ wedding, guest, onOpen, onDone }) {
           >
             {!reduce && (
               <span
-                className="absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s] [animation-fill-mode:both] [animation-iteration-count:4]"
+                className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-gold-light/70 [animation-duration:2.4s] [animation-fill-mode:both] [animation-iteration-count:4]"
                 aria-hidden="true"
               />
             )}

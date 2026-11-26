@@ -49,7 +49,7 @@ export default function MusicToggle() {
         {/* A brief invitation to tap, three pulses and then still, never a pulse that runs forever */}
         {!playing && (
           <span
-            className="absolute inset-0 animate-ping rounded-full border border-gold/50 [animation-delay:1.6s] [animation-duration:2.6s] [animation-fill-mode:both] [animation-iteration-count:3]"
+            className="pointer-events-none absolute inset-0 animate-ping rounded-full border border-gold/50 [animation-delay:1.6s] [animation-duration:2.6s] [animation-fill-mode:both] [animation-iteration-count:3]"
             aria-hidden="true"
           />
         )}
