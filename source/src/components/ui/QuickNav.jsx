@@ -36,7 +36,8 @@ function useScrollState() {
       frame = 0;
       const line = window.innerHeight * 0.45;
       const invite = document.getElementById('invitation')?.closest('section');
-      const past = !!invite && invite.getBoundingClientRect().top <= window.innerHeight * 0.5;
+      // The garden section starts underneath the temple walk-in (crossfade); the dock appears once it has faded in
+      const past = !!invite && invite.getBoundingClientRect().top <= -window.innerHeight * 0.25;
       let active = null;
       for (const id of ['invitation', 'events', 'venues', 'rsvp']) {
         const el = document.getElementById(id);

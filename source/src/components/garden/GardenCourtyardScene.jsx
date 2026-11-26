@@ -41,10 +41,12 @@ export default function GardenCourtyardScene({ wedding }) {
   const reduceMotion = useReducedMotion();
   const g = artwork.garden;
 
-  const { scrollYProgress: entry } = useScroll({ target: ref, offset: ['start end', 'start start'] });
+  // The garden slides in under the last 30vh of the temple walk-in and fades in over the
+  // doorway light while both are on screen: a crossfade, never an empty white screen.
+  const { scrollYProgress: reveal } = useScroll({ target: ref, offset: ['start start', 'start -30vh'] });
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start end', 'end start'] });
 
-  const veil = useTransform(entry, [0.25, 1], [1, 0]);
+  const stageOpacity = useTransform(reveal, [0, 1], [0, 1]);
   const arcadeY = useTransform(p, [0, 1], ['3%', '-3%']);
   const railY = useTransform(p, [0, 1], ['7%', '-7%']);
   const groundY = useTransform(p, [0, 1], ['12%', '-12%']);
@@ -52,9 +54,9 @@ export default function GardenCourtyardScene({ wedding }) {
   const dim = useTransform(p, [0.3, 0.45, 0.75, 0.85], [0, 0.18, 0.18, 0]);
 
   return (
-    <section ref={ref} className="relative bg-[#5D7C38]" aria-label={t('formalInvitation')}>
+    <section ref={ref} className="relative -mt-[130svh]" aria-label={t('formalInvitation')}>
       {/* Sticky backdrop */}
-      <div className="stage sticky top-0 h-[100svh] w-full overflow-hidden bg-[#5D7C38]">
+      <motion.div className="stage pointer-events-none sticky top-0 h-[100svh] w-full overflow-hidden bg-[#5D7C38]" style={{ opacity: stageOpacity }}>
         <ArtLayer image={g.backdrop}>
           <GardenBackdrop />
         </ArtLayer>
@@ -100,12 +102,10 @@ export default function GardenCourtyardScene({ wedding }) {
 
         {/* Gentle dimming while the card is being read */}
         <motion.div className="absolute inset-0 bg-charcoal" style={{ opacity: dim }} aria-hidden="true" />
-        {/* Ivory veil continuing the hero's doorway light */}
-        <motion.div className="pointer-events-none absolute inset-0 bg-ivory" style={{ opacity: veil }} aria-hidden="true" />
-      </div>
+      </motion.div>
 
       {/* Scrolling content over the backdrop */}
-      <div className="relative z-10 -mt-[100svh] px-4 pb-[22svh] pt-[4svh] sm:px-6 sm:pb-[45svh] sm:pt-[92svh]">
+      <div className="relative z-10 -mt-[100svh] px-4 pb-[22svh] pt-[100svh] sm:px-6 sm:pb-[45svh] sm:pt-[122svh]">
         <div id="invitation">
           <InvitationCard wedding={wedding} />
         </div>

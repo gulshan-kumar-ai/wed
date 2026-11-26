@@ -75,14 +75,14 @@ function Coordinator({ c }) {
       <p className="font-sans text-[15px] font-semibold text-charcoal">{c.name}</p>
       <p className="font-sans text-[13px] text-charcoal-soft">{c.role}</p>
       <div className="mt-2 flex flex-wrap gap-2">
-        <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="rounded-full bg-crimson px-3.5 py-2 font-sans text-[13px] font-semibold text-white hover:bg-crimson-dark">
+        <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="inline-flex min-h-[44px] items-center rounded-full bg-crimson px-4 py-2 font-sans text-[13px] font-semibold text-white hover:bg-crimson-dark">
           {t('call')} <bdi dir="ltr">{c.phone}</bdi>
         </a>
         <a
           href={`https://wa.me/${digits}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-[#1F7A4D] px-3.5 py-2 font-sans text-[13px] font-semibold text-white hover:brightness-110"
+          className="inline-flex min-h-[44px] items-center rounded-full bg-[#1F7A4D] px-4 py-2 font-sans text-[13px] font-semibold text-white hover:brightness-110"
         >
           {t('whatsapp')}
         </a>

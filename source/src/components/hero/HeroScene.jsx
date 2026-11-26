@@ -77,7 +77,8 @@ export default function HeroScene({ wedding }) {
   // screen a little sooner and the invitation card rises straight out of it, so
   // there is no empty white screen between the two scenes.
   const glowOpacity = useTransform(p, small ? [0.4, 0.74] : [0.45, 0.82], [0, 1]);
-  const whiteout = useTransform(p, small ? [0.7, 0.86] : [0.8, 0.97], [0, 1]);
+  // Light, not a blank page: the garden fades in over it (see GardenCourtyardScene)
+  const whiteout = useTransform(p, small ? [0.6, 0.9] : [0.75, 0.97], [0, 0.8]);
 
   const enter = () => {
     const el = ref.current;
