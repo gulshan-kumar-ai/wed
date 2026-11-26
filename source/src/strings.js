@@ -40,7 +40,6 @@ export const strings = {
     calProvisional: 'Timing is provisional. Please check the invitation for updates.',
     allToCalendar: 'Add all {n} events to my calendar',
     allToCalendarHint: 'One file for Apple Calendar, Outlook and most phones. For Google Calendar, use “Save to Calendar” on each ceremony.',
-    baraatAria: 'Animated royal baraat procession',
 
     travelling: 'Travelling to Kunri', venuesTitle: 'Venues & Directions',
     venuesIntro: 'Everything you need to find your way around Kunri, District Umerkot, during the celebrations.',
@@ -133,7 +132,6 @@ export const strings = {
     calProvisional: 'وقت عارضی ہے۔ تازہ معلومات کے لیے دعوت نامہ دیکھتے رہیں۔',
     allToCalendar: 'تمام {n} تقریبات اپنے کیلنڈر میں شامل کریں',
     allToCalendarHint: 'ایپل کیلنڈر، آؤٹ لک اور زیادہ تر فونز کے لیے ایک ہی فائل۔ گوگل کیلنڈر کے لیے ہر تقریب پر "کیلنڈر میں محفوظ کریں" استعمال کریں۔',
-    baraatAria: 'شاہی بارات کی متحرک تصویر',
 
     travelling: 'کنری کا سفر', venuesTitle: 'مقامات اور راستے',
     venuesIntro: 'تقریبات کے دوران کنری، ضلع عمرکوٹ میں راستہ تلاش کرنے کے لیے ضروری معلومات۔',
@@ -226,7 +224,6 @@ export const strings = {
     calProvisional: 'وقت عارضي آهي. تازي معلومات لاءِ دعوت نامو ڏسندا رهو.',
     allToCalendar: 'سڀ {n} تقريبون پنهنجي ڪئلينڊر ۾ شامل ڪريو',
     allToCalendarHint: 'ايپل ڪئلينڊر، آئوٽ لڪ ۽ گهڻن فونن لاءِ هڪ ئي فائل. گوگل ڪئلينڊر لاءِ هر تقريب تي "ڪئلينڊر ۾ محفوظ ڪريو" استعمال ڪريو.',
-    baraatAria: 'شاهي جڃ جي متحرڪ تصوير',
 
     travelling: 'ڪنري جو سفر', venuesTitle: 'هنڌ ۽ رستا',
     venuesIntro: 'تقريبن دوران ڪنري، ضلعي عمرڪوٽ ۾ رستو ڳولڻ لاءِ ضروري معلومات.',

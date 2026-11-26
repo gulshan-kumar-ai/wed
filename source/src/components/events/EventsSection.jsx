@@ -5,7 +5,6 @@ import SectionHeading from '../ui/SectionHeading';
 import { MOTIFS } from '../ui/MotifIcons';
 import CalendarMenu from './CalendarMenu';
 import { downloadIcs, formatDay, formatTimeRange } from './calendar';
-import BaraatProcession from './BaraatProcession';
 
 function Detail({ label, children }) {
   return (
@@ -70,8 +69,6 @@ function EventCard({ event, venue, timeZone, index, confirmed, calendarEvent }) 
         <h3 className="mt-4 font-display text-[1.9rem] font-semibold leading-tight text-crimson sm:text-[2.1rem]">{event.title}</h3>
         {event.subtitle && <p className="font-display text-xl italic text-saffron-dark">({event.subtitle})</p>}
         <p className="mt-3 max-w-sm font-sans text-[15px] leading-relaxed text-charcoal">{event.description}</p>
-
-        {event.id === 'baraat' && <BaraatProcession className="mt-5" label={t('baraatAria')} />}
 
         <dl className="mt-6 w-full max-w-sm">
           <Detail label={t('date')}>{formatDay(event.start, timeZone, language)}</Detail>
