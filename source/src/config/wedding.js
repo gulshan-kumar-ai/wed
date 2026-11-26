@@ -239,7 +239,7 @@ export const wedding = {
     // With neither set, the reply opens in WhatsApp and the guest picks who to send
     // it to (usually whoever sent them the invitation), so it still reaches you.
     endpoint: null, // TODO: paste the Apps Script web-app URL here
-    whatsapp: null, // TODO: e.g. '923001234567'
+    whatsapp: '923328209460', // Prem U. Pamoora (+92 332 8209460)
     // With an endpoint, also count how often the invitation is opened (Summary and Visits tabs)
     countVisits: true,
     maxGuests: 10,

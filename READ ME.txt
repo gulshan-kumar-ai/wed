@@ -19,9 +19,10 @@ PERSONAL LINKS
   "Dear Sharma Family" appears on the doors and their RSVP is filled in.
 
 GOOGLE SHEET: RSVPs AND VISITS
-  Until the Sheet is connected, each reply opens in WhatsApp, ready for the
-  guest to send to whoever invited them. Once it is connected, every reply
-  AND every opening of the invitation is recorded in one Google Sheet:
+  Until the Sheet is connected, each reply opens in WhatsApp addressed to
+  Prem U. Pamoora (+92 332 8209460), ready for the guest to send.
+  Once it is connected, every reply AND every opening of the invitation
+  is recorded in one Google Sheet:
     Summary      live totals: times opened, different phones, replies,
                  accepted, declined, guests coming, head count per
                  ceremony, pick-ups and rooms needed
@@ -34,8 +35,8 @@ GOOGLE SHEET: RSVPs AND VISITS
        top: create the Sheet, paste the script, run "setup", deploy it.
     2. Put the web-app link it gives you (it ends in /exec) into
        source\src\config\wedding.js at rsvp.endpoint, then publish (below).
-  To have WhatsApp replies addressed to one family number instead, put it
-  at rsvp.whatsapp in the same file (for example '923001234567').
+  The WhatsApp number for replies is rsvp.whatsapp in the same file
+  (international format without +, e.g. '923328209460').
 
 PUBLISHING CHANGES
   In the source folder run:   npm run release
