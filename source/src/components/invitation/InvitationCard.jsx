@@ -69,10 +69,10 @@ function useFitToScreen(ref, key) {
 }
 
 /** "Sons of Smt. Vineeta & Shri Prem…" with the (English-lettered) names isolated from the sentence. */
-function Lineage({ template, names, className = '' }) {
+function Lineage({ template, names, className = '', small = false }) {
   const [before, after = ''] = template.split('{name}');
   return (
-    <p className={`font-display text-[0.9em] leading-snug text-charcoal-soft ${className}`}>
+    <p className={`font-display leading-snug text-charcoal-soft ${small ? 'text-[12px]' : 'text-[13px]'} ${className}`}>
       {before}
       <bdi className="font-medium text-charcoal">{names}</bdi>
       {after}
@@ -84,7 +84,8 @@ function Lineage({ template, names, className = '' }) {
 function Name({ honorific, name }) {
   return (
     <div dir="ltr" className="flex min-w-0 flex-col items-center">
-      {honorific && <span className="font-caps text-[0.72em] font-semibold tracking-[0.2em] text-saffron-dark">{honorific}</span>}
+      {/* fontSize keeps 12px minimum so the label stays legible when --fit shrinks the card. */}
+      {honorific && <span className="font-caps font-semibold tracking-[0.2em] text-saffron-dark" style={{ fontSize: 'max(12px, 0.75em)' }}>{honorific}</span>}
       <span className="font-script text-[2em] leading-[1.12] text-crimson sm:text-[2.25em]">{name}</span>
     </div>
   );
@@ -129,8 +130,8 @@ function Couples({ couples, hosts }) {
         <Fragment key={c.bride}>
           {i === 1 && <span />}
           <div className="mt-[0.2em]">
-            {c.brideParents && <Lineage template={t('daughterOf')} names={c.brideParents} className="text-[0.84em]" />}
-            {c.brideHometown && <p className="font-display text-[0.84em] text-charcoal-soft">{c.brideHometown}</p>}
+            {c.brideParents && <Lineage template={t('daughterOf')} names={c.brideParents} small />}
+            {c.brideHometown && <p className="font-display text-[12px] text-charcoal-soft">{c.brideHometown}</p>}
           </div>
         </Fragment>
       ))}
@@ -159,7 +160,7 @@ export default function InvitationCard({ wedding }) {
           {/* Blessing and the hosts' request */}
           <motion.header variants={reveal} className="inv-head flex flex-col items-center">
             <GaneshaEmblem image={artwork.ganesha} label={t('ganesha')} className="h-[3.3em] w-[3.3em]" />
-            <p dir="ltr" className="mt-[0.4em] font-caps text-[0.8em] font-semibold tracking-[0.16em] text-crimson">
+            <p dir="ltr" className="mt-[0.4em] font-caps text-[13px] font-semibold tracking-[0.16em] text-crimson">
               {invitation.mantra}
             </p>
             {family.blessings && (
@@ -185,11 +186,11 @@ export default function InvitationCard({ wedding }) {
 
           {/* When and where */}
           <motion.div variants={reveal} className="inv-when flex flex-col items-center">
-            <p className="font-caps text-[0.84em] font-semibold tracking-[0.12em] text-crimson">{invitation.dateLine}</p>
+            <p className="font-caps text-[13px] font-semibold tracking-[0.12em] text-crimson">{invitation.dateLine}</p>
             <p className="mt-[0.25em] font-display text-[1.15em] leading-tight text-charcoal">
               <span className="italic text-charcoal-soft">{t('at')}</span> <span className="font-semibold">{venue.name}</span>
             </p>
-            <p className="font-display text-[0.9em] text-charcoal-soft">{venue.address}</p>
+            <p className="font-display text-[13px] text-charcoal-soft">{venue.address}</p>
           </motion.div>
 
           {/* Closing words, the family's couplet and their regards */}
@@ -199,14 +200,14 @@ export default function InvitationCard({ wedding }) {
               <blockquote className="mt-[0.6em] w-full max-w-[28em] border-y border-gold/50 px-[0.6em] py-[0.55em]">
                 <p className="font-display text-[1.02em] italic leading-snug text-crimson">“{invitation.quote}”</p>
                 {invitation.quoteBy && (
-                  <cite className="mt-[0.35em] block font-caps text-[0.7em] font-semibold not-italic tracking-[0.16em] text-saffron-dark">
+                  <cite className="mt-[0.35em] block font-caps text-[12px] font-semibold not-italic tracking-[0.16em] text-saffron-dark">
                     — <bdi>{invitation.quoteBy}</bdi>
                   </cite>
                 )}
               </blockquote>
             )}
             {invitation.compliments && (
-              <p className="mt-[0.6em] font-caps text-[0.72em] font-semibold tracking-[0.12em] text-saffron-dark">{invitation.compliments}</p>
+              <p className="mt-[0.6em] font-caps text-[12px] font-semibold tracking-[0.12em] text-saffron-dark">{invitation.compliments}</p>
             )}
           </motion.div>
         </motion.article>
