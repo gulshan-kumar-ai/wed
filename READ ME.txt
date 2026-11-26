@@ -54,9 +54,7 @@ FILES
                                     "npm run dev" inside it to make changes.
 
 STILL TO FILL IN (in source\src\config\wedding.js)
-  - Spellings "Grouve" and "Prena"
   - Ceremony days/times and the phere muhurat. Guests see them marked
     "provisional" until you set timingsConfirmed: true.
-  - Coordinator names and phone numbers (hidden from guests until added)
   - Photos: portraits and gallery (the gallery stays hidden until added)
   - The Google Sheet link (see above)

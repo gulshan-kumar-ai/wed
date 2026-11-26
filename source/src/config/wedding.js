@@ -275,13 +275,11 @@ export const wedding = {
     },
     hospitality: {
       title: 'Blessings & Hospitality',
-      intro: 'Our coordinators are happy to help with travel, stays and anything you need.',
-      // TODO: names and numbers. Use full international numbers, e.g. '+92 300 1234567'.
-      // Coordinators whose number still contains 'X' are hidden from guests until filled in.
+      intro: 'For travel, stays or anything you need, please get in touch:',
+      // Use full international numbers (+92 …), so the Call and WhatsApp buttons work from abroad too.
+      // To add another contact, add a line here and its translated role in wedding.i18n.js (same position).
       coordinators: [
-        { name: 'Travel coordinator', role: 'Pick-ups from Mirpurkhas & Hyderabad', phone: '+92 3XX XXXXXXX' },
-        { name: 'Stay coordinator', role: 'Guest rooms & accommodation', phone: '+92 3XX XXXXXXX' },
-        { name: 'Ceremonies coordinator', role: 'Timings, rituals & ladies’ sangeet', phone: '+92 3XX XXXXXXX' },
+        { name: 'Prem U. Pamoora', role: 'Family contact · travel, stays and any help', phone: '+92 332 8209460' },
       ],
     },
   },
