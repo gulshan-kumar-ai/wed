@@ -108,11 +108,31 @@ export default function CouplesSection({ wedding }) {
   const { t } = useLanguage();
 
   return (
-    <section className="relative bg-ivory-deep px-5 pb-24 pt-4 sm:px-8 sm:pb-28" aria-labelledby="couples-heading">
+    <section className="relative bg-ivory-deep px-5 pb-24 pt-10 sm:px-8 sm:pb-28 sm:pt-14" aria-labelledby="couples-heading">
       <h2 id="couples-heading" className="sr-only">
         {t('meetTitle')}
       </h2>
       <div className="mx-auto max-w-6xl">
+
+        {/* Twin grooms portrait — centred, introduced before the per-couple toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-12 flex justify-center sm:mb-14"
+        >
+          <img
+            src="/photos/twins-portrait.png"
+            alt="Grouve (Gaurav) and Gulshan Kumar — the twin grooms"
+            width={540}
+            height={540}
+            loading="lazy"
+            decoding="async"
+            className="w-full max-w-[min(380px,88vw)] rounded-2xl shadow-[0_18px_60px_rgba(80,30,10,0.18)] sm:max-w-[440px]"
+          />
+        </motion.div>
+
         <CoupleToggle couples={couples} active={active} onChange={setActive} />
 
         <div className="mt-12">

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useElementSize } from '../../hooks/useElementSize';
 
 /* ── Corner ornament ─────────────────────────────────────────────── */
@@ -120,18 +121,30 @@ function TopRod() {
 export default function ScrollBanner({ children, contentClassName = '' }) {
   const bodyRef = useRef(null);
   const { width: w, height: h } = useElementSize(bodyRef);
+  const inView = useInView(bodyRef, { once: true, amount: 0 });
 
   return (
     <div
       className="relative mx-auto w-full max-w-[520px] lg:max-w-[560px]"
       style={{ filter: 'drop-shadow(0 28px 60px rgba(80,10,10,0.55))' }}
     >
-      <TopRod />
+      {/* Rod fades + drops in just before the scroll unfurls */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <TopRod />
+      </motion.div>
 
-      {/* Scroll body */}
-      <div
+      {/* Scroll body — clips open from top to bottom, like a scroll unfurling */}
+      <motion.div
         ref={bodyRef}
         className="relative overflow-hidden"
+        initial={{ clipPath: 'inset(0 0 100% 0)' }}
+        animate={{ clipPath: inView ? 'inset(0 0 0% 0)' : 'inset(0 0 100% 0)' }}
+        transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1], delay: inView ? 0.2 : 0 }}
         style={{
           marginTop: '-2px',
           background: 'radial-gradient(ellipse at 50% 18%, #C53030 0%, #8B1A1A 48%, #5E0F0F 100%)',
@@ -149,7 +162,7 @@ export default function ScrollBanner({ children, contentClassName = '' }) {
         <div className={`relative z-20 ${contentClassName}`}>
           {children}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import BalustradeArt from './art/BalustradeArt';
 import GardenForeground from './art/GardenForeground';
 import Peacock from './art/Peacock';
 import Toran from '../hero/art/Toran';
+import PetalRain from '../ui/PetalRain';
 import InvitationCard from '../invitation/InvitationCard';
 import { artwork } from '../../config/artwork';
 import { useAmbient } from '../../hooks/useAmbient';
@@ -103,6 +104,9 @@ export default function GardenCourtyardScene({ wedding }) {
         >
           <Toran key={`Toran-3-${animate}`} className="h-full w-full md:drop-shadow-[0_6px_10px_rgba(80,30,10,0.25)]" animate={animate} />
         </ArtLayer>
+
+        {/* Marigold petals + gold sparkles drifting through the scene */}
+        <PetalRain />
 
         {/* Gentle dimming while the card is being read */}
         <motion.div className="absolute inset-0 bg-charcoal" style={{ opacity: dim }} aria-hidden="true" />
