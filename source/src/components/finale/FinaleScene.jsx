@@ -7,8 +7,11 @@ import LotusForegroundArt from './art/LotusForegroundArt';
 import Elephant from './art/Elephant';
 import Countdown from './Countdown';
 import Ornament from '../ui/Ornament';
+import ShareButton from '../ui/ShareButton';
+import { OmMedallion, Swastika } from '../ui/SacredEmblem';
 import { useAmbient } from '../../hooks/useAmbient';
 import { useIsSmallScreen } from '../../hooks/useMediaQuery';
+import { useLanguage } from '../../i18n';
 import { artwork } from '../../config/artwork';
 
 /* Elephants stand on the near banks, about 700 art units out from centre on desktop. */
@@ -26,12 +29,11 @@ const ELEPHANT_INSET = 'clamp(-4vw, calc(50% - var(--u) * 720), 6%)';
 export default function FinaleScene({ wedding }) {
   const ref = useRef(null);
   const animate = useAmbient(ref);
-  // As in the opening scene: on phones the loops inside the full-screen sky and lotus layers stay
-  // still while those layers move with the scroll; the floating diyas and elephants keep it alive.
   const small = useIsSmallScreen();
   const animateBig = animate && !small;
   const f = artwork.finale;
-  const { finale } = wedding;
+  const { finale, couples, footer } = wedding;
+  const { t } = useLanguage();
 
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start end', 'end end'] });
   const skyY = useTransform(p, [0, 1], ['-6%', '0%']);
@@ -89,12 +91,33 @@ export default function FinaleScene({ wedding }) {
         </div>
       </motion.div>
 
-      {/* Closing family blessing, floating on the pond */}
-      <motion.div style={{ opacity: textOpacity }} className="absolute inset-x-0 bottom-[calc(34vw*0.81+0.5rem)] z-10 flex justify-center px-4 lg:bottom-[max(1.5rem,5svh)] short:bottom-6">
-        <div className="flex flex-col items-center rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(18,19,46,0.78)_0%,rgba(18,19,46,0.5)_55%,rgba(18,19,46,0)_100%)] px-10 py-5 text-center">
-        <Ornament className="h-3 w-44" />
-        <p className="mt-3 font-display text-xl italic text-ivory/95 sm:text-2xl">{finale.regards}</p>
-        <p className="mt-1 font-display text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-gold-light">{finale.family}</p>
+      {/* Closing blessing + couple names + share — all in one screen */}
+      <motion.div style={{ opacity: textOpacity }} className="absolute inset-x-0 bottom-[calc(34vw*0.81+0.25rem)] z-10 flex justify-center px-4 lg:bottom-[max(1rem,3svh)] short:bottom-4">
+        <div className="flex flex-col items-center rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(18,19,46,0.85)_0%,rgba(18,19,46,0.6)_60%,rgba(18,19,46,0)_100%)] px-10 py-4 text-center">
+          <Ornament className="h-2.5 w-36" />
+          <p className="mt-2 font-display text-base italic text-ivory/90 sm:text-lg">{finale.regards}</p>
+          <p className="mt-0.5 font-display text-[clamp(1.3rem,3.2vw,2rem)] font-semibold text-gold-light">{finale.family}</p>
+
+          <div className="mt-3 h-px w-28 bg-gold/30" />
+
+          <div className="mt-3 flex items-center gap-3">
+            <Swastika className="h-3 w-3 text-gold/70" />
+            <OmMedallion className="h-8 w-8" />
+            <Swastika className="h-3 w-3 text-gold/70" />
+          </div>
+          <p dir="ltr" className="mt-2 font-display text-[clamp(1rem,2.4vw,1.4rem)] font-semibold text-gold-light">
+            {couples[0].groom} &amp; {couples[0].bride}{' '}
+            <span className="text-ivory/50">·</span>{' '}
+            {couples[1].groom} &amp; {couples[1].bride}
+          </p>
+          {footer?.hashtag && (
+            <p dir="ltr" className="mt-1 font-sans text-xs font-semibold tracking-[0.18em] text-saffron-light">
+              {footer.hashtag}
+            </p>
+          )}
+          <div className="mt-3">
+            <ShareButton wedding={wedding} />
+          </div>
         </div>
       </motion.div>
     </section>

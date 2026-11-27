@@ -87,14 +87,6 @@ function CouplePanel({ couple, index }) {
           </h3>
           <Ornament className="mx-auto mt-5 h-3 w-48" />
           <p className="mx-auto mt-5 max-w-md font-display text-xl leading-relaxed text-charcoal">{couple.story}</p>
-          {couple.brideParents && (
-            <p className="mt-5 font-sans text-[15px] text-charcoal-soft">
-              {t('brideDaughterOf', {
-                bride: brideFormal(couple),
-                parents: [couple.brideParents, couple.brideHometown].filter(Boolean).join(t('comma')),
-              })}
-            </p>
-          )}
         </div>
       </div>
 

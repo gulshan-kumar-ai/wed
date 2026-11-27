@@ -5,12 +5,12 @@
  * ─────────────────────────────────────────────────────────────
  */
 export const wedding = {
-  invocation: '॥ Shree Ganeshaya Namah ॥', // hero line; set to '' to hide
+  invocation: 'Om Shree Ganeshaye Namah', // hero line; set to '' to hide
 
   subtitle: 'A Double Royal Union',
 
   location: 'Kunri, Sindh, Pakistan',
-  dates: '14 – 16 January 2027', // TODO: confirm the festivity dates (Shubh Vivah on the 16th)
+  dates: '16 – 31 January 2027',
 
   // Auspicious emblem shown above the hero title
   emblem: {
@@ -38,25 +38,25 @@ export const wedding = {
 
   // The grooms' parents: the hosts of the invitation
   family: {
-    hosts: 'Smt. Vineeta & Shri Prem Uttamchand, Pamoora',
+    hosts: 'Mr. & Mrs. Prem Kumar Pamoora',
     // Optional line above the hosts; set to '' to hide
-    blessings: 'With the divine grace of Lord Ganesha and the blessings of our elders',
+    blessings: '',
   },
 
   invitation: {
-    mantra: '॥ Shree Ganeshaya Namah ॥',
-    request: 'request the honour of your gracious presence and blessings at the auspicious double wedding of their beloved twin sons',
-    dateLine: 'Thursday 14 to Saturday 16 January 2027',
+    mantra: 'Om Shree Ganeshaye Namah',
+    request: 'With the blessings of ancestors and grace of the Almighty, we cordially invite you to join us for the Wedding Ceremony of our beloved Sons.',
+    dateLine: 'Monday, 18th January 2027',
     closing: 'Your presence will make the celebrations complete.',
     quote: 'Saj-dhaj kar aana, khushiyaan sang laana, mere judwa bhaiyon ki shaadi mein zaroor-zaroor aana.',
     quoteBy: 'Chohiet Pamoora',
     // Optional sign-off line at the bottom of the card; '' to hide
-    compliments: 'With love & warm regards from the Pamoora Pariwar',
+    compliments: 'With Warm Regards, The Pamoora & Ratnani Pariwar',
   },
 
   venue: {
-    name: 'Pamoora House',
-    address: 'Kunri, District Umerkot, Sindh, Pakistan',
+    name: 'Alfateh Marriage Hall',
+    address: 'Kunri, Sindh, Pakistan',
   },
 
   /* ── Meet the couples ────────────────────────────────────── */
@@ -71,14 +71,14 @@ export const wedding = {
   couples: [
     {
       groom: 'Grouve',
-      groomName: 'Grouve Kumar',
+      groomName: 'Grouve Kumar (Gaurav)',
       groomTitle: 'Dr.',
       bride: 'Payal',
       brideName: 'Payal Kumari',
       brideTitle: 'Dr.',
       groomPrefix: '', // optional word before the title, e.g. 'Chi.' (Chiranjeevi)
       bridePrefix: '',
-      brideParents: 'Shri Kailash Kumar Harani',
+      brideParents: 'Seth Kelash Harani',
       brideHometown: '',
       // Portraits: put files in public/photos/ and set e.g. 'photos/grouve.jpg'
       // (no leading slash, so it also works from the GitHub Pages sub-folder)
@@ -105,7 +105,7 @@ export const wedding = {
       brideTitle: 'Dr.',
       groomPrefix: '',
       bridePrefix: '',
-      brideParents: 'Shri Tarachand Dedha',
+      brideParents: 'Seth Tarachand Dedha',
       brideHometown: '',
       groomPhoto: null,
       bridePhoto: null,
@@ -134,67 +134,130 @@ export const wedding = {
 
   events: [
     {
+      id: 'lagan',
+      motif: 'marigold',
+      title: 'Lagan Rasam',
+      short: 'Lagan',
+      start: '2027-01-16T10:00:00+05:00',
+      end: '2027-01-16T13:00:00+05:00',
+      venueId: 'residence',
+      dressCode: 'Traditional',
+      description: 'The auspicious Lagan ceremony marks the formal beginning of the wedding rituals, with sacred rites and blessings from the family elders.',
+    },
+    {
       id: 'haldi',
-      motif: 'marigold', // lotus | dhol | marigold | fire
-      title: 'Ganesh Sthapana & Haldi',
-      short: 'Haldi', // label on the RSVP form
-      subtitle: 'Pithi',
-      start: '2027-01-14T10:00:00+05:00',
-      end: '2027-01-14T14:00:00+05:00',
+      motif: 'marigold',
+      title: 'Haldi',
+      short: 'Haldi',
+      start: '2027-01-16T14:00:00+05:00',
+      end: '2027-01-16T17:00:00+05:00',
       venueId: 'residence',
       dressCode: 'Yellow & Marigold',
-      description: 'We begin by seating Lord Ganesha, then shower both grooms with turmeric, blessings and plenty of laughter.',
+      description: 'Turmeric, blessings and laughter — the grooms are showered with haldi by family and friends.',
     },
     {
-      id: 'sangeet',
+      id: 'dawat-general',
       motif: 'dhol',
-      title: 'Mehendi & Sangeet Night',
-      short: 'Mehendi & Sangeet',
-      start: '2027-01-15T18:30:00+05:00',
-      end: '2027-01-15T23:30:00+05:00',
+      title: 'General Dawat',
+      short: 'General Dawat',
+      start: '2027-01-17T19:30:00+05:00',
+      end: '2027-01-17T23:00:00+05:00',
+      venueId: 'hall',
+      dressCode: 'Festive',
+      description: 'A joyful dinner gathering for family and guests to celebrate the beginning of the festivities.',
+    },
+    {
+      id: 'mehndi',
+      motif: 'dhol',
+      title: 'Mehndi Night',
+      short: 'Mehndi',
+      start: '2027-01-18T00:00:00+05:00',
+      end: '2027-01-18T03:00:00+05:00',
       venueId: 'hall',
       dressCode: 'Vibrant Festive',
-      description: 'Henna, dholki, Sindhi folk songs and two families competing on the dance floor. Bring your best moves.',
+      description: 'A midnight mehndi celebration with henna, dholki and Sindhi folk songs into the early hours.',
     },
     {
-      id: 'baraat',
+      id: 'binayak-grouve',
       motif: 'lotus',
-      title: 'Royal Twin Baraat Procession',
-      short: 'Baraat',
-      start: '2027-01-16T16:30:00+05:00',
-      end: '2027-01-16T18:30:00+05:00',
+      title: 'Gaurav Binayak',
+      short: 'Gaurav Binayak',
+      start: '2027-01-18T10:00:00+05:00',
+      end: '2027-01-18T13:00:00+05:00',
+      venueId: 'residence',
+      dressCode: 'Traditional',
+      description: 'The sacred Binayak (Vinayak Puja) ceremony for Dr. Grouve Kumar (Gaurav) — seeking Lord Ganesha\'s blessings before the baraat.',
+    },
+    {
+      id: 'ghore',
+      motif: 'lotus',
+      title: 'Ghore',
+      short: 'Ghore',
+      start: '2027-01-18T16:00:00+05:00',
+      end: '2027-01-18T18:00:00+05:00',
+      venueId: 'residence',
+      dressCode: 'Royal Traditional',
+      description: 'The groom mounts the decorated horse to the sounds of the dhol — the royal baraat procession prepares to set out.',
+    },
+    {
+      id: 'dawat-main',
+      motif: 'fire',
+      title: 'Main Dawat & Musical Night',
+      short: 'Main Dawat',
+      start: '2027-01-18T20:00:00+05:00',
+      end: '2027-01-19T01:00:00+05:00',
       venueId: 'hall',
-      route: { from: 'Pamoora House', to: 'Alfateh Marriage Hall' },
-      // Optional illustration on the card (files in public/art/events/; WebP with a JPEG fallback)
+      dressCode: 'Traditional Formal',
+      description: 'The grand wedding dinner followed by a spectacular musical night — celebrate with family and friends under the stars.',
+    },
+    {
+      id: 'baraat-grouve',
+      motif: 'lotus',
+      title: 'Royal Baraat — Dr. Grouve Kumar (Gaurav)',
+      short: 'Grouve Baraat',
+      start: '2027-01-19T12:00:00+05:00',
+      end: '2027-01-19T16:00:00+05:00',
+      venueId: 'residence',
+      route: { from: 'Kunri', to: 'Digree' },
       image: {
         webp: 'art/events/baraat.webp',
         fallback: 'art/events/baraat.jpg',
         width: 560,
         height: 216,
-        alt: 'The baraat: the groom on a white horse, the bride in a decorated doli, dhol players and dancing guests',
+        alt: 'The baraat: the groom on a white horse, dhol players and dancing guests',
       },
       dressCode: 'Royal Traditional',
-      description: 'Two grooms, two decorated mounts, one band. The twin baraat sets out from Pamoora House and dances its way to the mandap.',
+      description: 'Dr. Grouve Kumar (Gaurav)\'s royal baraat procession sets out from Kunri to Digree, bringing the family\'s joy and blessings to the bride\'s home.',
     },
     {
-      id: 'vivah',
+      id: 'binayak-gulshan',
+      motif: 'lotus',
+      title: 'Gulshan Binayak',
+      short: 'Gulshan Binayak',
+      start: '2027-01-30T15:00:00+05:00',
+      end: '2027-01-30T18:00:00+05:00',
+      venueId: 'residence',
+      dressCode: 'Traditional',
+      description: 'The sacred Binayak (Vinayak Puja) ceremony for Engr. Gulshan Kumar — seeking Lord Ganesha\'s blessings before the baraat to Karachi.',
+    },
+    {
+      id: 'baraat-gulshan',
       motif: 'fire',
-      title: 'Shubh Vivah (Phere) & Reception',
-      short: 'Wedding & Reception',
-      start: '2027-01-16T19:00:00+05:00',
-      end: '2027-01-17T00:30:00+05:00',
-      venueId: 'hall',
-      // Phere muhurat, shown in each language's time format. TODO: confirm with the pandit ji.
-      muhurat: { start: '2027-01-16T20:41:00+05:00', end: '2027-01-16T22:15:00+05:00' },
-      dressCode: 'Traditional Formal',
+      title: 'Royal Baraat — Engr. Gulshan Kumar',
+      short: 'Gulshan Baraat',
+      start: '2027-01-31T12:00:00+05:00',
+      end: '2027-01-31T16:00:00+05:00',
+      venueId: 'residence',
+      route: { from: 'Kunri', to: 'Karachi' },
       image: {
-        webp: 'art/events/phere.webp',
-        fallback: 'art/events/phere.jpg',
-        width: 529,
-        height: 322,
-        alt: 'The wedding ceremony under the flower mandap, with the family gathered around the couple',
+        webp: 'art/events/baraat.webp',
+        fallback: 'art/events/baraat.jpg',
+        width: 560,
+        height: 216,
+        alt: 'The baraat: the groom on a white horse, dhol players and dancing guests',
       },
-      description: 'The sacred seven vows around the holy fire, followed by dinner and the reception for both couples.',
+      dressCode: 'Royal Traditional',
+      description: 'Engr. Gulshan Kumar\'s royal baraat travels from Kunri to Karachi, bringing the family\'s love and blessings to celebrate with the bride\'s family.',
     },
   ],
 
@@ -217,15 +280,15 @@ export const wedding = {
     },
     {
       id: 'hall',
-      tab: 'Alfateh Marriage Hall · Mandap',
+      tab: 'Alfateh Marriage Hall · Dawat',
       name: 'Alfateh Marriage Hall',
       address: 'Kunri, District Umerkot, Sindh',
       mapQuery: 'Alfateh Marriage Hall, Kunri, Sindh, Pakistan', // TODO: check the pin, or use coordinates
       landmarks: [
-        'Venue for the Mehendi & Sangeet, the Baraat arrival, Phere and Reception',
-        'Volunteers will guide cars to the parking area from 4:00 PM',
+        'Venue for the Mehndi Night, General Dawat and Main Dawat & Musical Night',
+        'Volunteers will guide cars to the parking area from 7:00 PM',
       ],
-      hosts: 'Mehendi & Sangeet, the Baraat arrival, Phere and the Reception',
+      hosts: 'Mehndi Night, General Dawat & Main Dawat',
     },
   ],
 
@@ -246,7 +309,7 @@ export const wedding = {
     countVisits: true,
     maxGuests: 10,
     // Travel questions for guests coming from outside Kunri
-    arrivalDates: ['2027-01-13', '2027-01-14', '2027-01-15', '2027-01-16'],
+    arrivalDates: ['2027-01-15', '2027-01-16', '2027-01-17', '2027-01-18'],
     pickupFrom: [
       { id: 'mirpurkhas', label: 'Mirpurkhas' },
       { id: 'hyderabad', label: 'Hyderabad' },
@@ -293,10 +356,10 @@ export const wedding = {
     title: 'Counting Down to the Shubh Vivah',
     subtitle: 'Starts 16 January, 2027',
     // The moment the countdown runs to (with time zone offset): the Shubh Vivah start
-    countdownTo: '2027-01-16T19:00:00+05:00',
+    countdownTo: '2027-01-18T12:00:00+05:00',
     arrivedMessage: 'The celebrations have begun. Welcome to Kunri!',
     regards: 'With warm regards,',
-    family: 'The Pamoora Pariwar, Kunri',
+    family: 'The Pamoora & Ratnani Pariwar',
   },
 
   footer: {

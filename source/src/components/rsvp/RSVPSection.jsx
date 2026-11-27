@@ -200,6 +200,7 @@ export default function RSVPSection({ wedding, guest }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const initial = useMemo(() => normalizeSaved(readRsvp(), guest), []);
   const idRef = useRef(initial?.id ?? newId());
+  const [open, setOpen] = useState(false);
   const [values, setValues] = useState(initial?.values ?? emptyValues(guest));
   const [delivered, setDelivered] = useState(initial?.delivered ?? null);
   const [status, setStatus] = useState(initial?.delivered ? 'done' : 'idle'); // idle | sending | error | done
@@ -269,6 +270,32 @@ export default function RSVPSection({ wedding, guest }) {
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading id="rsvp-heading" eyebrow={t('rsvpEyebrow')} title={t('rsvpTitle')} intro={rsvp.deadline} />
 
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls="rsvp-form-panel"
+            className="inline-flex items-center gap-2 rounded-full border border-gold bg-crimson px-8 py-3.5 font-caps text-[13px] font-semibold tracking-[0.18em] text-white shadow-lg transition hover:bg-crimson/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
+          >
+            {open ? t('rsvpTitle') : t('rsvpTitle')}
+            <svg viewBox="0 0 16 16" className={`h-4 w-4 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} aria-hidden="true">
+              <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <AnimatePresence initial={false}>
+        {open && (
+        <motion.div
+          id="rsvp-form-panel"
+          key="rsvp-panel"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          style={{ overflow: 'hidden' }}
+        >
         <RoyalScroll className="mt-14">
           <AnimatePresence mode="wait" initial={false}>
             {status === 'done' ? (
@@ -536,6 +563,9 @@ export default function RSVPSection({ wedding, guest }) {
             )}
           </AnimatePresence>
         </RoyalScroll>
+        </motion.div>
+        )}
+        </AnimatePresence>
       </div>
     </section>
   );

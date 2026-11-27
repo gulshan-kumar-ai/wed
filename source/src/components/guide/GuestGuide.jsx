@@ -98,11 +98,13 @@ function Column({ icon, title, children, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col items-center rounded-[1.75rem] border border-gold/60 bg-white/55 px-6 py-9 text-center shadow-[0_16px_40px_rgba(80,30,10,0.08)] sm:px-8"
+      className="flex flex-col items-center rounded-[1.75rem] border border-gold/60 bg-white/55 px-6 py-7 text-center shadow-[0_16px_40px_rgba(80,30,10,0.08)] sm:px-8"
     >
-      <span className="flex h-24 w-24 items-center justify-center rounded-full border border-gold/60 bg-ivory shadow-inner">{icon}</span>
-      <h3 className="mt-5 font-display text-[1.9rem] font-semibold leading-tight text-crimson">{title}</h3>
-      <div className="mt-4 w-full">{children}</div>
+      <span className="flex h-16 w-16 items-center justify-center rounded-full border border-gold/60 bg-ivory shadow-inner">
+        <span className="scale-[0.65] block">{icon}</span>
+      </span>
+      <h3 className="mt-3 font-display text-[1.5rem] font-semibold leading-tight text-crimson">{title}</h3>
+      <div className="mt-3 w-full">{children}</div>
     </motion.article>
   );
 }
@@ -155,22 +157,16 @@ function Contacts({ hospitality, familyWhatsApp }) {
   );
 }
 
-/** "Things to Know": travel, dress code & weather, and hospitality contacts for out-of-town guests. */
+/** "Things to Know": hospitality contacts for out-of-town guests. */
 export default function GuestGuide({ wedding }) {
-  const { travel, attire, hospitality } = wedding.guide;
+  const { hospitality } = wedding.guide;
   const { t } = useLanguage();
   return (
-    <section className="relative bg-ivory-deep px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="guide-heading">
+    <section className="relative bg-ivory-deep px-5 py-12 sm:px-8 sm:py-14" aria-labelledby="guide-heading">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading id="guide-heading" eyebrow={t('guideEyebrow')} title={t('guideTitle')} intro={t('guideIntro')} />
-        <div className="mt-14 grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
-          <Column icon={<TravelIcon />} title={travel.title} index={0}>
-            <Points points={travel.points} />
-          </Column>
-          <Column icon={<AttireIcon />} title={attire.title} index={1}>
-            <Points points={attire.points} />
-          </Column>
-          <Column icon={<HospitalityIcon />} title={hospitality.title} index={2}>
+        <SectionHeading id="guide-heading" eyebrow={t('guideEyebrow')} title={t('guideTitle')} intro="" />
+        <div className="mt-8 mx-auto max-w-md">
+          <Column icon={<HospitalityIcon />} title={hospitality.title} index={0}>
             <Contacts hospitality={hospitality} familyWhatsApp={wedding.rsvp.whatsapp} />
           </Column>
         </div>

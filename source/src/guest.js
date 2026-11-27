@@ -76,7 +76,7 @@ export function getBoot(maxGuests) {
   store.set(SESSION_KEY, '1', sessionStorage);
 
   const hashId = window.location.hash.slice(1);
-  const showGate = force || !seen;
+  const showGate = true;
 
   boot = {
     guest,

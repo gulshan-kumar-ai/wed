@@ -159,9 +159,6 @@ export default function OpeningGate({ wedding, guest, onOpen, onDone }) {
             </div>
 
             <Ornament className="mt-[1.8svh] h-3 w-44 [@media(max-height:740px)]:hidden" />
-            <p className="mt-[1.4svh] font-sans text-xs font-semibold uppercase tracking-[0.24em] text-ivory/85 sm:text-[13px]">
-              {wedding.location.split(/[,،]/)[0]} · {wedding.dates}
-            </p>
           </div>
 
           <div className="flex flex-col items-center short:shrink-0">

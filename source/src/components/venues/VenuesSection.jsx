@@ -37,23 +37,6 @@ function VenuePanel({ venue }) {
           {venue.address}
         </p>
 
-        {venue.hosts && (
-          <p className="mt-4 rounded-xl bg-gold-pale/70 px-4 py-3 font-sans text-sm leading-relaxed text-charcoal">
-            <span className="font-semibold text-crimson-dark">{t('hosting')}: </span>
-            {venue.hosts}
-          </p>
-        )}
-
-        <h4 className="mt-6 font-sans text-xs font-semibold uppercase tracking-[0.24em] text-crimson">{t('findingWay')}</h4>
-        <ul className="mt-3 space-y-2.5">
-          {venue.landmarks.map((l) => (
-            <li key={l} className="flex gap-3 font-sans text-[15px] leading-relaxed text-charcoal">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rotate-45 bg-saffron" aria-hidden="true" />
-              {l}
-            </li>
-          ))}
-        </ul>
-
         <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-8">
           <a
             href={directionsUrl(venue.mapQuery)}
@@ -63,14 +46,6 @@ function VenuePanel({ venue }) {
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
             {t('directions')}
-          </a>
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.mapQuery)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-gold px-6 py-3 font-sans text-[13px] font-semibold uppercase tracking-[0.14em] text-crimson transition hover:bg-gold-pale focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron"
-          >
-            {t('openMaps')}
           </a>
         </div>
       </div>
