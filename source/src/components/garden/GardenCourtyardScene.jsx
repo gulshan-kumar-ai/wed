@@ -70,6 +70,9 @@ export default function GardenCourtyardScene({ wedding }) {
         <ArtLayer image={g.balustrade} style={{ y: railY }}>
           <BalustradeArt />
         </ArtLayer>
+        <ArtLayer image={g.foreground} style={{ y: groundY }}>
+          <GardenForeground />
+        </ArtLayer>
         <motion.div className="pointer-events-none absolute inset-0" style={{ y: railY }} aria-hidden="true">
           <motion.div
             className="absolute"
@@ -92,9 +95,6 @@ export default function GardenCourtyardScene({ wedding }) {
             )}
           </motion.div>
         </motion.div>
-        <ArtLayer image={g.foreground} style={{ y: groundY }}>
-          <GardenForeground />
-        </ArtLayer>
         <ArtLayer
           image={artwork.toran}
           className="absolute inset-x-0 top-0 h-[clamp(84px,12.5vw,170px)]"

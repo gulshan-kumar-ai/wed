@@ -140,7 +140,7 @@ export const wedding = {
       short: 'Lagan',
       start: '2027-01-16T10:00:00+05:00',
       end: '2027-01-16T13:00:00+05:00',
-      venueId: 'residence',
+      venueId: 'hall',
       dressCode: 'Traditional',
       description: 'The auspicious Lagan ceremony marks the formal beginning of the wedding rituals, with sacred rites and blessings from the family elders.',
     },
@@ -151,7 +151,7 @@ export const wedding = {
       short: 'Haldi',
       start: '2027-01-16T14:00:00+05:00',
       end: '2027-01-16T17:00:00+05:00',
-      venueId: 'residence',
+      venueId: 'hall',
       dressCode: 'Yellow & Marigold',
       description: 'Turmeric, blessings and laughter — the grooms are showered with haldi by family and friends.',
     },
@@ -359,7 +359,7 @@ export const wedding = {
     countdownTo: '2027-01-18T12:00:00+05:00',
     arrivedMessage: 'The celebrations have begun. Welcome to Kunri!',
     regards: 'With warm regards,',
-    family: 'The Pamoora & Ratnani Pariwar',
+    family: 'Pamoora & Ratnani Pariwar',
   },
 
   footer: {

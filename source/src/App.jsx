@@ -13,6 +13,7 @@ import Footer from './components/layout/Footer';
 import TopBar from './components/ui/TopBar';
 import QuickNav from './components/ui/QuickNav';
 import OpeningGate from './components/intro/OpeningGate';
+import CurtainTransition from './components/intro/CurtainTransition';
 import WelcomeBack from './components/intro/WelcomeBack';
 import { jumpToY, scrollToSection, useSmoothScroll } from './hooks/useSmoothScroll';
 import { wedding } from './config/wedding';
@@ -33,6 +34,7 @@ function AppContent() {
   const w = useMemo(() => localizeWedding(wedding, language), [language]);
 
   const [gate, setGate] = useState(boot.showGate);
+  const [curtain, setCurtain] = useState(false);
   const [opened, setOpened] = useState(!boot.showGate);
   const [welcome, setWelcome] = useState(boot.returning);
   const pendingHash = useRef(boot.hash);
@@ -97,7 +99,18 @@ function AppContent() {
         {!gate && <QuickNav />}
         {welcome && !gate && <WelcomeBack guest={guest} onReplay={replay} />}
         <AnimatePresence>
-          {gate && <OpeningGate key="gate" wedding={w} guest={guest} onOpen={openInvitation} onDone={() => setGate(false)} />}
+          {gate && (
+            <OpeningGate
+              key="gate"
+              wedding={w}
+              guest={guest}
+              onOpen={openInvitation}
+              onDone={() => { setCurtain(true); setGate(false); }}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {curtain && <CurtainTransition key="curtain" onDone={() => setCurtain(false)} />}
         </AnimatePresence>
       </IntroContext.Provider>
     </MotionConfig>
